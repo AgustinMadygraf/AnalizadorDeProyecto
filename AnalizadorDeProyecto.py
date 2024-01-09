@@ -129,7 +129,7 @@ def crear_archivo_bat():
 
     contenido_bat = f'@echo off\n"{python_executable}" "{ruta_script}"\npause\n'
 
-    ruta_archivo_bat = os.path.join(directorio_script, 'ejecutar_script.bat')
+    ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
     with open(ruta_archivo_bat, 'w') as archivo_bat:
         archivo_bat.write(contenido_bat)
 
