@@ -5,3 +5,5 @@ listado_AnalizadorDeProyecto.txt
 __pycache__
 mejoras.txt
 gestion_archivos.log
+logs/analizador.log
+logs/gestion_archivos.log
