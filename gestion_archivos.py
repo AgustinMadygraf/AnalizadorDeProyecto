@@ -3,8 +3,11 @@
 import os
 import datetime
 import pyperclip
+import logging
+
 
 carpetas_a_omitir = ["__pycache__/"]
+logging.basicConfig(filename='gestion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def listar_archivos(ruta, extensiones):
     try:
@@ -33,7 +36,7 @@ def listar_archivos(ruta, extensiones):
         archivos_encontrados = otros_archivos + archivos_sql + archivos_json
         return archivos_encontrados, estructura
     except Exception as e:
-        print(f"Error al listar archivos: {e}")
+        logging.error(f"Error al listar archivos en {ruta}: {e}")
         return [], []
 
 def escribir_contenido_archivo(archivo, archivo_txt):
@@ -43,7 +46,7 @@ def escribir_contenido_archivo(archivo, archivo_txt):
             archivo_txt.write(f"# {archivo}\n")
             archivo_txt.writelines(linea for linea in file if not linea.strip().startswith('#'))
     except Exception as e:
-        print(f"Error al escribir el contenido del archivo {archivo}: {e}")
+        logging.error(f"Error al escribir el contenido del archivo {archivo}: {e}")
 
 def obtener_estructura_formato(estructura):
     # Inicializamos la estructura formateada con el directorio raíz
@@ -91,7 +94,7 @@ def generar_archivo_salida(ruta, archivos, estructura,modo_prompt):
         copiar_contenido_al_portapapeles(nombre_archivo_salida)
         return nombre_archivo_salida
     except Exception as e:
-        print(f"Error al generar el archivo de salida: {e}")
+        logging.error(f"Error al generar el archivo de salida en {ruta}: {e}")
         return None
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
@@ -99,6 +102,6 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
         with open(nombre_archivo_salida, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()
         pyperclip.copy(contenido)
-        print(f"El contenido del archivo '{nombre_archivo_salida}' ha sido copiado al portapapeles.")
+        logging.info(f"El contenido del archivo '{nombre_archivo_salida}' ha sido copiado al portapapeles.")
     except Exception as e:
-        print(f"Error al copiar al portapapeles: {e}")
+        logging.error(f"Error al copiar al portapapeles el archivo {nombre_archivo_salida}: {e}")

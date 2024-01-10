@@ -1,0 +1,7 @@
+2024-01-10 17:09:29,933 - INFO - Versión de Python en uso: 3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]
+2024-01-10 17:09:32,926 - INFO - El contenido del archivo 'C:\AppServ\www\AnalizadorDeProyecto\listado_AnalizadorDeProyecto.txt' ha sido copiado al portapapeles.
+2024-01-10 17:13:24,930 - INFO - Versión de Python en uso: 3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]
+2024-01-10 17:13:24,934 - INFO - Librería 'pyperclip' está instalada (versión 1.8.2).
+2024-01-10 17:13:24,940 - INFO - Librería 'datetime' está instalada (versión 5.4).
+2024-01-10 17:13:24,943 - INFO - Librería 'importlib' está instalada (versión 1.0.4).
+2024-01-10 17:13:27,321 - INFO - El contenido del archivo 'C:\AppServ\www\AnalizadorDeProyecto\listado_AnalizadorDeProyecto.txt' ha sido copiado al portapapeles.

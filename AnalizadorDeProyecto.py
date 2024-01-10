@@ -7,7 +7,9 @@ from gestion_archivos import listar_archivos, generar_archivo_salida
 from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python
 from interfaz_usuario import mostrar_opciones
 from interfaz_usuario import elegir_modo
+import logging
 
+logging.basicConfig(filename='analizador.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def obtener_ruta_default():
     try:
@@ -19,7 +21,7 @@ def obtener_ruta_default():
         with open(archivo_default, 'r', encoding='utf-8') as file:
             return file.read().strip()
     except Exception as e:
-        print(f"Error al obtener la ruta por defecto: {e}")
+        logging.error(f"Error al obtener la ruta por defecto: {e}")
         return None
 
 def guardar_nueva_ruta_default(nueva_ruta):
@@ -38,7 +40,7 @@ def validar_ruta(ruta):
     return os.path.isdir(ruta) and os.access(ruta, os.R_OK)
 
 def main():
-    print(f"Versión de Python en uso: {obtener_version_python()}")
+    logging.info(f"Versión de Python en uso: {obtener_version_python()}")
     librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
     verificar_e_instalar_librerias(librerias_necesarias)
 
@@ -56,11 +58,11 @@ def main():
             archivos, estructura = listar_archivos(ruta, extensiones)
             nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura,modo_prompt)
             if nombre_archivo_salida is None:
-                print("No se generó ningún archivo.")
+                logging.warning("No se generó ningún archivo.")
                 ruta_anterior = None
                 continue
         except Exception as e:
-            print(f"Error al procesar la ruta: {e}")
+            logging.error(f"Error al procesar la ruta: {e}")
             ruta_anterior = None
             continue
 

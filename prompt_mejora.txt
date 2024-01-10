@@ -1,6 +1,7 @@
 /start
 ¡Hola! Como agente de IA experto en programación, te invito a analizar detalladamente el siguiente proyecto. Tu objetivo es identificar una área específica para aplicar mejores prácticas de programación. Sigue estos pasos:
-1. Realiza un análisis del proyecto.
+1. Realiza un breve análisis del proyecto.
 2. Identifica un área clave para mejora.
 3. Proporciona una sugerencia específica para esa mejora.
 4. Desarrolla un plan de acción detallado y paso a paso para implementar la mejora.
+5. Indica que archivo hay que empezar a mejorar. Proporciona una modificación en el código que necesita como un punto de partida para la implementación de la mejora. 
