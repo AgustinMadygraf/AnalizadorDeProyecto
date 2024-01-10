@@ -11,29 +11,14 @@ def solicitar_ruta():
 
 
 def mostrar_opciones(ruta_anterior):
-    while True:
-        print("\nOpciones:\n S - Salir\n R - Repetir con la misma ruta\n C - Cambiar la ruta\n H - Ayuda")
-        opcion = input("Seleccione una opción [S/R/C/H]: ").upper()
-
-        if opcion == 'S':
-            exit()
-        elif opcion == 'C':
-            return 'C', solicitar_ruta()
-        elif opcion == 'R':
-            print("Repetir con la misma ruta.")
-            return 'R', ruta_anterior
-        elif opcion == 'H':
-            mostrar_ayuda()
-        else:
-            print("Opción no válida. Por favor, elija una opción entre S, R, C y H.")
-            
-def mostrar_ayuda():
-    print("\nAyuda del Analizador de Proyectos:")
-    print(" S - Salir del programa.")
-    print(" R - Repetir la operación con la misma ruta de carpeta.")
-    print(" C - Cambiar la ruta de la carpeta para la operación.")
-    print(" H - Mostrar este mensaje de ayuda.\n")
-
+    opcion = input("\n¿Desea salir (S), repetir con la misma ruta (R) o cambiar la ruta (C)? [S/R/C]: ").upper()
+    if opcion == 'S':
+        exit()
+    elif opcion == 'C':
+        return 'C', solicitar_ruta()
+    else:
+        print("Repetir con la misma ruta.")
+        return 'R', ruta_anterior
     
 def elegir_modo():
     while True:
