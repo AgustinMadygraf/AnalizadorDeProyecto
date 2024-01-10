@@ -2,11 +2,10 @@
 
 import os
 import sys
-import subprocess
 from importlib import metadata
-from gestion_archivos import listar_archivos, escribir_contenido_archivo, generar_archivo_salida
-from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python, obtener_librerias_pip
-from interfaz_usuario import solicitar_ruta, mostrar_opciones
+from gestion_archivos import listar_archivos, generar_archivo_salida
+from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python
+from interfaz_usuario import mostrar_opciones
 
 def obtener_ruta_default():
     try:

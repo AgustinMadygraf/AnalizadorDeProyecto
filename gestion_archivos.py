@@ -70,6 +70,7 @@ def generar_archivo_salida(ruta, archivos, estructura):
         return None
 
 
+
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     try:
         with open(nombre_archivo_salida, 'r', encoding='utf-8') as archivo:
