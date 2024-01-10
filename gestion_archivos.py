@@ -10,6 +10,16 @@ carpetas_a_omitir = ["__pycache__/"]
 logging.basicConfig(filename='gestion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def filtrar_archivos_por_extension(archivos, extensiones):
+    """
+    Filtra una lista de archivos, retornando aquellos que coinciden con las extensiones dadas.
+
+    Parámetros:
+    archivos (list of str): Lista de nombres de archivos a filtrar.
+    extensiones (list of str): Extensiones para usar en el filtrado.
+
+    Retorna:
+    list of str: Lista de archivos filtrados que coinciden con las extensiones.
+    """
     archivos_filtrados = []
     for archivo in archivos:
         if any(archivo.endswith(ext) for ext in extensiones):
