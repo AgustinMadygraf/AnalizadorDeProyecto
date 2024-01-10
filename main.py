@@ -9,11 +9,11 @@ from interfaz_usuario import mostrar_opciones
 from interfaz_usuario import elegir_modo
 import logging
 
-logging.basicConfig(filename='analizador.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs/analizador.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def obtener_ruta_default():
     ruta_script = obtener_ruta_script()  # Nueva función para obtener la ruta
-    archivo_default = os.path.join(ruta_script, 'default.txt')
+    archivo_default = os.path.join(ruta_script, 'config_path.txt')
     try:
         with open(archivo_default, 'r', encoding='utf-8') as file:
             return file.read().strip()
@@ -33,7 +33,7 @@ def obtener_ruta_script():
 
 def guardar_nueva_ruta_default(nueva_ruta):
     try:
-        archivo_default = os.path.join(obtener_ruta_script(), 'default.txt')
+        archivo_default = os.path.join(obtener_ruta_script(), 'config_path.txt')
         print(f"Intentando escribir en: {archivo_default}")  # Agregar para depuración
         with open(archivo_default, 'w', encoding='utf-8') as file:
             file.write(nueva_ruta)
@@ -76,7 +76,7 @@ def main():
         if opcion == 'S':
             break
         elif opcion == 'C':
-            guardar_nueva_ruta_default(nueva_ruta)  # Guardar la nueva ruta en default.txt
+            guardar_nueva_ruta_default(nueva_ruta)  # Guardar la nueva ruta en config_path.txt
             ruta_anterior = nueva_ruta  # Actualizar la ruta anterior con la nueva ruta
         else:
             ruta_anterior = ruta

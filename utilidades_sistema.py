@@ -5,7 +5,7 @@ from importlib import metadata
 import logging
 import os
 
-logging.basicConfig(filename='utilidades_sistema.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs/utilidades_sistema.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def verificar_e_instalar_librerias(librerias):

@@ -7,7 +7,7 @@ import logging
 
 
 carpetas_a_omitir = ["__pycache__/"]
-logging.basicConfig(filename='gestion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs/gestion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def filtrar_archivos_por_extension(archivos, extensiones):
     """
@@ -57,7 +57,6 @@ def listar_archivos(ruta, extensiones):
     except Exception as e:
         logging.error(f"Error al listar archivos en {ruta}: {e}")
         return [], []
-
 
 def escribir_contenido_archivo(archivo, archivo_txt):
     try:
