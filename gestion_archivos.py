@@ -43,6 +43,21 @@ def escribir_contenido_archivo(archivo, archivo_txt):
     except Exception as e:
         print(f"Error al escribir el contenido del archivo {archivo}: {e}")
 
+def obtener_estructura_formato(estructura):
+    # Inicializamos la estructura formateada con el directorio raíz
+    estructura_formateada = [estructura[0]]
+
+    for linea in estructura[1:]:
+        nivel = linea.count(' ') // 4  # Calculamos el nivel de indentación
+        if nivel == 0:
+            estructura_formateada.append(linea)
+        else:
+            # Agregamos la línea formateada con ramas para mostrar la jerarquía
+            estructura_formateada.append("│   " * (nivel - 1) + "└── " + linea.strip())
+
+    # Unimos las líneas formateadas en un solo texto
+    return '\n'.join(estructura_formateada)
+
 def generar_archivo_salida(ruta, archivos, estructura):
     try:
         nombre = os.path.basename(os.path.normpath(ruta))
@@ -59,8 +74,12 @@ def generar_archivo_salida(ruta, archivos, estructura):
             archivo_txt.write(f"Fecha y hora de generación: {fecha_hora_actual}\n\n")
             archivo_txt.write(contenido_prompt + "\n\n")  
             archivo_txt.write("\n\nEstructura de Carpetas y Archivos:\n")
-            archivo_txt.writelines(f"{linea}\n" for linea in estructura)
-            archivo_txt.write("\n\nContenido de Archivos:\n")
+            
+            # Utilizamos la función obtener_estructura_formato
+            estructura_formateada = obtener_estructura_formato(estructura)
+            archivo_txt.write(estructura_formateada + "\n\n")
+            
+            archivo_txt.write("Contenido de Archivos:\n")
             for archivo in archivos:
                 escribir_contenido_archivo(archivo, archivo_txt)
         copiar_contenido_al_portapapeles(nombre_archivo_salida)
