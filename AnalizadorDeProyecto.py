@@ -4,7 +4,7 @@ import subprocess
 from importlib import metadata
 from gestion_archivos import listar_archivos, escribir_contenido_archivo, generar_archivo_salida
 from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python, obtener_librerias_pip
-
+from interfaz_usuario import solicitar_ruta, mostrar_opciones  
 
 # Obtener ruta del archivo default
 def obtener_ruta_default():
@@ -16,12 +16,10 @@ def obtener_ruta_default():
     with open(archivo_default, 'r', encoding='utf-8') as file:
         return file.read().strip()
 
-
 # Solicitar ruta al usuario
 def solicitar_ruta():
     return input("Ingrese la ruta de la carpeta: ")
 
-# Función principal
 def main():
     ruta_anterior = None
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me']
@@ -36,16 +34,13 @@ def main():
             print("No se generó ningún archivo.")
             ruta_anterior = None
             continue
-        opcion = input("\n¿Desea salir (S), repetir con la misma ruta (R) o cambiar la ruta (C)? [S/R/C]: ").upper()
+        opcion, nueva_ruta = mostrar_opciones(ruta)
         if opcion == 'S':
             break
         elif opcion == 'C':
-            input("Presione Enter para continuar...")
-            ruta_anterior = solicitar_ruta()
+            ruta_anterior = nueva_ruta
         else:
-            print("Repetir con la misma ruta.")
             ruta_anterior = ruta
-
 
 def crear_archivo_bat():
     python_executable = sys.executable  # Ubicación del ejecutable de Python
