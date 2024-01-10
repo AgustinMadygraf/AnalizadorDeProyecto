@@ -1,4 +1,4 @@
-# AnalizadorDeProyecto.py
+# C:\AppServ\www\AnalizadorDeProyecto\AnalizadorDeProyecto.py
 
 import os
 import sys
@@ -19,6 +19,18 @@ def obtener_ruta_default():
     except Exception as e:
         print(f"Error al obtener la ruta por defecto: {e}")
         return None
+
+def guardar_nueva_ruta_default(nueva_ruta):
+    try:
+        ruta_script = os.path.dirname(os.path.abspath(__file__))
+        archivo_default = os.path.join(ruta_script, 'default.txt')
+        print(f"Intentando escribir en: {archivo_default}")  # Agregar para depuración
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            file.write(nueva_ruta)
+        print("Ruta guardada con éxito.")  # Agregar para depuración
+    except Exception as e:
+        print(f"Error al guardar la nueva ruta por defecto: {e}")
+
 
 def validar_ruta(ruta):
     return os.path.isdir(ruta) and os.access(ruta, os.R_OK)
@@ -51,7 +63,8 @@ def main():
         if opcion == 'S':
             break
         elif opcion == 'C':
-            ruta_anterior = nueva_ruta
+            guardar_nueva_ruta_default(nueva_ruta)  # Guardar la nueva ruta en default.txt
+            ruta_anterior = nueva_ruta  # Actualizar la ruta anterior con la nueva ruta
         else:
             ruta_anterior = ruta
 
