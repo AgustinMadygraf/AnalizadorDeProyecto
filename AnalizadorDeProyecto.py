@@ -99,7 +99,7 @@ def solicitar_ruta():
 # Función principal
 def main():
     ruta_anterior = None
-    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql']
+    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me']
     while True:
         ruta = ruta_anterior or obtener_ruta_default()
         if not os.path.isdir(ruta):
