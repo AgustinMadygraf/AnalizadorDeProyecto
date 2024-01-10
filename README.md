@@ -28,11 +28,3 @@ pip install pyperclip datetime importlib-metadata
 ---
 
 **Importante:** Este proyecto requiere Python 3.6 o superior. Asegúrate de tener la versión correcta de Python instalada en tu sistema antes de ejecutar `AnalizadorDeProyecto`.
-```
-
-### Explicación de las Modificaciones
-
-- **Claridad en la Descripción:** Se ha añadido más detalle sobre las capacidades y el propósito del script.
-- **Instrucciones de Instalación:** Se ha simplificado y aclarado el proceso de instalación, incluyendo una nota sobre `importlib-metadata`.
-- **Cómo Usar:** Se proporciona una descripción más detallada del proceso de uso, explicando las acciones que realiza el script.
-- **Nota sobre la Versión de Python:** Se añadió una nota importante sobre la versión de Python requerida para evitar confusiones.
