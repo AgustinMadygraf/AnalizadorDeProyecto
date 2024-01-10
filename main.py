@@ -49,11 +49,11 @@ def main():
     logging.info(f"Versión de Python en uso: {obtener_version_python()}")
     librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
     verificar_e_instalar_librerias(librerias_necesarias)
-
+    crear_archivo_bat()
     modo_prompt = elegir_modo()  # Llama a la función para elegir el modo
-
     ruta_anterior = None
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']
+
     while True:
         ruta = ruta_anterior or obtener_ruta_default()
         if not validar_ruta(ruta):
@@ -85,9 +85,14 @@ def crear_archivo_bat():
     try:
         python_executable = sys.executable  # Ubicación del ejecutable de Python
         directorio_script = os.path.dirname(os.path.abspath(__file__))  # Directorio del script actual
-        ruta_script = os.path.join(directorio_script, 'AnalizadorDeProyecto.py')  # Ruta completa del script
 
-        contenido_bat = f'@echo off\n"{python_executable}" "{ruta_script}"\npause\n'
+        # Modificación aquí: Agregar 'cd' para cambiar al directorio del script
+        contenido_bat = (
+            "@echo off\n"
+            f"cd {directorio_script}\n"  # Cambia al directorio del script
+            f"\"{python_executable}\" main.py\n"  # Ejecuta main.py
+            "pause\n"
+        )
 
         ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
         with open(ruta_archivo_bat, 'w') as archivo_bat:

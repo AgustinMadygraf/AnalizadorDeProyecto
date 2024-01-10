@@ -6,7 +6,7 @@ def solicitar_ruta():
 def mostrar_opciones(ruta_anterior):
     opcion = input("\n¿Desea salir (S), repetir con la misma ruta (R) o cambiar la ruta (C)? [S/R/C]: ").upper()
     if opcion == 'S':
-        return 'S', None
+        exit()
     elif opcion == 'C':
         return 'C', solicitar_ruta()
     else:
