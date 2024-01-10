@@ -12,22 +12,28 @@ import logging
 logging.basicConfig(filename='analizador.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def obtener_ruta_default():
+    ruta_script = obtener_ruta_script()  # Nueva función para obtener la ruta
+    archivo_default = os.path.join(ruta_script, 'default.txt')
     try:
-        ruta_script = os.path.dirname(os.path.abspath(__file__))
-        archivo_default = os.path.join(ruta_script, 'default.txt')
-        if not os.path.exists(archivo_default):
-            with open(archivo_default, 'w', encoding='utf-8') as file:
-                file.write("Contenido por defecto o dejar esta línea en blanco")
         with open(archivo_default, 'r', encoding='utf-8') as file:
             return file.read().strip()
-    except FileNotFoundError as e:
-        logging.error(f"Archivo default.txt no encontrado: {e}")
-        return None
+    except FileNotFoundError:
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            file.write("Contenido por defecto o dejar esta línea en blanco")
+            return "Contenido por defecto o dejar esta línea en blanco"
+
+def obtener_ruta_script():
+    """
+    Obtiene la ruta absoluta del directorio donde se encuentra el script actual.
+
+    Retorna:
+        str: La ruta del directorio del script actual.
+    """
+    return os.path.dirname(os.path.abspath(__file__))
 
 def guardar_nueva_ruta_default(nueva_ruta):
     try:
-        ruta_script = os.path.dirname(os.path.abspath(__file__))
-        archivo_default = os.path.join(ruta_script, 'default.txt')
+        archivo_default = os.path.join(obtener_ruta_script(), 'default.txt')
         print(f"Intentando escribir en: {archivo_default}")  # Agregar para depuración
         with open(archivo_default, 'w', encoding='utf-8') as file:
             file.write(nueva_ruta)
