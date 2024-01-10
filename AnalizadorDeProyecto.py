@@ -125,7 +125,7 @@ def main():
 def crear_archivo_bat():
     python_executable = sys.executable  # Ubicación del ejecutable de Python
     directorio_script = os.path.dirname(os.path.abspath(__file__))  # Directorio del script actual
-    ruta_script = os.path.join(directorio_script, 'listado_archivos_y_codigos.py')  # Ruta completa del script
+    ruta_script = os.path.join(directorio_script, 'AnalizadorDeProyecto.py')  # Ruta completa del script
 
     contenido_bat = f'@echo off\n"{python_executable}" "{ruta_script}"\npause\n'
 
