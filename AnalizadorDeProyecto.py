@@ -25,6 +25,9 @@ def validar_ruta(ruta):
     return os.path.isdir(ruta) and os.access(ruta, os.R_OK)
 
 def main():
+    print(f"Versión de Python en uso: {obtener_version_python()}")
+    librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
+    verificar_e_instalar_librerias(librerias_necesarias)
     ruta_anterior = None
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me']
     while True:
