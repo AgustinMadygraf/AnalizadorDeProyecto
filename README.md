@@ -1,16 +1,18 @@
-# \AnalizadorDeProyecto
+# AnalizadorDeProyecto
 
 ## Descripción
 Script de Python multifuncional para análisis y reporte de proyectos: verifica e instala librerías, enumera archivos por extensión y genera un archivo detallado de la estructura del proyecto. Ideal para la organización y revisión de código.
 
 ## Versión de Python
-Este proyecto se ha desarrollado utilizando Python [versión de Python utilizada en el proyecto].
+Este proyecto se ha desarrollado utilizando Python 3.12.1.
 
 ## Instrucciones de Instalación
 Para ejecutar este proyecto, es necesario instalar algunas bibliotecas de Python. Puedes instalarlas fácilmente utilizando pip. Abre una terminal y ejecuta el siguiente comando:
 
 ```bash
-pip install pyperclip datetime importlib
+pip install pyperclip  
+pip install datetime
+pip install importlib
 ```
 
 ## Cómo Usar
