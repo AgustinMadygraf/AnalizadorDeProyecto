@@ -1,4 +1,3 @@
-```markdown
 # \AnalizadorDeProyecto
 
 ## Descripción
