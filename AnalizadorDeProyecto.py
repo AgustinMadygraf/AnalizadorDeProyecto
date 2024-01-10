@@ -6,6 +6,8 @@ from importlib import metadata
 from gestion_archivos import listar_archivos, generar_archivo_salida
 from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python
 from interfaz_usuario import mostrar_opciones
+from interfaz_usuario import elegir_modo
+
 
 def obtener_ruta_default():
     try:
@@ -39,8 +41,11 @@ def main():
     print(f"Versión de Python en uso: {obtener_version_python()}")
     librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
     verificar_e_instalar_librerias(librerias_necesarias)
+
+    modo_prompt = elegir_modo()  # Llama a la función para elegir el modo
+
     ruta_anterior = None
-    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me']
+    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']
     while True:
         ruta = ruta_anterior or obtener_ruta_default()
         if not validar_ruta(ruta):
@@ -49,7 +54,7 @@ def main():
             continue
         try:
             archivos, estructura = listar_archivos(ruta, extensiones)
-            nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura)
+            nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura,modo_prompt)
             if nombre_archivo_salida is None:
                 print("No se generó ningún archivo.")
                 ruta_anterior = None

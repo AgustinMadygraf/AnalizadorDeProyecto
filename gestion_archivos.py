@@ -64,14 +64,14 @@ def obtener_estructura_formato(estructura):
     # Unimos las líneas formateadas en un solo texto
     return '\n'.join(estructura_formateada)
 
-def generar_archivo_salida(ruta, archivos, estructura):
+def generar_archivo_salida(ruta, archivos, estructura,modo_prompt):
     try:
         nombre = os.path.basename(os.path.normpath(ruta))
         nombre_archivo_salida = os.path.join(ruta, f"listado_{nombre}.txt")
         
-        # Leer el contenido de prompt.txt
+        # Leer el contenido de prompt_mejora.txt
         ruta_directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo_prompt = os.path.join(ruta_directorio_actual, 'prompt.txt')
+        ruta_archivo_prompt = os.path.join(ruta_directorio_actual, modo_prompt)
         with open(ruta_archivo_prompt, 'r', encoding='utf-8') as archivo_prompt:
             contenido_prompt = archivo_prompt.read()
 
