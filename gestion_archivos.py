@@ -4,6 +4,8 @@ import os
 import datetime
 import pyperclip
 
+carpetas_a_omitir = ["__pycache__/"]
+
 def listar_archivos(ruta, extensiones):
     try:
         archivos_json, archivos_sql, otros_archivos = [], [], []
@@ -52,8 +54,12 @@ def obtener_estructura_formato(estructura):
         if nivel == 0:
             estructura_formateada.append(linea)
         else:
-            # Agregamos la línea formateada con ramas para mostrar la jerarquía
-            estructura_formateada.append("│   " * (nivel - 1) + "└── " + linea.strip())
+            # Verificamos si la línea contiene una carpeta a omitir
+            omitir = any(carpeta in linea for carpeta in carpetas_a_omitir)
+            if not omitir:
+                # Agregamos la línea formateada con ramas para mostrar la jerarquía
+                estructura_formateada.append("│   " * (nivel - 1) + "└── " + linea.strip())
+
 
     # Unimos las líneas formateadas en un solo texto
     return '\n'.join(estructura_formateada)
@@ -87,8 +93,6 @@ def generar_archivo_salida(ruta, archivos, estructura):
     except Exception as e:
         print(f"Error al generar el archivo de salida: {e}")
         return None
-
-
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     try:
