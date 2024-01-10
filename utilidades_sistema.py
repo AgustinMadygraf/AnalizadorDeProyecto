@@ -3,6 +3,7 @@ import subprocess
 import sys
 from importlib import metadata
 import logging
+import os
 
 logging.basicConfig(filename='utilidades_sistema.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -20,11 +21,15 @@ def verificar_e_instalar_librerias(librerias):
             except Exception as e:
                 logging.error(f"No se pudo instalar la librería '{libreria}': {e}")
 
-# Obtener versión de Python
 def obtener_version_python():
     return sys.version
 
-# Obtener librerías instaladas con pip
 def obtener_librerias_pip():
     resultado = subprocess.run(["pip", "list"], capture_output=True, text=True)
     return resultado.stdout
+
+def limpieza_pantalla():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')

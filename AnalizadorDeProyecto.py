@@ -4,7 +4,7 @@ import os
 import sys
 from importlib import metadata
 from gestion_archivos import listar_archivos, generar_archivo_salida
-from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python
+from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones
 from interfaz_usuario import elegir_modo
 import logging
@@ -20,8 +20,8 @@ def obtener_ruta_default():
                 file.write("Contenido por defecto o dejar esta línea en blanco")
         with open(archivo_default, 'r', encoding='utf-8') as file:
             return file.read().strip()
-    except Exception as e:
-        logging.error(f"Error al obtener la ruta por defecto: {e}")
+    except FileNotFoundError as e:
+        logging.error(f"Archivo default.txt no encontrado: {e}")
         return None
 
 def guardar_nueva_ruta_default(nueva_ruta):
@@ -35,11 +35,11 @@ def guardar_nueva_ruta_default(nueva_ruta):
     except Exception as e:
         print(f"Error al guardar la nueva ruta por defecto: {e}")
 
-
 def validar_ruta(ruta):
     return os.path.isdir(ruta) and os.access(ruta, os.R_OK)
 
 def main():
+    limpieza_pantalla()
     logging.info(f"Versión de Python en uso: {obtener_version_python()}")
     librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
     verificar_e_instalar_librerias(librerias_necesarias)

@@ -1,30 +1,18 @@
-import unittest
-import os
 import sys
+import os
+import unittest
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from gestion_archivos import filtrar_archivos_por_extension
 
-# Añadir la carpeta superior al PATH de Python
-ruta_directorio_superior = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(ruta_directorio_superior)
 
-from gestion_archivos import listar_archivos, escribir_contenido_archivo
+class TestFiltrarArchivosPorExtension(unittest.TestCase):
 
-class TestGestionArchivos(unittest.TestCase):
-
-    def setUp(self):
-        # Configuración inicial para las pruebas
-        pass
-
-    def test_listar_archivos(self):
-        # Aquí tus pruebas para listar_archivos
-        pass
-
-    def test_escribir_contenido_archivo(self):
-        # Aquí tus pruebas para escribir_contenido_archivo
-        pass
-
-    def tearDown(self):
-        # Limpieza después de cada prueba
-        pass
+    def test_filtrado_correcto(self):
+        archivos = ["foto.jpg", "documento.txt", "script.py", "tabla.xlsx"]
+        extensiones = [".txt", ".py"]
+        esperado = ["documento.txt", "script.py"]
+        resultado = filtrar_archivos_por_extension(archivos, extensiones)
+        self.assertEqual(resultado, esperado)
 
 if __name__ == '__main__':
     unittest.main()

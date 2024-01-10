@@ -9,6 +9,13 @@ import logging
 carpetas_a_omitir = ["__pycache__/"]
 logging.basicConfig(filename='gestion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+def filtrar_archivos_por_extension(archivos, extensiones):
+    archivos_filtrados = []
+    for archivo in archivos:
+        if any(archivo.endswith(ext) for ext in extensiones):
+            archivos_filtrados.append(archivo)
+    return archivos_filtrados
+
 def listar_archivos(ruta, extensiones):
     try:
         archivos_json, archivos_sql, otros_archivos = [], [], []
@@ -23,21 +30,24 @@ def listar_archivos(ruta, extensiones):
             estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
             subindentacion = ' ' * 4 * (nivel + 1)
 
-            for archivo in archivos:
+            archivos_en_raiz = [os.path.join(raiz, archivo) for archivo in archivos]
+            archivos_filtrados = filtrar_archivos_por_extension(archivos_en_raiz, extensiones)
+
+            for archivo in archivos_filtrados:
+                estructura.append(f"{subindentacion}{os.path.basename(archivo)}")
                 if archivo.endswith('.json'):
-                    archivos_json.append(os.path.join(raiz, archivo))
+                    archivos_json.append(archivo)
                 elif archivo.endswith('.sql'):
-                    archivos_sql.append(os.path.join(raiz, archivo))
-                elif any(archivo.endswith(ext) for ext in extensiones):
-                    otros_archivos.append(os.path.join(raiz, archivo))
-                if archivo in archivos_json or archivo in archivos_sql or any(archivo.endswith(ext) for ext in extensiones):
-                    estructura.append(f"{subindentacion}{archivo}")
+                    archivos_sql.append(archivo)
+                else:
+                    otros_archivos.append(archivo)
 
         archivos_encontrados = otros_archivos + archivos_sql + archivos_json
         return archivos_encontrados, estructura
     except Exception as e:
         logging.error(f"Error al listar archivos en {ruta}: {e}")
         return [], []
+
 
 def escribir_contenido_archivo(archivo, archivo_txt):
     try:
