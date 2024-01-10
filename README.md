@@ -27,6 +27,3 @@ pip install importlib
 ---
 
 **Nota:** Asegúrate de tener Python instalado en tu sistema antes de ejecutar este proyecto.
-```
-
-Puedes utilizar este README.md como guía para tu proyecto. Si tienes alguna otra pregunta o necesitas más información, no dudes en preguntar.
