@@ -65,9 +65,12 @@ def generar_archivo_salida(ruta, archivos, estructura, modo_prompt):
         modo_prompt (str): Modo seleccionado para la salida.
     """
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
+    print("\n\n\n nombre_archivo_salida: ",nombre_archivo_salida)
     contenido = preparar_contenido_salida(estructura, modo_prompt)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
+
+    return(nombre_archivo_salida)
 
 # Ejemplo de uso
 # ruta = 'ruta/a/tu/directorio'

@@ -53,11 +53,16 @@ def main():
             continue
         try:
             archivos, estructura = listar_archivos(ruta, extensiones)
+            print("\n\n\n archivos: ",archivos)
+            print("\n\n\n estructura: ",estructura)
+            print("\n\n")
             nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura, modo_prompt)
+            print("\n\n\n nombre_archivo_salida: ",nombre_archivo_salida)
+            print("\n\n")
             if nombre_archivo_salida is None:
                 logger.warning("No se generó ningún archivo.")
                 ruta_anterior = None
-                continue
+                exit()
         except Exception as e:
             logger.error(f"Error al procesar la ruta: {e}")
             ruta_anterior = None
