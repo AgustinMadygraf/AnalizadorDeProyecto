@@ -3,13 +3,13 @@ import sys
 from importlib import metadata
 from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
-from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python, limpieza_pantalla
+from utilidades_sistema import obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones, elegir_modo
-import logging
+from config_logger import configurar_logger
 import subprocess
 
-# Configuración del logger raíz
-logging.basicConfig(filename='logs/analizador.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# Configuración del logger
+logger = configurar_logger(filename='logs/analizador.log')
 
 def obtener_ruta_default():
     ruta_script = obtener_ruta_script()
@@ -31,20 +31,15 @@ def guardar_nueva_ruta_default(nueva_ruta):
         with open(archivo_default, 'w', encoding='utf-8') as file:
             file.write(nueva_ruta)
     except Exception as e:
-        logging.error(f"Error al guardar la nueva ruta por defecto: {e}")
+        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def validar_ruta(ruta):
     return os.path.isdir(ruta) and os.access(ruta, os.R_OK)
 
 def main():
     limpieza_pantalla()
-    logging.info(f"Versión de Python en uso: {obtener_version_python()}")
-    librerias_necesarias = ['pyperclip', 'datetime', 'importlib']
-    
-    #for libreria in librerias_necesarias:
-    #    verificar_e_instalar_librerias(libreria)
-    
-    crear_archivo_bat()
+    logger.info(f"Versión de Python en uso: {obtener_version_python()}")
+    #crear_archivo_bat()
     modo_prompt = elegir_modo()
     ruta_anterior = None
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']
@@ -52,18 +47,18 @@ def main():
     while True:
         ruta = ruta_anterior or obtener_ruta_default()
         if not validar_ruta(ruta):
-            logging.error("La ruta proporcionada no es válida, no es accesible o no existe.")
+            logger.error("La ruta proporcionada no es válida, no es accesible o no existe.")
             ruta_anterior = None
             continue
         try:
             archivos, estructura = listar_archivos(ruta, extensiones)
             nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura, modo_prompt)
             if nombre_archivo_salida is None:
-                logging.warning("No se generó ningún archivo.")
+                logger.warning("No se generó ningún archivo.")
                 ruta_anterior = None
                 continue
         except Exception as e:
-            logging.error(f"Error al procesar la ruta: {e}")
+            logger.error(f"Error al procesar la ruta: {e}")
             ruta_anterior = None
             continue
 
@@ -92,7 +87,7 @@ def crear_archivo_bat():
         with open(ruta_archivo_bat, 'w') as archivo_bat:
             archivo_bat.write(contenido_bat)
     except Exception as e:
-        logging.error(f"Error al crear el archivo .bat: {e}")
+        logger.error(f"Error al crear el archivo .bat: {e}")
 
 if __name__ == "__main__":
     main()

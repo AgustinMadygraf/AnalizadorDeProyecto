@@ -3,7 +3,8 @@ from logging.handlers import RotatingFileHandler
 
 def configurar_logging(
         filename='proyecto.log',
-        level=logging.DEBUG,  # Establecer el nivel de registro en DEBUG
+        file_level=logging.DEBUG,  # Nivel de registro para el archivo
+        console_level=logging.INFO,  # Nivel de registro para la consola
         format='%(asctime)s - %(levelname)s - %(module)s: %(message)s',
         maxBytes=10485760,  # 10MB
         backupCount=5
@@ -13,7 +14,8 @@ def configurar_logging(
 
     Args:
         filename (str): Nombre del archivo de log.
-        level (int): Nivel de logging.
+        file_level (int): Nivel de logging para el archivo.
+        console_level (int): Nivel de logging para la consola.
         format (str): Formato de los mensajes de log.
         maxBytes (int): Tamaño máximo del archivo de log en bytes antes de la rotación.
         backupCount (int): Número de archivos de backup a mantener.
@@ -24,23 +26,18 @@ def configurar_logging(
 
     # Handler para archivo con rotación
     file_handler = RotatingFileHandler(filename, maxBytes=maxBytes, backupCount=backupCount)
+    file_handler.setLevel(file_level)
     file_handler.setFormatter(formatter)
 
     # Handler para consola
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(console_level)
     console_handler.setFormatter(formatter)
 
-    # Configuración del logger
-    logger = logging.getLogger()  # Obtener el logger raíz
-    logger.setLevel(level)
-    logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
-    # Configuración del logger
-    logger = logging.getLogger()  # Obtener el logger raíz
-    logger.setLevel(logging.INFO)  # Establecer el nivel de registro en INFO para la consola
+    # Configuración del logger raíz
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)  
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 
-
-# Ejemplo de uso
-# configurar_logging(level=logging.INFO)
+    return logger
