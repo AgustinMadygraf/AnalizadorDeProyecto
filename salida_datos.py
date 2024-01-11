@@ -54,7 +54,7 @@ def preparar_contenido_salida(estructura, modo_prompt):
     contenido += '\n'.join(estructura) + "\n\n"
     return contenido
 
-def generar_archivo_salida(ruta, estructura, modo_prompt):
+def generar_archivo_salida(ruta, archivos, estructura, modo_prompt):
     """
     Genera el archivo de salida con la estructura dada.
 
