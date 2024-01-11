@@ -9,3 +9,5 @@ logs/analizador.log
 logs/gestion_archivos.log
 logs/manipulacion_archivos.log
 .vscode/
+logs/sistema.log
+[LIST]-C_%AppServ%www%AnalizadorDeProyecto.txt

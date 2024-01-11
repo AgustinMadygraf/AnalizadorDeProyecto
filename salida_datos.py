@@ -17,9 +17,14 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     Returns:
         str: Ruta completa del archivo de salida.
     """
-    fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    nombre_archivo_salida = f"{nombre_base}_{fecha_hora_actual}.txt"
+    # Formatear la ruta para el nombre del archivo
+    ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
+    print("\n\n ruta_formateada: ",ruta_formateada,"\n\n")
+    nombre_archivo_salida = f"[LIST]-{ruta_formateada}.txt"
+    print("\n\n nombre_archivo_salida: ",nombre_archivo_salida,"\n\n")
+
     return os.path.join(ruta, nombre_archivo_salida)
+
 
 def escribir_archivo_salida(nombre_archivo, contenido):
     """
