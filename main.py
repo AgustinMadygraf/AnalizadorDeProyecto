@@ -3,8 +3,7 @@
 import os
 import sys
 from importlib import metadata
-from manipulacion_archivos import listar_archivos
-from salida_datos import generar_archivo_salida
+from gestion_archivos import listar_archivos, generar_archivo_salida
 from utilidades_sistema import verificar_e_instalar_librerias, obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones
 from interfaz_usuario import elegir_modo
