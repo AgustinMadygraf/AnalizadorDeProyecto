@@ -20,7 +20,7 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     # Formatear la ruta para el nombre del archivo
     ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
     print("\n\n ruta_formateada: ",ruta_formateada,"\n\n")
-    nombre_archivo_salida = f"[LIST]-{ruta_formateada}.txt"
+    nombre_archivo_salida = f"LIST-{ruta_formateada}.txt"
     print("\n\n nombre_archivo_salida: ",nombre_archivo_salida,"\n\n")
 
     return os.path.join(ruta, nombre_archivo_salida)
