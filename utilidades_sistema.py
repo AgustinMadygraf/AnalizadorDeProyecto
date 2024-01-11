@@ -6,10 +6,9 @@ import os
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/utilidades_sistema.log')
+logger = configurar_logging()
 
 def obtener_version_python():
-    logger.info("Obteniendo versión de Python.")
     return sys.version
 
 def obtener_librerias_pip():

@@ -4,7 +4,7 @@ from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/salida_datos.log')
+logger = configurar_logging()
 
 def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """

@@ -1,8 +1,9 @@
+#manipulacion_archivos.py
 import os
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/manipulacion_archivos.log')
+logger = configurar_logging()
 
 def filtrar_archivos_por_extension(archivos, extensiones):
     """

@@ -1,3 +1,4 @@
+#main.py
 import os
 import sys
 from importlib import metadata
@@ -9,7 +10,7 @@ from logs.config_logger import configurar_logging
 import subprocess
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/analizador.log')
+logger = configurar_logging()
 
 def obtener_ruta_default():
     ruta_script = obtener_ruta_script()

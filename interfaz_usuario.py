@@ -3,7 +3,7 @@ import os
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/interfaz_usuario.log')
+logger = configurar_logging()
 
 def solicitar_ruta():
     while True:
@@ -49,7 +49,10 @@ def elegir_modo():
     logger.info("Inicio de la selección del modo de operación.")
     while True:
         try:
-            opcion = int(input("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): "))
+            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): ")
+            opcion_str = input("")  # Obtener la entrada del usuario
+            opcion = int(opcion_str)  # Convertir la entrada a un entero
+
             if opcion == 1:
                 logger.info("Modo seleccionado: Implementar mejoras en la programación.")
                 return 'prompt_mejora.txt'
@@ -62,3 +65,4 @@ def elegir_modo():
         except ValueError:
             logger.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
             return 'prompt_mejora.txt'
+

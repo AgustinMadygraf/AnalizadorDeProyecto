@@ -3,7 +3,7 @@ import os
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
-logger = configurar_logging(filename='logs/gestion_archivos.log')
+logger = configurar_logging()
 
 def leer_archivo(nombre_archivo):
     """
