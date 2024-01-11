@@ -1,5 +1,6 @@
 # interfaz_usuario.py
 import os
+import logging
 
 def solicitar_ruta():
     while True:
@@ -36,12 +37,16 @@ def mostrar_ayuda():
 
     
 def elegir_modo():
+    logging.info("...") #agregar logging info
     while True:
         try:
             opcion = int(input("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): "))
             if opcion == 2:
+                logging.info("Modo seleccionado: Solucionar errores")
                 return 'prompt_error.txt'
             else:
+                logging.info("Modo seleccionado: Implementar mejoras en la programación")
                 return 'prompt_mejora.txt'
         except ValueError:
+            logging.error("Opción no válida. Por favor, elige una opción entre 1 y 2.")
             return 'prompt_mejora.txt'

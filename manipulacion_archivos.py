@@ -1,7 +1,8 @@
 import os
 import logging
 
-logging.basicConfig(filename='logs/manipulacion_archivos.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs/manipulacion_archivos.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def filtrar_archivos_por_extension(archivos, extensiones):
     """
@@ -31,6 +32,8 @@ def listar_archivos(ruta, extensiones=None):
     archivos_encontrados = []
     estructura = []
 
+    logging.info(f"Iniciando listado de archivos en la ruta: {ruta}")
+
     for raiz, _, archivos in os.walk(ruta):
         if '.git' in raiz:  # Ignorar directorios .git
             continue
@@ -45,7 +48,10 @@ def listar_archivos(ruta, extensiones=None):
         estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
         archivos_encontrados.extend(archivos_filtrados)
 
+    logging.info(f"Listado de archivos completo. Total de archivos encontrados: {len(archivos_encontrados)}")
+
     return archivos_encontrados, estructura
+
 
 # Ejemplo de uso
 # ruta = 'ruta/a/tu/directorio'

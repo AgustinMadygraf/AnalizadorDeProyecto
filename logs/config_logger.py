@@ -31,7 +31,10 @@ def configurar_logging(
     console_handler.setFormatter(formatter)
 
     # Configuración del logger
-    logging.basicConfig(level=level, handlers=[file_handler, console_handler])
+    logger = logging.getLogger()  # Obtener el logger raíz
+    logger.setLevel(level)
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
 
 # Ejemplo de uso
 # configurar_logging(level=logging.INFO)
