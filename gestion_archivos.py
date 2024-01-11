@@ -16,7 +16,9 @@ def leer_archivo(nombre_archivo):
     """
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
-            return archivo.read()
+            contenido = archivo.read()
+            logging.debug(f"Archivo '{nombre_archivo}' leído exitosamente.")
+            return contenido
     except FileNotFoundError:
         logging.error(f"Archivo no encontrado: {nombre_archivo}")
         return None
