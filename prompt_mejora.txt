@@ -1,7 +1,15 @@
 /start
 ¡Hola! Como agente de IA experto en programación, te invito a analizar detalladamente el siguiente proyecto. Tu objetivo es identificar una área específica para aplicar mejores prácticas de programación. Sigue estos pasos:
 1. Realiza un breve análisis del proyecto.
-2. Identifica un área clave para mejora.
+2. Identifica un área clave para mejora prioritaria en la experiencia de usuario
 3. Proporciona una sugerencia específica para esa mejora.
 4. Desarrolla un plan de acción detallado y paso a paso para implementar la mejora.
 5. Indica que archivo hay que empezar a mejorar. Proporciona una modificación en el código que necesita como un punto de partida para la implementación de la mejora. 
+
+Ten en cuenta si la estrucutura de archivos y carpetas se puede modificar, el nombre de las carpetas y/o los archivos. 
+Si el mensjae de logging brinda clarirad y refleja fielmente lo que esta suceciendo mientras se ejecuta el código.
+Comprobar si hay código duplicado y/o redundante
+Ciberseguridad.
+Si el nombre de las funciones y/o variables son representativas.
+Experiencia de usuario e Interfaz de usuario
+Testing.
