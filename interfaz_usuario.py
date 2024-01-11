@@ -37,16 +37,19 @@ def mostrar_ayuda():
 
     
 def elegir_modo():
-    logging.info("...") #agregar logging info
+    logging.info("Inicio de la selección del modo de operación.")
     while True:
         try:
             opcion = int(input("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): "))
-            if opcion == 2:
-                logging.info("Modo seleccionado: Solucionar errores")
+            if opcion == 1:
+                logging.info("Modo seleccionado: Implementar mejoras en la programación.")
+                return 'prompt_mejora.txt'
+            elif opcion == 2:
+                logging.info("Modo seleccionado: Solucionar errores.")
                 return 'prompt_error.txt'
             else:
-                logging.info("Modo seleccionado: Implementar mejoras en la programación")
+                logging.warning("Opción no válida. Debes elegir 1 o 2. Seleccionando modo por defecto: Mejoras en la programación.")
                 return 'prompt_mejora.txt'
         except ValueError:
-            logging.error("Opción no válida. Por favor, elige una opción entre 1 y 2.")
+            logging.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
             return 'prompt_mejora.txt'
