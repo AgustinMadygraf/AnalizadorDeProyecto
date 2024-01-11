@@ -5,11 +5,11 @@ from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
 from utilidades_sistema import obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones, elegir_modo
-from config_logger import configurar_logger
+from logs.config_logger import configurar_logging
 import subprocess
 
 # Configuración del logger
-logger = configurar_logger(filename='logs/analizador.log')
+logger = configurar_logging(filename='logs/analizador.log')
 
 def obtener_ruta_default():
     ruta_script = obtener_ruta_script()
