@@ -1,30 +1,30 @@
 # AnalizadorDeProyecto
 
 ## Descripción
-`AnalizadorDeProyecto` es un script de Python multifuncional diseñado para el análisis y reporte de estructuras de proyectos. Esta herramienta es ideal para la organización y revisión de código, ya que verifica e instala automáticamente las librerías necesarias, enumera archivos por extensión y genera un reporte detallado de la estructura del proyecto.
+El `AnalizadorDeProyecto` es una herramienta versátil en Python, diseñada para analizar y documentar la estructura de proyectos de software. Facilita la gestión y el mantenimiento del código, ofreciendo funciones automáticas de verificación e instalación de dependencias, enumeración de archivos según su extensión y generación de informes detallados sobre la arquitectura del proyecto.
 
 ## Versión de Python
-Desarrollado y probado en Python 3.12.1.
+Compatible y testeado en Python 3.12.1.
 
-## Instrucciones de Instalación
-Antes de ejecutar `AnalizadorDeProyecto`, asegúrate de instalar las dependencias requeridas. Ejecuta los siguientes comandos en tu terminal para instalarlas:
+## Instalación
+Para utilizar `AnalizadorDeProyecto`, es esencial instalar previamente las dependencias requeridas. Utiliza estos comandos en tu terminal para una instalación rápida:
 
 ```bash
 pip install pyperclip datetime importlib-metadata
 ```
 
-**Nota:** `importlib-metadata` es necesario para Python versiones anteriores a la 3.8. Si estás utilizando Python 3.8 o superior, esta librería ya está incluida en la biblioteca estándar.
+**Nota:** `importlib-metadata` es esencial para versiones de Python inferiores a 3.8. En versiones 3.8 o superiores, esta librería ya forma parte del conjunto estándar.
 
-## Cómo Usar
-1. Navega a la carpeta raíz del proyecto y ejecuta `AnalizadorDeProyecto.py`.
-2. Ingresa la ruta de la carpeta que deseas analizar cuando se te solicite.
-3. El script realizará las siguientes acciones:
-   - Verificará e instalará las librerías necesarias.
-   - Enumerará los archivos en la ruta proporcionada según sus extensiones.
-   - Generará un reporte detallado de la estructura del proyecto en un archivo de texto.
+## Uso
+1. Dirígete a la carpeta raíz de tu proyecto y ejecuta `AnalizadorDeProyecto.py`.
+2. Proporciona la ruta de la carpeta a analizar cuando se solicite.
+3. El script efectuará las siguientes tareas:
+   - Enumerar archivos en la ruta dada, clasificados por extensión.
+   - Crear un informe exhaustivo sobre la estructura del proyecto en formato de texto.
 
-¡Disfruta utilizando `AnalizadorDeProyecto` para analizar y organizar tus proyectos!
+`AnalizadorDeProyecto` es tu aliado para una mejor organización y entendimiento de tus proyectos de software.
 
 ---
 
-**Importante:** Este proyecto requiere Python 3.6 o superior. Asegúrate de tener la versión correcta de Python instalada en tu sistema antes de ejecutar `AnalizadorDeProyecto`.
+**Advertencia:** Este proyecto es compatible con Python 3.6 en adelante. Verifica que tienes la versión adecuada instalada en tu sistema antes de ejecutar `AnalizadorDeProyecto`.
+```
