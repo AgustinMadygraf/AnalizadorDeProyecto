@@ -20,10 +20,7 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """
     # Formatear la ruta para el nombre del archivo
     ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
-    print("\n\n ruta_formateada: ",ruta_formateada,"\n\n")
     nombre_archivo_salida = f"LIST-{ruta_formateada}.txt"
-    print("\n\n nombre_archivo_salida: ",nombre_archivo_salida,"\n\n")
-
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
@@ -47,23 +44,18 @@ def escribir_archivo_salida(nombre_archivo, contenido):
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-
     contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else ''
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
-
     if contenido_prompt:
         contenido += contenido_prompt + "\n\n"
     else:
         contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
         logger.warning("No se proporcionó o no se pudo leer el contenido del modo prompt")
-
     contenido += "\n\nEstructura de Carpetas y Archivos:\n"
     contenido += '\n'.join(estructura) + "\n\n"
-
     if not archivos_seleccionados:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
-
     contenido += "\n\nContenido de archivos seleccionados:\n"
     for archivo in archivos_seleccionados:
         contenido_archivo = leer_archivo(archivo)
@@ -73,7 +65,6 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
         else:
             logger.error(f"No se pudo obtener el contenido del archivo: {archivo}")
     contenido += "\n```\n\n"
-
     return contenido
 
 def contenido_archivo(archivos_seleccionados):
@@ -139,12 +130,8 @@ def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
     """
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
-    print("\n\narchivos_encontrados: ",archivos_encontrados,"\n\n")
-    print("\n\nestructura_actualizada: ",estructura_actualizada,"\n\n")
     contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
-    print("\n\ncontenido:\n",contenido,"\n\n")
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
-
     return nombre_archivo_salida
 

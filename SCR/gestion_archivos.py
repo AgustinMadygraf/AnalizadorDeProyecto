@@ -1,7 +1,6 @@
 import pyperclip
 import os
 from logs.config_logger import configurar_logging
-import os
 import fnmatch
 
 # Configuración del logger
@@ -64,14 +63,9 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
             contenido = archivo.read()
             logger.debug(f"Archivo '{nombre_archivo}' leído exitosamente.")
             return contenido
-    except FileNotFoundError:
-        logger.error(f"Archivo no encontrado: {nombre_archivo}")
-        return None
-    except IOError as e:
-        logger.error(f"Error de E/S al leer el archivo {nombre_archivo}: {e}")
-        return None
-    except UnicodeDecodeError as e:
-        logger.error(f"Error de decodificación al leer el archivo {nombre_archivo}: {e}")
+    except (FileNotFoundError, OSError, UnicodeDecodeError) as e:
+        # Manejo unificado de errores de lectura de archivo y decodificación
+        logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
         return None
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):

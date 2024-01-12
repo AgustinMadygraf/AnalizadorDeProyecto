@@ -17,8 +17,8 @@ def solicitar_ruta():
 
 def mostrar_opciones(ruta_anterior):
     while True:
-        print("\nOpciones:\n S - Salir\n R - Repetir con la misma ruta\n C - Cambiar la ruta\n H - Ayuda")
-        opcion = input("Seleccione una opción [S/R/C/H]: ").upper()
+        logger.info("\n\nOpciones:\n S - Salir\n R - Repetir con la misma ruta\n C - Cambiar la ruta\n H - Ayuda\n")
+        opcion = input("Seleccione una opción [S/R/C/H]: \n").upper()
 
         if opcion == 'S':
             logger.info("Opción seleccionada: Salir")
@@ -28,14 +28,14 @@ def mostrar_opciones(ruta_anterior):
             return 'C', solicitar_ruta()
         elif opcion == 'R':
             logger.info("Opción seleccionada: Repetir con la misma ruta")
-            print("Repetir con la misma ruta.")
+            logger.info("Repetir con la misma ruta.")
             return 'R', ruta_anterior
         elif opcion == 'H':
             logger.info("Opción seleccionada: Ayuda")
             mostrar_ayuda()
         else:
             logger.warning("Opción no válida seleccionada")
-            print("Opción no válida. Por favor, elija una opción entre S, R, C y H.")
+            logger.info("Opción no válida. Por favor, elija una opción entre S, R, C y H.")
 
 def mostrar_ayuda():
     logger.info("Mostrando mensaje de ayuda")
