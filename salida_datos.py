@@ -26,7 +26,6 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
 
     return os.path.join(ruta, nombre_archivo_salida)
 
-
 def escribir_archivo_salida(nombre_archivo, contenido):
     """
     Escribe el contenido dado en el archivo de salida especificado.
@@ -46,8 +45,6 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
-
-
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
 
@@ -58,6 +55,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     if contenido_prompt:
         contenido += contenido_prompt + "\n\n"
     else:
+        contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
         logger.warning("No se proporcionó o no se pudo leer el contenido del modo prompt")
 
     contenido += "\n\nEstructura de Carpetas y Archivos:\n"
@@ -77,7 +75,6 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
 
     return contenido
 
-
 def contenido_archivo(archivos_seleccionados):
     contenido_total = ""
     for archivo in archivos_seleccionados:
@@ -89,7 +86,6 @@ def contenido_archivo(archivos_seleccionados):
         except Exception as e:
             contenido_total += f"\nError al leer el archivo {archivo}: {e}\n"
     return contenido_total
-
     
 def listar_archivos(ruta, extensiones):
     try:
@@ -130,7 +126,6 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
-
 def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
     """
     Genera el archivo de salida con la estructura dada.
@@ -152,9 +147,3 @@ def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
 
     return nombre_archivo_salida
 
-
-# Ejemplo de uso
-# ruta = 'ruta/a/tu/directorio'
-# estructura = ['Directorio1/', '   archivo1.txt', 'Directorio2/', '   archivo2.txt']
-# modo_prompt = 'ruta/a/tu/modo_prompt.txt'
-# generar_archivo_salida(ruta, estructura, modo_prompt)
