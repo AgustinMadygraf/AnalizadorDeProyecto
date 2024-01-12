@@ -8,6 +8,8 @@ from utilidades_sistema import obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones, elegir_modo
 from logs.config_logger import configurar_logging
 import subprocess
+import datetime
+
 
 # Configuración del logger
 logger = configurar_logging()
@@ -57,7 +59,10 @@ def main():
             if nombre_archivo_salida is None:
                 logger.warning("No se generó ningún archivo.")
                 ruta_anterior = None
-                continue
+                exit()
+            fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print("")
+            logger.info(f"Fecha y hora de generación: {fecha_hora_actual} \n\n")
         except Exception as e:
             logger.error(f"Error al procesar la ruta: {e}")
             ruta_anterior = None

@@ -37,7 +37,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
         # Abrir el archivo en modo de escritura, lo que borrará su contenido
         with open(nombre_archivo_salida, 'w', encoding='utf-8') as archivo:
             archivo.write('')  # Escribir un contenido vacío
-        logger.info(f"El contenido de {nombre_archivo_salida} ha sido eliminado.---------------------------------------------------------------------------------------------")
+        logger.info(f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
@@ -47,17 +47,15 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
     nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo) 
-    fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
 
     if contenido_prompt:
-        contenido += contenido_prompt + "\n\n"
+        contenido = contenido_prompt 
     else:
         contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
         logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
 
-    contenido += "\n---\n\n#Estructura de Carpetas y Archivos\n\n"
-    contenido += '\n'.join(estructura) + "\n\n---\n"
+    contenido += "\n---\n\n# Estructura de Carpetas y Archivos\n```bash\n"
+    contenido += '\n'.join(estructura) + "\n```\n---\n"
 
     if not archivos_seleccionados:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")

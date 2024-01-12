@@ -16,8 +16,13 @@ def solicitar_ruta():
 
 def mostrar_opciones(ruta_anterior):
     while True:
-        logger.info("\n\nOpciones:\n S - Salir\n R - Repetir con la misma ruta\n C - Cambiar la ruta\n H - Ayuda\n")
-        opcion = input("Seleccione una opción [S/R/C/H]: \n").upper()
+        logger.info("Opciones:")
+        logger.info("         S - Salir")
+        logger.info("         R - Repetir con la misma ruta")
+        logger.info("         C - Cambiar la ruta")
+        logger.info("         H - Ayuda\n")
+        logger.info("Seleccione una opción [S/R/C/H]: \n")
+        opcion = input("").upper()
 
         if opcion == 'S':
             logger.info("Opción seleccionada: Salir")
