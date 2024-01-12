@@ -3,6 +3,7 @@ import os
 import datetime
 from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
+import datetime
 
 # Configuración del logger
 logger = configurar_logging()
@@ -42,30 +43,37 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
+
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else '' ########################################
+    contenido_prompt = leer_archivo_prompt(modo_prompt) if modo_prompt else ''
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
+
     if contenido_prompt:
         contenido += contenido_prompt + "\n\n"
     else:
         contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
         logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
+
     contenido += "\n\nEstructura de Carpetas y Archivos:\n"
     contenido += '\n'.join(estructura) + "\n\n"
+
     if not archivos_seleccionados:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
+
     contenido += "\n\nContenido de archivos seleccionados:\n"
     for archivo in archivos_seleccionados:
         contenido_archivo = leer_archivo(archivo)
         if contenido_archivo:
-            contenido += f"\n```\n--- Contenido de {archivo} ---\n"
+            contenido += f"\n--- Contenido de {archivo} ---\n"
             contenido += contenido_archivo + "\n"
         else:
             logger.error(f"No se pudo obtener el contenido del archivo: {archivo}")
-    contenido += "\n```\n\n"
+
+    contenido += "\n"
     return contenido
+
 
 def contenido_archivo(archivos_seleccionados):
     contenido_total = ""
@@ -135,3 +143,12 @@ def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     return nombre_archivo_salida
 
+def leer_archivo_prompt(modo_prompt):
+    try:
+        with open(modo_prompt, 'r', encoding='utf-8') as archivo:
+            contenido = archivo.read()
+            logger.debug(f"Archivo '{modo_prompt}' leído exitosamente.")
+            return contenido
+    except (FileNotFoundError, OSError, UnicodeDecodeError) as e:
+        logger.error(f"Error al leer el archivo {modo_prompt}: {e}")
+        return None
