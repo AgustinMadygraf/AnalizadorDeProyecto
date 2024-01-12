@@ -10,7 +10,7 @@ def configurar_logging():
         return logger
 
     # Establecer un nombre de archivo fijo para el log
-    filename = 'logs/sistema.log'
+    filename = 'SCR/logs/sistema.log'
 
     # Asegurarse de que el directorio 'logs' existe
     if not os.path.exists('logs'):
