@@ -73,24 +73,3 @@ def verificar_existencia_archivo(nombre_archivo):
         bool: True si el archivo existe, False en caso contrario.
     """
     return os.path.exists(nombre_archivo)
-
-
-class ErrorLecturaArchivo(Exception):
-    """Excepción para errores en la lectura de archivos."""
-    pass
-
-class ArchivoNoEncontradoError(ErrorLecturaArchivo):
-    """Excepción para cuando un archivo no se encuentra."""
-    pass
-
-class ArchivoInvalidoError(ErrorLecturaArchivo):
-    """Excepción para cuando el archivo es inválido (e.g., tipo incorrecto, formato no permitido)."""
-    pass
-
-class ErrorIOArchivo(ErrorLecturaArchivo):
-    """Excepción para errores de E/S al leer el archivo."""
-    pass
-
-class ErrorDecodificacionArchivo(ErrorLecturaArchivo):
-    """Excepción para errores de decodificación."""
-    pass
