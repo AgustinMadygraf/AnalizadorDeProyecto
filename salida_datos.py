@@ -68,10 +68,11 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     for archivo in archivos_seleccionados:
         contenido_archivo = leer_archivo(archivo)
         if contenido_archivo:
-            contenido += f"\n--- Contenido de {archivo} ---\n"
+            contenido += f"\n```\n--- Contenido de {archivo} ---\n"
             contenido += contenido_archivo + "\n"
         else:
             logger.error(f"No se pudo obtener el contenido del archivo: {archivo}")
+    contenido += "\n```\n\n"
 
     return contenido
 
