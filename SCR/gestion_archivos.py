@@ -46,18 +46,18 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
 
     # Validación de la extensión del archivo
     if not any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas):
-        logger.info(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
+        logger.warning(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
         return None
 
-    # Validación de la ruta del archivo (debe ser un archivo y no un directorio)
+    #Validación de la ruta del archivo (debe ser un archivo y no un directorio)
     if not os.path.isfile(nombre_archivo):
-        logger.error(f"El nombre del archivo no corresponde a un archivo: {nombre_archivo}")
+        logger.warning(f"El nombre del archivo no corresponde a un archivo: {nombre_archivo}")
         return None
 
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
-        logger.error(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
+        logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
         return None
-
+    print("\n\nnombre_archivo: ",nombre_archivo,"\n\n")
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()

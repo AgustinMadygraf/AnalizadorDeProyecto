@@ -43,11 +43,13 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
-
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else ''
-    contenido_prompt = "\n\nprompt:\nNo hay prompt. falla.\n\n"
+    print("\n\nmodo_prompt: ",modo_prompt,"\n\n")
+    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
+    nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
+    contenido_prompt = leer_archivo(nombre_archivo) 
+    print("\n\ncontenido_prompt: ",contenido_prompt,"\n\n")
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
 
@@ -74,7 +76,6 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
 
     contenido += "\n"
     return contenido
-
 
 def contenido_archivo(archivos_seleccionados):
     contenido_total = ""
@@ -127,7 +128,7 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
-def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
+def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones):
     """
     Genera el archivo de salida con la estructura dada.
 

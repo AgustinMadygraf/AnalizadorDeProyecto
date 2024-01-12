@@ -53,7 +53,7 @@ def main():
             exit()
         try:
             archivos, estructura = listar_archivos(ruta, extensiones)
-            nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura, modo_prompt)
+            nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones)
             if nombre_archivo_salida is None:
                 logger.warning("No se generó ningún archivo.")
                 ruta_anterior = None
