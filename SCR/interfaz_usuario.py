@@ -7,7 +7,8 @@ logger = configurar_logging()
 
 def solicitar_ruta():
     while True:
-        ruta = input("Ingrese la ruta de la carpeta: ")
+        ruta = input("\n\nIngrese la ruta de la carpeta: ")
+        print("\n")
         if os.path.isdir(ruta):
             logger.info(f"Ruta ingresada: {ruta}")
             return ruta
@@ -16,7 +17,7 @@ def solicitar_ruta():
 
 def mostrar_opciones(ruta_anterior):
     while True:
-        logger.info("Opciones:")
+        logger.info("Opciones:\n")
         logger.info("         S - Salir")
         logger.info("         R - Repetir con la misma ruta")
         logger.info("         C - Cambiar la ruta")

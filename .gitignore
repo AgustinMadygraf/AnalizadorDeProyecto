@@ -1,6 +1,5 @@
 LIST-C_%AppServ%www%AnalizadorDeProyecto.md
 AnalizadorDeProyecto.bat
-listado_AnalizadorDeProyecto.txt
 SCR/logs/sistema.log
 __pycache__
 SCR/__pycache__
