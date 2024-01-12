@@ -1,10 +1,8 @@
-AnalizadorDeProyecto.ico
-default.txt
+LIST-C_%AppServ%www%AnalizadorDeProyecto.md
 AnalizadorDeProyecto.bat
-listado_AnalizadorDeProyecto.txt
-__pycache__
-mejoras.txt
-gestion_archivos.log
-logs/analizador.log
-logs/gestion_archivos.log
 SCR/logs/sistema.log
+__pycache__
+SCR/__pycache__
+SCR/logs/__pycache__
+config/path.txt
+>>>>>>> devs
