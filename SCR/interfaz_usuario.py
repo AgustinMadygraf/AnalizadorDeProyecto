@@ -49,7 +49,7 @@ def elegir_modo():
     logger.info("Inicio de la selección del modo de operación.")
     while True:
         try:
-            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): ")
+            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
             #opcion_str = 1##################################################################################
             opcion_str = input("")  ########################################
             opcion = int(opcion_str)  
@@ -60,6 +60,9 @@ def elegir_modo():
             elif opcion == 2:
                 logger.info("Modo seleccionado: Solucionar errores.")
                 return 'prompt_error.md'
+            elif opcion == 3:
+                logger.info("Modo seleccionado: Solucionar errores.")
+                return 'prompt_aprender.md'
             else:
                 logger.warning("Opción no válida. Debes elegir 1 o 2. Seleccionando modo por defecto: Mejoras en la programación.")
                 return 'prompt_mejora.txt'
