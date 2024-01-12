@@ -16,15 +16,19 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     Returns:
         str: Contenido del archivo.
     """
+    # Validación del tipo de 'nombre_archivo'
     if not isinstance(nombre_archivo, str):
         logger.error(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
         return None
 
-    print("\n\nnombre_archivo: ", nombre_archivo, "\n\n")
-    
-    # Comprobar si la extensión del archivo está en la lista de extensiones permitidas
+    # Validación de la extensión del archivo
     if not any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas):
         logger.info(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
+        return None
+
+    # Validación de la ruta del archivo (debe ser un archivo y no un directorio)
+    if not os.path.isfile(nombre_archivo):
+        logger.error(f"El nombre del archivo no corresponde a un archivo: {nombre_archivo}")
         return None
 
     try:
@@ -41,6 +45,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     except UnicodeDecodeError as e:
         logger.error(f"Error de decodificación al leer el archivo {nombre_archivo}: {e}")
         return None
+
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     """
@@ -68,3 +73,24 @@ def verificar_existencia_archivo(nombre_archivo):
         bool: True si el archivo existe, False en caso contrario.
     """
     return os.path.exists(nombre_archivo)
+
+
+class ErrorLecturaArchivo(Exception):
+    """Excepción para errores en la lectura de archivos."""
+    pass
+
+class ArchivoNoEncontradoError(ErrorLecturaArchivo):
+    """Excepción para cuando un archivo no se encuentra."""
+    pass
+
+class ArchivoInvalidoError(ErrorLecturaArchivo):
+    """Excepción para cuando el archivo es inválido (e.g., tipo incorrecto, formato no permitido)."""
+    pass
+
+class ErrorIOArchivo(ErrorLecturaArchivo):
+    """Excepción para errores de E/S al leer el archivo."""
+    pass
+
+class ErrorDecodificacionArchivo(ErrorLecturaArchivo):
+    """Excepción para errores de decodificación."""
+    pass
