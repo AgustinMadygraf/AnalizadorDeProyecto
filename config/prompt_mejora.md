@@ -1,9 +1,9 @@
-Objetivo: Analizar un proyecto de IA para identificar áreas específicas para aplicar mejores prácticas de programación y diseño UI/UX.
+Objetivo: Analizar un proyecto de IA para identificar áreas específicas para aplicar mejores prácticas de programación.
 
 Pasos:
 
-1 - Realizar un análisis del proyecto, prestando especial atención a accesibilidad, estética, funcionalidad, etc.
-2 - Identificar un área clave para mejora prioritaria, como accesibilidad, estética, funcionalidad, etc.
+1 - Realizar un análisis del proyecto
+2 - Identificar un área clave para mejora prioritaria
 3 - Proveer una sugerencia específica para esa mejora, detallando cómo podría implementarse.
 4 - Desarrollar un plan de acción detallado y paso a paso para implementar la mejora, incluyendo herramientas y métodos recomendados.
 5 - Indicar qué archivo o componente específico necesita ser mejorado como punto de partida para la implementación de la mejora. Considera el impacto en el código existente y la estructura del proyecto.
