@@ -44,14 +44,14 @@ def escribir_archivo_salida(nombre_archivo, contenido):
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else ''
+    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else '' ########################################
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
     if contenido_prompt:
         contenido += contenido_prompt + "\n\n"
     else:
         contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
-        logger.warning("No se proporcionó o no se pudo leer el contenido del modo prompt")
+        logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
     contenido += "\n\nEstructura de Carpetas y Archivos:\n"
     contenido += '\n'.join(estructura) + "\n\n"
     if not archivos_seleccionados:

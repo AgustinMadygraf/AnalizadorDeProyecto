@@ -41,7 +41,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     """
     # Validación del tipo de 'nombre_archivo'
     if not isinstance(nombre_archivo, str):
-        logger.error(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
+        logger.warning(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
         return None
 
     # Validación de la extensión del archivo
