@@ -15,7 +15,7 @@ python --version
 Primero, clona el repositorio del proyecto:
 
 ```bash
-git clone [URL del repositorio]
+git clone https://github.com/AgustinMadygraf/AnalizadorDeProyecto.git
 cd AnalizadorDeProyecto
 ```
 

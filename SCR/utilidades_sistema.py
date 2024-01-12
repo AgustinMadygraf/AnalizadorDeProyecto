@@ -11,10 +11,6 @@ logger = configurar_logging()
 def obtener_version_python():
     return sys.version
 
-def obtener_librerias_pip():
-    logger.info("Obteniendo listado de librerías de pip.")
-    resultado = subprocess.run(["pip", "list"], capture_output=True, text=True)
-    return resultado.stdout
 
 def limpieza_pantalla():
     logger.info("Limpiando pantalla.")

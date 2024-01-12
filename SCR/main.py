@@ -1,6 +1,5 @@
 #main.py
 import os
-import sys
 from importlib import metadata
 from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
@@ -42,7 +41,6 @@ def validar_ruta(ruta):
 def main():
     limpieza_pantalla()
     logger.info(f"Versión de Python en uso: {obtener_version_python()}")
-    #crear_archivo_bat()
     modo_prompt = elegir_modo()
     ruta_anterior = None
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
@@ -75,24 +73,6 @@ def main():
             ruta_anterior = nueva_ruta
         else:
             ruta_anterior = ruta
-
-def crear_archivo_bat():
-    try:
-        python_executable = sys.executable
-        directorio_script = os.path.dirname(os.path.abspath(__file__))
-
-        contenido_bat = (
-            "@echo off\n"
-            f"cd {directorio_script}\n"
-            f"\"{python_executable}\" main.py\n"
-            "pause\n"
-        )
-
-        ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
-        with open(ruta_archivo_bat, 'w') as archivo_bat:
-            archivo_bat.write(contenido_bat)
-    except Exception as e:
-        logger.error(f"Error al crear el archivo .bat: {e}")
 
 if __name__ == "__main__":
     main()
