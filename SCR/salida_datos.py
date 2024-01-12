@@ -8,6 +8,23 @@ import datetime
 # Configuración del logger
 logger = configurar_logging()
 
+def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones):
+    """
+    Genera el archivo de salida con la estructura dada.
+
+    Args:
+        ruta (str): Ruta del directorio donde se generará el archivo de salida.
+        estructura (list): Estructura de directorios y archivos a incluir en el archivo de salida.
+        modo_prompt (str): Modo seleccionado para la salida.
+        extensiones (list of str): Extensiones para filtrar archivos.
+    """
+    archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
+    nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
+    escribir_archivo_salida(nombre_archivo_salida, contenido)
+    copiar_contenido_al_portapapeles(nombre_archivo_salida)
+    return nombre_archivo_salida
+
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
     ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
@@ -53,7 +70,7 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """
     # Formatear la ruta para el nombre del archivo
     ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
-    nombre_archivo_salida = f"LIST-{ruta_formateada}.txt"
+    nombre_archivo_salida = f"LIST-{ruta_formateada}.md"
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
@@ -126,19 +143,3 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
-def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones):
-    """
-    Genera el archivo de salida con la estructura dada.
-
-    Args:
-        ruta (str): Ruta del directorio donde se generará el archivo de salida.
-        estructura (list): Estructura de directorios y archivos a incluir en el archivo de salida.
-        modo_prompt (str): Modo seleccionado para la salida.
-        extensiones (list of str): Extensiones para filtrar archivos.
-    """
-    archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
-    nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
-    escribir_archivo_salida(nombre_archivo_salida, contenido)
-    copiar_contenido_al_portapapeles(nombre_archivo_salida)
-    return nombre_archivo_salida
