@@ -5,7 +5,7 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']):
+def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.me']):
     """
     Lee el contenido de un archivo de texto y lo devuelve.
 
@@ -41,7 +41,6 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     except UnicodeDecodeError as e:
         logger.error(f"Error de decodificación al leer el archivo {nombre_archivo}: {e}")
         return None
-
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     """

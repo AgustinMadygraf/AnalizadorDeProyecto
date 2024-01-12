@@ -35,6 +35,10 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         nombre_archivo (str): Ruta del archivo donde se escribirá el contenido.
         contenido (str): Contenido a escribir en el archivo.
     """
+    if contenido is None:
+        logger.error(f"Intento de escribir contenido 'None' en el archivo {nombre_archivo}")
+        contenido = "Contenido no disponible o error al leer el archivo."
+
     try:
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
@@ -42,22 +46,37 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
+
+
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
-    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else ''#############################################
+    logger.info("Preparando contenido de salida")
+
+    contenido_prompt = leer_archivo(modo_prompt) if modo_prompt else ''
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
-    contenido += contenido_prompt + "\n\n" if contenido_prompt else ''
+
+    if contenido_prompt:
+        contenido += contenido_prompt + "\n\n"
+    else:
+        logger.warning("No se proporcionó o no se pudo leer el contenido del modo prompt")
+
     contenido += "\n\nEstructura de Carpetas y Archivos:\n"
     contenido += '\n'.join(estructura) + "\n\n"
-    contenido += "\n\nContenido de archivos seleccionados:\n"
 
+    if not archivos_seleccionados:
+        logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
+
+    contenido += "\n\nContenido de archivos seleccionados:\n"
     for archivo in archivos_seleccionados:
         contenido_archivo = leer_archivo(archivo)
         if contenido_archivo:
             contenido += f"\n--- Contenido de {archivo} ---\n"
             contenido += contenido_archivo + "\n"
+        else:
+            logger.error(f"No se pudo obtener el contenido del archivo: {archivo}")
 
     return contenido
+
 
 def contenido_archivo(archivos_seleccionados):
     contenido_total = ""
@@ -127,8 +146,9 @@ def generar_archivo_salida(ruta, estructura, modo_prompt, extensiones):
     print("\n\narchivos_encontrados: ",archivos_encontrados,"\n\n")
     print("\n\nestructura_actualizada: ",estructura_actualizada,"\n\n")
     contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
-    #escribir_archivo_salida(nombre_archivo_salida, contenido)
-    #copiar_contenido_al_portapapeles(nombre_archivo_salida)
+    print("\n\ncontenido:\n",contenido,"\n\n")
+    escribir_archivo_salida(nombre_archivo_salida, contenido)
+    copiar_contenido_al_portapapeles(nombre_archivo_salida)
 
     return nombre_archivo_salida
 
