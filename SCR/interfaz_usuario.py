@@ -6,7 +6,7 @@ from logs.config_logger import configurar_logging
 logger = configurar_logging()
 
 def solicitar_ruta():
-    logger.info("Por favor, introduzca la ruta de la carpeta: ")
+    logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
     ruta = input().strip()
     return ruta
 

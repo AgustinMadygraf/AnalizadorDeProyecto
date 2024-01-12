@@ -33,7 +33,6 @@ def crear_acceso_directo(ruta_archivo_bat):
     except Exception as e:
         logger.error(f"Error al crear el acceso directo: {e}")
 
-
 def main():
     limpieza_pantalla()
     logger.info("Iniciando instalador")
@@ -45,7 +44,6 @@ def main():
         ruta_archivo_bat = crear_archivo_bat()
     instalar_dependencias()
     crear_acceso_directo(ruta_archivo_bat)
-
 
 def instalar_dependencias():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
