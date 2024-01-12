@@ -3,10 +3,29 @@ import os
 import sys
 from SCR.utilidades_sistema import obtener_version_python, limpieza_pantalla
 from SCR.logs.config_logger import configurar_logging
-
-
+import os
+import winshell
+from win32com.client import Dispatch
 
 logger = configurar_logging()
+
+def crear_acceso_directo():
+    escritorio = winshell.desktop()
+    ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
+    directorio_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_archivo_bat = os.path.join(directorio_script, '..\\AnalizadorDeProyecto.bat')
+
+    if not os.path.isfile(ruta_acceso_directo):
+        shell = Dispatch('WScript.Shell')
+        acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
+        acceso_directo.Targetpath = ruta_archivo_bat
+        acceso_directo.WorkingDirectory = directorio_script
+        acceso_directo.IconLocation = ruta_archivo_bat
+        acceso_directo.save()
+
+        logger.info("Acceso directo en el escritorio creado.")
+    else:
+        logger.info("El acceso directo ya existe en el escritorio.")
 
 def main():
     limpieza_pantalla()
@@ -16,6 +35,8 @@ def main():
     if not check_archivo_bat():
         crear_archivo_bat()
     instalar_dependencias()
+    if check_archivo_bat() or crear_archivo_bat():
+        crear_acceso_directo()
 
 
 def instalar_dependencias():
@@ -98,7 +119,6 @@ def crear_archivo_bat():
         logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
     except Exception as e:
         logger.error(f"Error al crear el archivo .bat: {e}")
-
 
 if __name__ == "__main__":
     main()
