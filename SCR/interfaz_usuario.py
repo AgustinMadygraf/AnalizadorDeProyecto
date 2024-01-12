@@ -13,7 +13,6 @@ def solicitar_ruta():
             return ruta
         else:
             logger.warning("La ruta ingresada no es válida o no existe.")
-            print("La ruta ingresada no es válida o no existe. Inténtelo de nuevo.")
 
 def mostrar_opciones(ruta_anterior):
     while True:
@@ -39,11 +38,11 @@ def mostrar_opciones(ruta_anterior):
 
 def mostrar_ayuda():
     logger.info("Mostrando mensaje de ayuda")
-    print("\nAyuda del Analizador de Proyectos:")
-    print(" S - Salir del programa.")
-    print(" R - Repetir la operación con la misma ruta de carpeta.")
-    print(" C - Cambiar la ruta de la carpeta para la operación.")
-    print(" H - Mostrar este mensaje de ayuda.\n")
+    logger.info("\nAyuda del Analizador de Proyectos:")
+    logger.info(" S - Salir del programa.")
+    logger.info(" R - Repetir la operación con la misma ruta de carpeta.")
+    logger.info(" C - Cambiar la ruta de la carpeta para la operación.")
+    logger.info(" H - Mostrar este mensaje de ayuda.\n")
 
 def elegir_modo():
     logger.info("Inicio de la selección del modo de operación.")

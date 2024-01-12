@@ -45,11 +45,9 @@ def escribir_archivo_salida(nombre_archivo, contenido):
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-    print("\n\nmodo_prompt: ",modo_prompt,"\n\n")
     ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
     nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo) 
-    print("\n\ncontenido_prompt: ",contenido_prompt,"\n\n")
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
 

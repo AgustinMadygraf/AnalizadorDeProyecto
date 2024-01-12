@@ -57,7 +57,6 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
         return None
-    print("\n\nnombre_archivo: ",nombre_archivo,"\n\n")
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()
