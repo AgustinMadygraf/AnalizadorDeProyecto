@@ -28,7 +28,7 @@ def esta_en_gitignore(ruta_archivo, ruta_proyecto):
         logger.warning(f"No se encontró el archivo .gitignore en {ruta_proyecto}")
     return False
 
-def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']):
+def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
     """
     Lee el contenido de un archivo de texto y lo devuelve.
 

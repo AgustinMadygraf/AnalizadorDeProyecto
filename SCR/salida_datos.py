@@ -8,6 +8,38 @@ import datetime
 # Configuración del logger
 logger = configurar_logging()
 
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
+    logger.info("Preparando contenido de salida")
+    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
+    nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
+    contenido_prompt = leer_archivo(nombre_archivo) 
+    fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
+
+    if contenido_prompt:
+        contenido += contenido_prompt + "\n\n"
+    else:
+        contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
+        logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
+
+    contenido += "\n---\n\n#Estructura de Carpetas y Archivos\n\n"
+    contenido += '\n'.join(estructura) + "\n\n---\n"
+
+    if not archivos_seleccionados:
+        logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
+
+    contenido += "\n\nContenido de archivos seleccionados:\n"
+    for archivo in archivos_seleccionados:
+        contenido_archivo = leer_archivo(archivo)
+        if contenido_archivo:
+            contenido += f"\n--- Contenido de {archivo} ---\n"
+            contenido += contenido_archivo + "\n"
+        else:
+            logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
+
+    contenido += "\n"
+    return contenido
+
 def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """
     Genera el nombre del archivo de salida basado en la ruta y un nombre base.
@@ -42,38 +74,6 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         logger.info(f"Archivo de salida generado: {nombre_archivo}")
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
-
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
-    logger.info("Preparando contenido de salida")
-    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
-    nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
-    contenido_prompt = leer_archivo(nombre_archivo) 
-    fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    contenido = f"Fecha y hora de generación: {fecha_hora_actual}\n\n"
-
-    if contenido_prompt:
-        contenido += contenido_prompt + "\n\n"
-    else:
-        contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
-        logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
-
-    contenido += "\n\nEstructura de Carpetas y Archivos:\n"
-    contenido += '\n'.join(estructura) + "\n\n"
-
-    if not archivos_seleccionados:
-        logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
-
-    contenido += "\n\nContenido de archivos seleccionados:\n"
-    for archivo in archivos_seleccionados:
-        contenido_archivo = leer_archivo(archivo)
-        if contenido_archivo:
-            contenido += f"\n--- Contenido de {archivo} ---\n"
-            contenido += contenido_archivo + "\n"
-        else:
-            logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
-
-    contenido += "\n"
-    return contenido
 
 def contenido_archivo(archivos_seleccionados):
     contenido_total = ""

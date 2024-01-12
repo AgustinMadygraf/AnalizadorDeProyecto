@@ -43,7 +43,7 @@ def main():
     #crear_archivo_bat()
     modo_prompt = elegir_modo()
     ruta_anterior = None
-    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.me', '.txt']
+    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
 
     while True:
         ruta = ruta_anterior or obtener_ruta_default()
