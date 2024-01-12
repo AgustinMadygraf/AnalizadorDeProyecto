@@ -20,10 +20,27 @@ def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones)
     """
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
+    formatear_archivo_salida(nombre_archivo_salida)
     contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     return nombre_archivo_salida
+
+def formatear_archivo_salida(nombre_archivo_salida):
+    """
+    Elimina el contenido del archivo de salida.
+
+    Args:
+        nombre_archivo_salida (str): Ruta del archivo cuyo contenido se eliminará.
+    """
+    try:
+        # Abrir el archivo en modo de escritura, lo que borrará su contenido
+        with open(nombre_archivo_salida, 'w', encoding='utf-8') as archivo:
+            archivo.write('')  # Escribir un contenido vacío
+        logger.info(f"El contenido de {nombre_archivo_salida} ha sido eliminado.---------------------------------------------------------------------------------------------")
+    except Exception as e:
+        logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
+
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
