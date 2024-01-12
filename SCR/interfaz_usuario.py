@@ -6,17 +6,13 @@ from logs.config_logger import configurar_logging
 logger = configurar_logging()
 
 def solicitar_ruta():
-    while True:
-        ruta = input("Ingrese la ruta de la carpeta: ")
-        if os.path.isdir(ruta):
-            logger.info(f"Ruta ingresada: {ruta}")
-            return ruta
-        else:
-            logger.warning("La ruta ingresada no es válida o no existe.")
+    logger.info("Por favor, introduzca la ruta de la carpeta: ")
+    ruta = input().strip()
+    return ruta
 
 def mostrar_opciones(ruta_anterior):
     while True:
-        logger.info("Opciones:")
+        logger.info("Opciones:\n")
         logger.info("         S - Salir")
         logger.info("         R - Repetir con la misma ruta")
         logger.info("         C - Cambiar la ruta")
@@ -54,8 +50,8 @@ def elegir_modo():
     while True:
         try:
             logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores): ")
-            opcion_str = 1##################################################################################
-            #opcion_str = input("")  ########################################
+            #opcion_str = 1##################################################################################
+            opcion_str = input("")  ########################################
             opcion = int(opcion_str)  
 
             if opcion == 1:

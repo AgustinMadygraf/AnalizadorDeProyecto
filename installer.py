@@ -1,7 +1,6 @@
 import subprocess
 import os
 import sys
-from SCR.utilidades_sistema import obtener_version_python, limpieza_pantalla
 from SCR.logs.config_logger import configurar_logging
 import os
 import winshell
@@ -9,34 +8,43 @@ from win32com.client import Dispatch
 
 logger = configurar_logging()
 
-def crear_acceso_directo():
+def crear_acceso_directo(ruta_archivo_bat):
     escritorio = winshell.desktop()
+    print("\nescritorio: ",escritorio,"\n\n")
     ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
+    print("ruta_acceso_directo: ",ruta_acceso_directo,"\n\n")
     directorio_script = os.path.dirname(os.path.abspath(__file__))
-    ruta_archivo_bat = os.path.join(directorio_script, '..\\AnalizadorDeProyecto.bat')
+    print("directorio_script: ",directorio_script,"\n\n")
+    print("ruta_archivo_bat: ",ruta_archivo_bat,"\n\n")
+    ruta_icono = os.path.join(directorio_script, "config\AnalizadorDeProyecto.ico")
 
-    if not os.path.isfile(ruta_acceso_directo):
-        shell = Dispatch('WScript.Shell')
-        acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
-        acceso_directo.Targetpath = ruta_archivo_bat
-        acceso_directo.WorkingDirectory = directorio_script
-        acceso_directo.IconLocation = ruta_archivo_bat
-        acceso_directo.save()
+    try:
+        if not os.path.isfile(ruta_acceso_directo):
+            shell = Dispatch('WScript.Shell')
+            acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
+            acceso_directo.Targetpath = ruta_archivo_bat
+            acceso_directo.WorkingDirectory = directorio_script
+            acceso_directo.IconLocation = ruta_icono  
+            acceso_directo.save()
 
-        logger.info("Acceso directo en el escritorio creado.")
-    else:
-        logger.info("El acceso directo ya existe en el escritorio.")
+            logger.info("Acceso directo en el escritorio creado.")
+        else:
+            logger.info("El acceso directo ya existe en el escritorio.")
+    except Exception as e:
+        logger.error(f"Error al crear el acceso directo: {e}")
+
 
 def main():
     limpieza_pantalla()
     logger.info("Iniciando instalador")
     version_python = obtener_version_python()
     logger.info(f"Versión de Python en uso: {version_python}")
-    if not check_archivo_bat():
-        crear_archivo_bat()
+    # Resto de tu código...
+    archivo_bat_existente, ruta_archivo_bat = check_archivo_bat()
+    if not archivo_bat_existente:
+        ruta_archivo_bat = crear_archivo_bat()
     instalar_dependencias()
-    if check_archivo_bat() or crear_archivo_bat():
-        crear_acceso_directo()
+    crear_acceso_directo(ruta_archivo_bat)
 
 
 def instalar_dependencias():
@@ -69,15 +77,17 @@ def instalar_dependencias():
 
 def check_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
-    ruta_archivo_bat = os.path.join(directorio_script, '..\\AnalizadorDeProyecto.bat')
+    ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
     if os.path.isfile(ruta_archivo_bat):
-        logger.info("\n'AnalizadorDeProyecto.bat' ya está instalado.\n")
-        return True
+        logger.info("'AnalizadorDeProyecto.bat' ya está instalado.")
+        return True, ruta_archivo_bat
     else:
-        logger.warning("\n'AnalizadorDeProyecto.bat' no está instalado.\n")
-        return False
+        logger.info("'AnalizadorDeProyecto.bat' no está instalado.")
+        return False, ruta_archivo_bat
 
 def crear_archivo_bat():
+    directorio_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
     try:
         python_executable = sys.executable
         directorio_script = os.path.dirname(os.path.abspath(__file__))
@@ -119,6 +129,20 @@ def crear_archivo_bat():
         logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
     except Exception as e:
         logger.error(f"Error al crear el archivo .bat: {e}")
+    return ruta_archivo_bat  
+
+
+def obtener_version_python():
+    return sys.version
+
+
+def limpieza_pantalla():
+    logger.info("Limpiando pantalla.")
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
 
 if __name__ == "__main__":
     main()
