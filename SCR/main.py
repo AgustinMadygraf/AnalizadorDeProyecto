@@ -1,4 +1,4 @@
-#main.py
+#SCR/main.py
 import os
 from importlib import metadata
 from manipulacion_archivos import listar_archivos

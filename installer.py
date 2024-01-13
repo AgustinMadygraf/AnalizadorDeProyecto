@@ -48,6 +48,14 @@ def main():
 def instalar_dependencias():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_requirements = os.path.join(directorio_script, 'requirements.txt')
+    
+    # Verifica si se está ejecutando dentro de un entorno virtual
+    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+        logger.info("Entorno virtual detectado.")
+    else:
+        logger.warning("No se detectó un entorno virtual activo. Se recomienda activar el entorno virtual antes de continuar.")
+        return
+
     if os.path.isfile(ruta_requirements):
         logger.info("Verificando dependencias...")
         with open(ruta_requirements) as file:
@@ -73,6 +81,7 @@ def instalar_dependencias():
     else:
         logger.warning("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales.")
 
+
 def check_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
@@ -85,20 +94,21 @@ def check_archivo_bat():
 
 def crear_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_entorno_virtual = os.path.join(directorio_script, 'analizador_env')
+    ruta_python_executable = os.path.join(ruta_entorno_virtual, 'Scripts', 'python.exe')
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
-    try:
-        python_executable = sys.executable
-        directorio_script = os.path.dirname(os.path.abspath(__file__))
 
+    try:
         contenido_bat = (
             "@echo off\n"
             "setlocal\n"
             "\n"
             "set \"SCRIPT_DIR=%~dp0\"\n"
-            "set \"PYTHON_EXEC=" + python_executable + "\"\n"
+            "set \"VENV_DIR=" + ruta_entorno_virtual + "\"\n"
+            "set \"PYTHON_EXEC=" + ruta_python_executable + "\"\n"
             "\n"
             "if not exist \"%PYTHON_EXEC%\" (\n"
-            "    echo No se encontró el ejecutable de Python. Asegúrese de que Python está instalado.\n"
+            "    echo No se encontró el ejecutable de Python en el entorno virtual. Asegúrese de que el entorno virtual está activo.\n"
             "    pause\n"
             "    exit /b\n"
             ")\n"
@@ -112,7 +122,7 @@ def crear_archivo_bat():
             "\n"
             "\"%PYTHON_EXEC%\" SCR\\main.py\n"
             "if errorlevel 1 (\n"
-            "    echo El script de Python falló. Verifique las dependencias y la versión de Python.\n"
+            "    echo El script de Python falló. Verifique las dependencias y la versión de Python en el entorno virtual.\n"
             "    pause\n"
             "    exit /b\n"
             ")\n"
@@ -121,14 +131,12 @@ def crear_archivo_bat():
             "endlocal\n"
         )
 
-        ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
         with open(ruta_archivo_bat, 'w') as archivo_bat:
             archivo_bat.write(contenido_bat)
         logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
     except Exception as e:
         logger.error(f"Error al crear el archivo .bat: {e}")
-    return ruta_archivo_bat  
-
+    return ruta_archivo_bat
 
 def obtener_version_python():
     return sys.version
