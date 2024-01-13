@@ -5,6 +5,7 @@ import sys
 from SCR.logs.config_logger import configurar_logging
 import winshell
 from win32com.client import Dispatch
+from packaging import version
 
 logger = configurar_logging()
 
@@ -14,10 +15,9 @@ def crear_acceso_directo(ruta_archivo_bat):
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_icono = os.path.join(directorio_script, "config", "AnalizadorDeProyecto.ico")
 
-    # Verificar si el archivo de icono existe
     if not os.path.isfile(ruta_icono):
         logger.error(f"El archivo de icono en '{ruta_icono}' no existe. Verifique la ubicación y la existencia del icono.")
-        return
+        return False
 
     try:
         if not os.path.isfile(ruta_acceso_directo):
@@ -27,11 +27,13 @@ def crear_acceso_directo(ruta_archivo_bat):
             acceso_directo.WorkingDirectory = directorio_script
             acceso_directo.IconLocation = ruta_icono  
             acceso_directo.save()
-            logger.info("Acceso directo en el escritorio creado.")
+            logger.info("Acceso directo en el escritorio creado exitosamente.")
         else:
             logger.info("El acceso directo ya existe en el escritorio.")
+        return True
     except Exception as e:
         logger.error(f"Error al crear el acceso directo: {e}", exc_info=True)
+        return False
 
 def main():
     limpieza_pantalla()
@@ -60,27 +62,35 @@ def instalar_dependencias():
         with open(ruta_requirements) as file:
             required_packages = [line.strip() for line in file if line.strip() and not line.startswith('#')]
 
-        installed_packages = subprocess.run([sys.executable, "-m", "pip", "freeze"], capture_output=True, text=True).stdout.lower()
-
         for package in required_packages:
-            package_name_version = package.split('==')
-            if len(package_name_version) == 2:
-                package_name, package_version = package_name_version
-                package_lower = package.lower()
-                if package_lower not in installed_packages:
-                    logger.info(f"Instalando {package_name} en la versión {package_version}...")
-                    subprocess.run([sys.executable, "-m", "pip", "install", package_name+"=="+package_version], capture_output=True, text=True)
-
-        logger.info("Verificación de dependencias completada.")
+            try:
+                subprocess.run([sys.executable, "-m", "pip", "install", package], capture_output=True, text=True, check=True)
+                logger.info(f"Instalado o actualizado: {package}")
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Error al instalar la dependencia {package}: {e.output}")
+                
+        logger.info("Verificación y actualización de dependencias completada.")
     else:
         logger.warning("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales.")
 
 def check_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
+
+    # Verificar si el archivo .bat existe y es válido
     if os.path.isfile(ruta_archivo_bat):
-        logger.info("'AnalizadorDeProyecto.bat' ya está instalado.")
-        return True, ruta_archivo_bat
+        try:
+            with open(ruta_archivo_bat, 'r') as archivo:
+                contenido = archivo.read()
+            # Verificar si el contenido del archivo .bat es el esperado
+            if "AnalizadorDeProyecto.py" not in contenido:
+                logger.info("El archivo 'AnalizadorDeProyecto.bat' existente no es válido. Se creará uno nuevo.")
+                return False, ruta_archivo_bat
+            logger.info("'AnalizadorDeProyecto.bat' ya está instalado y es válido.")
+            return True, ruta_archivo_bat
+        except Exception as e:
+            logger.error(f"Error al leer 'AnalizadorDeProyecto.bat': {e}")
+            return False, ruta_archivo_bat
     else:
         logger.info("'AnalizadorDeProyecto.bat' no está instalado.")
         return False, ruta_archivo_bat
@@ -146,12 +156,16 @@ def obtener_version_python():
     return sys.version
 
 def limpieza_pantalla():
-    logger.info("Limpiando pantalla.")
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
-
+    try:
+        # Para Windows
+        if os.name == 'nt':
+            os.system('cls')
+        # Para Unix y MacOS (posix)
+        else:
+            os.system('clear')
+        logger.info("Pantalla limpiada.")
+    except Exception as e:
+        logger.error(f"Error al limpiar la pantalla: {e}")
 
 if __name__ == "__main__":
     main()
