@@ -1,8 +1,8 @@
+#installer.py
 import subprocess
 import os
 import sys
 from SCR.logs.config_logger import configurar_logging
-import os
 import winshell
 from win32com.client import Dispatch
 
@@ -10,13 +10,14 @@ logger = configurar_logging()
 
 def crear_acceso_directo(ruta_archivo_bat):
     escritorio = winshell.desktop()
-    print("\nescritorio: ",escritorio,"\n\n")
     ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
-    print("ruta_acceso_directo: ",ruta_acceso_directo,"\n\n")
     directorio_script = os.path.dirname(os.path.abspath(__file__))
-    print("directorio_script: ",directorio_script,"\n\n")
-    print("ruta_archivo_bat: ",ruta_archivo_bat,"\n\n")
-    ruta_icono = os.path.join(directorio_script, "config\AnalizadorDeProyecto.ico")
+    ruta_icono = os.path.join(directorio_script, "config", "AnalizadorDeProyecto.ico")
+
+    # Verificar si el archivo de icono existe
+    if not os.path.isfile(ruta_icono):
+        logger.error(f"El archivo de icono en '{ruta_icono}' no existe. Verifique la ubicación y la existencia del icono.")
+        return
 
     try:
         if not os.path.isfile(ruta_acceso_directo):
@@ -26,30 +27,28 @@ def crear_acceso_directo(ruta_archivo_bat):
             acceso_directo.WorkingDirectory = directorio_script
             acceso_directo.IconLocation = ruta_icono  
             acceso_directo.save()
-
             logger.info("Acceso directo en el escritorio creado.")
         else:
             logger.info("El acceso directo ya existe en el escritorio.")
     except Exception as e:
-        logger.error(f"Error al crear el acceso directo: {e}")
+        logger.error(f"Error al crear el acceso directo: {e}", exc_info=True)
 
 def main():
     limpieza_pantalla()
     logger.info("Iniciando instalador")
     version_python = obtener_version_python()
     logger.info(f"Versión de Python en uso: {version_python}")
-    # Resto de tu código...
+    instalar_dependencias()
+
     archivo_bat_existente, ruta_archivo_bat = check_archivo_bat()
     if not archivo_bat_existente:
         ruta_archivo_bat = crear_archivo_bat()
-    instalar_dependencias()
     crear_acceso_directo(ruta_archivo_bat)
 
 def instalar_dependencias():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_requirements = os.path.join(directorio_script, 'requirements.txt')
-    
-    # Verifica si se está ejecutando dentro de un entorno virtual
+
     if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
         logger.info("Entorno virtual detectado.")
     else:
@@ -60,27 +59,21 @@ def instalar_dependencias():
         logger.info("Verificando dependencias...")
         with open(ruta_requirements) as file:
             required_packages = [line.strip() for line in file if line.strip() and not line.startswith('#')]
-        
-        installed_packages = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True).stdout
-        install_needed = False
+
+        installed_packages = subprocess.run([sys.executable, "-m", "pip", "freeze"], capture_output=True, text=True).stdout.lower()
 
         for package in required_packages:
-            if package.split("==")[0].lower() not in installed_packages.lower():
-                install_needed = True
-                break
+            package_name_version = package.split('==')
+            if len(package_name_version) == 2:
+                package_name, package_version = package_name_version
+                package_lower = package.lower()
+                if package_lower not in installed_packages:
+                    logger.info(f"Instalando {package_name} en la versión {package_version}...")
+                    subprocess.run([sys.executable, "-m", "pip", "install", package_name+"=="+package_version], capture_output=True, text=True)
 
-        if install_needed:
-            logger.info("Instalando dependencias...")
-            resultado = subprocess.run([sys.executable, "-m", "pip", "install", "-r", ruta_requirements], capture_output=True, text=True)
-            if resultado.returncode == 0:
-                logger.info("Dependencias instaladas.")
-            else:
-                logger.error(f"Error al instalar dependencias: {resultado.stderr}")
-        else:
-            logger.info("Todas las dependencias ya están instaladas.")
+        logger.info("Verificación de dependencias completada.")
     else:
         logger.warning("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales.")
-
 
 def check_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
@@ -95,6 +88,16 @@ def check_archivo_bat():
 def crear_archivo_bat():
     directorio_script = os.path.dirname(os.path.abspath(__file__))
     ruta_entorno_virtual = os.path.join(directorio_script, 'analizador_env')
+
+    if not os.path.exists(ruta_entorno_virtual):
+        logger.error(f"El entorno virtual en '{ruta_entorno_virtual}' no existe. Crear el entorno virtual antes de ejecutar este script.")
+        return None
+
+    ruta_main_py = os.path.join(directorio_script, 'SCR', 'main.py')
+    if not os.path.isfile(ruta_main_py):
+        logger.error(f"El archivo 'main.py' no existe en '{ruta_main_py}'. Verifique la ubicación del archivo.")
+        return None
+
     ruta_python_executable = os.path.join(ruta_entorno_virtual, 'Scripts', 'python.exe')
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
 
@@ -120,7 +123,7 @@ def crear_archivo_bat():
             "    exit /b\n"
             ")\n"
             "\n"
-            "\"%PYTHON_EXEC%\" SCR\\main.py\n"
+            "\"%PYTHON_EXEC%\" \"" + ruta_main_py + "\"\n"
             "if errorlevel 1 (\n"
             "    echo El script de Python falló. Verifique las dependencias y la versión de Python en el entorno virtual.\n"
             "    pause\n"
@@ -136,11 +139,11 @@ def crear_archivo_bat():
         logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
     except Exception as e:
         logger.error(f"Error al crear el archivo .bat: {e}")
+
     return ruta_archivo_bat
 
 def obtener_version_python():
     return sys.version
-
 
 def limpieza_pantalla():
     logger.info("Limpiando pantalla.")

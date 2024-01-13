@@ -3,7 +3,7 @@
 # SYSTEM
 
 ## Contexto del Prompt
-Este prompt está diseñado para facilitar el proceso de enseñanza y aprendizaje del software "AnalizadorDeProyecto" utilizando un Modelo de Lenguaje de Gran Escala (LLM). Se proporcionará al LLM la estructura de directorios y archivos del software, así como el contenido de dichos archivos, para una comprensión detallada y efectiva del proyecto.
+Este prompt está diseñado para facilitar el proceso de enseñanza y aprendizaje del software [INSERTAR_NOMBRE_PROYECTO] que se encuentra a continuación.
 
 ## Objetivo del Prompt
 El objetivo es guiar al usuario a través de un entendimiento profundo del software, abarcando aspectos tales como su arquitectura, funcionalidades clave, uso efectivo y mejores prácticas de desarrollo integradas en el proyecto.
@@ -34,7 +34,3 @@ El objetivo es guiar al usuario a través de un entendimiento profundo del softw
    - Animar al usuario a experimentar activamente con el código, haciendo modificaciones y observando los resultados.
 - **Consultas Adicionales:**
    - Fomentar la formulación de preguntas específicas al LLM para aclarar dudas o profundizar en temas particulares.
-
----
-
-Este prompt está diseñado para proporcionar una experiencia de aprendizaje integral y práctica, aprovechando las capacidades de un LLM para explicar y guiar en el uso y comprensión del software "AnalizadorDeProyecto". ¿Hay algo más en lo que te pueda ayudar o alguna otra especificación que desees agregar?
