@@ -6,9 +6,6 @@ from salida_datos import generar_archivo_salida
 from utilidades_sistema import obtener_version_python, limpieza_pantalla
 from interfaz_usuario import mostrar_opciones, elegir_modo, solicitar_ruta
 from logs.config_logger import configurar_logging
-import subprocess
-import datetime
-
 
 # Configuración del logger
 logger = configurar_logging()
@@ -156,11 +153,9 @@ def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     archivos, estructura = listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto)
 
-
 def main():
     ruta_proyecto = inicializar()
     control_de_flujo(ruta_proyecto)
-
 
 if __name__ == "__main__":
     main()
