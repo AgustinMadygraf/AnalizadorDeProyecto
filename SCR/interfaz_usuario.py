@@ -56,7 +56,7 @@ def elegir_modo():
 
             if opcion == 1:
                 logger.info("Modo seleccionado: Implementar mejoras en la programación.")
-                return 'prompt_mejora.md'
+                return 'prompt_upd_1.md'
             elif opcion == 2:
                 logger.info("Modo seleccionado: Solucionar errores.")
                 return 'prompt_error.md'
@@ -64,8 +64,8 @@ def elegir_modo():
                 logger.info("Modo seleccionado: Solucionar errores.")
                 return 'prompt_aprender.md'
             else:
-                logger.warning("Opción no válida. Debes elegir 1 o 2. Seleccionando modo por defecto: Mejoras en la programación.")
-                return 'prompt_mejora.txt'
+                logger.warning("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación.")
+                return 'prompt_upd_1.txt'
         except ValueError:
             logger.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
             return 'prompt_mejora.txt'

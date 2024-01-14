@@ -44,33 +44,45 @@ def formatear_archivo_salida(nombre_archivo_salida):
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     logger.info("Preparando contenido de salida")
-    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"  # Nota el doble backslash
+    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"
     nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
-    contenido_prompt = leer_archivo(nombre_archivo) 
+    contenido_prompt = leer_archivo(nombre_archivo)
 
-    if contenido_prompt:
-        contenido = contenido_prompt 
+    contenido = contenido_prompt if contenido_prompt else "\n\nprompt:\nNo hay prompt. falla.\n\n"
+
+    # Encabezado para la estructura de carpetas y archivos
+    contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n"
+    contenido += '\n'.join(estructura) + "\n```\n"
+
+    # Sección para contenido de archivos seleccionados
+    if archivos_seleccionados:
+        contenido += "\n\n## Contenido de Archivos Seleccionados\n"
+        for archivo in archivos_seleccionados:
+            contenido_archivo = leer_archivo(archivo)
+            if contenido_archivo:
+                contenido += f"\n### {archivo}\n```plaintext\n"
+                contenido += escapar_caracteres_md(contenido_archivo) + "\n```\n"
+            else:
+                logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
     else:
-        contenido += "\n\nprompt:\nNo hay prompt. falla.\n\n"
-        logger.error("No se proporcionó o no se pudo leer el contenido del modo prompt")
-
-    contenido += "\n---\n\n# Estructura de Carpetas y Archivos\n```bash\n"
-    contenido += '\n'.join(estructura) + "\n```\n---\n"
-
-    if not archivos_seleccionados:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
 
-    contenido += "\n\nContenido de archivos seleccionados:\n"
-    for archivo in archivos_seleccionados:
-        contenido_archivo = leer_archivo(archivo)
-        if contenido_archivo:
-            contenido += f"\n--- Contenido de {archivo} ---\n"
-            contenido += contenido_archivo + "\n"
-        else:
-            logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
-
-    contenido += "\n"
     return contenido
+
+def escapar_caracteres_md(texto):
+    """
+    Escapa caracteres especiales de Markdown en un texto.
+
+    Args:
+        texto (str): Texto a escapar.
+
+    Returns:
+        str: Texto con caracteres de Markdown escapados.
+    """
+    caracteres_a_escapar = ['*', '_', '`', '!', '[', ']', '(', ')']
+    for char in caracteres_a_escapar:
+        texto = texto.replace(char, f'\\{char}')
+    return texto
 
 def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """
