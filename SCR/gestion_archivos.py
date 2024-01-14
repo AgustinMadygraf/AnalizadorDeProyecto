@@ -1,7 +1,8 @@
 import pyperclip
 import os
-from logs.config_logger import configurar_logging
+import time
 import fnmatch
+from logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()
@@ -79,6 +80,8 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
         try:
             pyperclip.copy(contenido)
             logger.info(f"El contenido del archivo '{nombre_archivo_salida}' ha sido copiado al portapapeles.")
+            time.sleep(1)
+            print("")
         except pyperclip.PyperclipException as e:
             logger.error(f"No se pudo copiar al portapapeles: {e}")
 

@@ -1,11 +1,13 @@
 #SCR/main.py
 import os
+import time
 from importlib import metadata
 from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
 from utilidades_sistema import obtener_version_python, limpieza_pantalla
-from HMI import mostrar_opciones, elegir_modo, solicitar_ruta
+from HMI import menu_2, elegir_modo, solicitar_ruta
 from logs.config_logger import configurar_logging
+
 
 # Configuración del logger
 logger = configurar_logging()
@@ -32,29 +34,30 @@ def inicializar():
     return ruta_proyecto
 
 def control_de_flujo(ruta_proyecto):
-    modo_prompt = elegir_modo() #### - HMI - ###
-    intentos = 0
-    intentos_maximos = 5
+    logger.info(f"Directorio por defecto: {ruta_proyecto}")
+    time.sleep(1)
+    logger.info("¿Desea analizar el directorio por defecto? (S/N): ")
+    respuesta = input("").upper()
+    if respuesta == 'N':
+        ruta = solicitar_ruta()
+        guardar_nueva_ruta_default(ruta)
+    else:
+        ruta = obtener_ruta_default()
 
-    while True:
-        ruta = obtener_ruta_default()  
+    # Validar ruta después de la elección del usuario
+    if not validar_ruta(ruta):
+        logger.error("La ruta proporcionada no es válida o no existe.")
+        return
 
-        if not validar_ruta(ruta) and intentos < intentos_maximos:
-            ruta = solicitar_ruta()
-            guardar_nueva_ruta_default(ruta)
-            intentos += 1
-        elif intentos >= intentos_maximos:
-            logger.error("Número máximo de intentos alcanzado. Abortando.")
-            break
-        print("ruta: ",ruta)
-        print("ruta_proyecto: ",ruta_proyecto)
-        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+    # Segunda consulta al usuario sobre el modo de operación
+    modo_prompt = elegir_modo()
 
-        opcion, nueva_ruta = mostrar_opciones(ruta)
-        if opcion == 'S':
-            break
-        elif opcion == 'C':
-            guardar_nueva_ruta_default(nueva_ruta)
+    # Procesamiento de archivos y opciones adicionales
+    procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+    opcion, nueva_ruta = menu_2(ruta)
+    if opcion == 'C':
+        guardar_nueva_ruta_default(nueva_ruta)
+
 
 def obtener_ruta_default():
     """

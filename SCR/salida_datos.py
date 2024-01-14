@@ -1,5 +1,6 @@
 #salida_datos.py
 import os
+import time
 from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
 
@@ -133,6 +134,8 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
         logger.info(f"Archivo de salida generado: {nombre_archivo}")
+        time.sleep(1)
+        print("")
     except Exception as e:
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
@@ -249,4 +252,4 @@ def asegurar_directorio_AMIS(ruta):
         os.makedirs(directorio_amis)
         logger.info(f"Directorio AMIS creado en {directorio_amis}")
     else:
-        logger.info(f"Directorio AMIS ya existe en {directorio_amis}")
+        logger.debug(f"Directorio AMIS ya existe en {directorio_amis}")

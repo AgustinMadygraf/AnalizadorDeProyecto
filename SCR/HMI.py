@@ -1,12 +1,13 @@
 # interfaz_usuario.py
 import os
+import time
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()
 
 def elegir_modo():
-    logger.debug("Inicio de la selección del modo de operación.")#################################################### MENU 1
+    logger.debug("Inicio de la selección del modo de operación.")
     while True:
         try:
             logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
@@ -15,47 +16,31 @@ def elegir_modo():
 
             if opcion == 1:
                 logger.info("Modo seleccionado: Implementar mejoras en la programación.")
+                time.sleep(1)
+                print("")
+
                 return 'config\prompt_upd_0.md'
             elif opcion == 2:
                 logger.info("Modo seleccionado: Solucionar errores.")
                 return 'config\prompt_error.md'
             elif opcion == 3:
-                logger.info("Modo seleccionado: Solucionar errores.")
+                logger.info("Modo seleccionado: Aprendizaje.")
                 return 'config\prompt_aprender.md'
             else:
-                logger.warning("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación.")
-                return 'config\prompt_upd_0.txt'
+                logger.warning("Opción no válida. Debes elegir 1, 2 o 3.")
+                return 'config\prompt_upd_0.md'
         except ValueError:
-            logger.warning("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
-            return 'config\prompt_upd_0.txt'
+            logger.warning("Entrada no válida. Debes ingresar un número.")
+            continue
 
-def mostrar_opciones(ruta_anterior): ############################################################################### MENU 2
-    while True:
-        print("ahora debe ingresar la respuesta de GPT4")
-        logger.info("Opciones:\n")
-        logger.info("         S - Salir")
-        logger.info("         R - Repetir con la misma ruta")
-        logger.info("         C - Cambiar la ruta")
-        logger.info("         H - Ayuda\n")
-        logger.info("Seleccione una opción [S/R/C/H]: \n")
-        opcion = input("").upper()
 
-        if opcion == 'S':
-            logger.info("Opción seleccionada: Salir")
-            exit()
-        elif opcion == 'C':
-            logger.info("Opción seleccionada: Cambiar la ruta")
-            return 'C', solicitar_ruta()
-        elif opcion == 'R':
-            logger.info("Opción seleccionada: Repetir con la misma ruta")
-            logger.info("Repetir con la misma ruta.")
-            return 'R', ruta_anterior
-        elif opcion == 'H':
-            logger.info("Opción seleccionada: Ayuda")
-            mostrar_ayuda()
-        else:
-            logger.warning("Opción no válida seleccionada")
-            logger.info("Opción no válida. Por favor, elija una opción entre S, R, C y H.")
+def menu_2(ruta_anterior): ############################################################################### MENU 2
+    logger.info('Ahora deberá por medio de un LLM, como podría ser ChatGPT, pegar "control + V" y la devolución del LLM deberá copiarlo a continuación')
+    time.sleep(3)
+    logger.info("")
+    input("")
+
+
 
 def mostrar_ayuda():
     logger.info("Mostrando mensaje de ayuda")
