@@ -112,58 +112,55 @@ def inicializar():
     limpieza_pantalla()
     logger.info(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
-    ruta_proyecto = os.path.join(ruta_script)  
+    ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
     print("ruta_proyecto: ", ruta_proyecto)
     return ruta_proyecto
 
-
-def procesar_archivos(ruta_proyecto):
-    """
-    Procesa los archivos en una ruta de proyecto dada.
-
-    Args:
-        ruta_proyecto (str): Ruta al directorio del proyecto.
-
-    Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
-    """
+def control_de_flujo(ruta_proyecto):
     modo_prompt = elegir_modo()
-    ruta_anterior = None
-    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
-    
-    
+    print("modo_prompt: ",modo_prompt)
+    intentos = 0
+    intentos_maximos = 5
+
     while True:
-        ruta = ruta_anterior or obtener_ruta_default()
-        if not validar_ruta(ruta):
-            logger.error("La ruta proporcionada no es válida, no es accesible o no existe.")
+        ruta = obtener_ruta_default()  # Obtener la ruta por defecto
+
+        if not validar_ruta(ruta) and intentos < intentos_maximos:
             ruta = solicitar_ruta()
             guardar_nueva_ruta_default(ruta)
-            ruta_anterior = ruta
+            intentos += 1
+        elif intentos >= intentos_maximos:
+            logger.error("Número máximo de intentos alcanzado. Abortando.")
+            break
 
-        try:
-            archivos, estructura = listar_archivos(ruta, extensiones)
-            nombre_archivo_salida = generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto)
-            if nombre_archivo_salida is None:
-                logger.warning("No se generó ningún archivo.")
-                ruta_anterior = None
-            fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            logger.info(f"Fecha y hora de generación: {fecha_hora_actual}")
-        except Exception as e:
-            logger.error(f"Error al procesar la ruta: {e}")
-            ruta_anterior = None
-            continue
+        nombre_archivo_salida = procesar_archivos(ruta, modo_prompt, ruta_proyecto)
 
         opcion, nueva_ruta = mostrar_opciones(ruta)
         if opcion == 'S':
             break
         elif opcion == 'C':
             guardar_nueva_ruta_default(nueva_ruta)
-            ruta_anterior = nueva_ruta
-        else:
-            ruta_anterior = ruta
+
+def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
+    """
+    Procesa los archivos en una ruta de proyecto dada.
+
+    Args:
+        ruta (str): Ruta a los archivos a procesar.
+        modo_prompt (str): Modo seleccionado para el procesamiento de archivos.
+        ruta_proyecto (str): Ruta al directorio del proyecto.
+
+    Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
+    """
+    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
+    archivos, estructura = listar_archivos(ruta, extensiones)
+    return generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto)
+
 
 def main():
     ruta_proyecto = inicializar()
-    procesar_archivos(ruta_proyecto)
+    control_de_flujo(ruta_proyecto)
+
 
 if __name__ == "__main__":
     main()

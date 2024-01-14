@@ -55,17 +55,17 @@ def elegir_modo():
 
             if opcion == 1:
                 logger.info("Modo seleccionado: Implementar mejoras en la programación.")
-                return 'prompt_upd_1.md'
+                return 'config\prompt_upd_1.md'
             elif opcion == 2:
                 logger.info("Modo seleccionado: Solucionar errores.")
-                return 'prompt_error.md'
+                return 'config\prompt_error.md'
             elif opcion == 3:
                 logger.info("Modo seleccionado: Solucionar errores.")
-                return 'prompt_aprender.md'
+                return 'config\prompt_aprender.md'
             else:
                 logger.warning("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación.")
-                return 'prompt_upd_1.txt'
+                return 'config\prompt_upd_1.txt'
         except ValueError:
             logger.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
-            return 'prompt_mejora.txt'
+            return 'config\prompt_upd_1.txt'
 

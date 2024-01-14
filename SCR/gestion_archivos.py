@@ -39,6 +39,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     Returns:
         str: Contenido del archivo.
     """
+    print("\n\n\n nombre_archivo: ",nombre_archivo,"\n\n\n\n")
     # Validación del tipo de 'nombre_archivo'
     if not isinstance(nombre_archivo, str):
         logger.warning(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
