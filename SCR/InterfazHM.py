@@ -1,8 +1,8 @@
-# interfaz_usuario.py
+#SCR/InterfazHM.py
 import os
 import time
 from logs.config_logger import configurar_logging
-from gestion_archivos import copiar_contenido_al_portapapeles
+from SCR.GestArch import copiar_contenido_al_portapapeles
 
 # Configuración del logger
 logger = configurar_logging()

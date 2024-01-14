@@ -1,11 +1,11 @@
-#SCR/main.py
+#SCR/Principal.py
 import os
 import time
 from importlib import metadata
-from manipulacion_archivos import listar_archivos
-from salida_datos import generar_archivo_salida
-from utilidades_sistema import obtener_version_python, limpieza_pantalla
-from HMI import menu_2, menu_1, menu_0
+from SCR.ManiArch import listar_archivos
+from SCR.SalidDatos import generar_archivo_salida
+from SCR.UtilSist import obtener_version_python, limpieza_pantalla
+from SCR.InterfazHM import menu_2, menu_1, menu_0
 from logs.config_logger import configurar_logging
 
 

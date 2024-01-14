@@ -1,7 +1,7 @@
-#salida_datos.py
+#SCR/SalidDatos.py
 import os
 import time
-from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
+from SCR.GestArch import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
 
 # Configuración del logger

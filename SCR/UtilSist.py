@@ -1,4 +1,4 @@
-# utilidades_sistema.py
+#SCR/UtilSist.py
 import subprocess
 import sys
 from importlib import metadata
