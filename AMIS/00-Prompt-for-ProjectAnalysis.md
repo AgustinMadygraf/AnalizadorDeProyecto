@@ -34,20 +34,20 @@ AnalizadorDeProyecto/
     installer.py
     README.md
     requirements.txt
+    AMIS/
+        02-TODO.md
     config/
         path.txt
         prompt_aprender.md
         prompt_diagrama_flujo.md
         prompt_error.md
+        prompt_upd_0.md
         prompt_upd_1.md
         prompt_upd_2.md
-        prompt_upd_old.md
         recomendaciones.md
     DOCS/
         CONTRIBUTING.md
-        LIST-C_%AppServ%www%AnalizadorDeProyecto.md
         QUICKSTART.MD
-        TODO.md
     SCR/
         gestion_archivos.py
         interfaz_usuario.py
@@ -353,6 +353,68 @@ zope.interface==6.1
 
 ```
 
+### C:\AppServ\www\AnalizadorDeProyecto\AMIS\02-TODO.md
+```plaintext
+# To Do List
+
+## CONTRIBUTING.md
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Revisar y actualizar las directrices para contribuir, asegurándose de que reflejen las prácticas y herramientas actuales.
+
+## installer.py
+- Situación: Finalizado
+- Análisis del Ingeniero de Software: Optimizar la creación del acceso directo y mejorar la validación y manejo de errores.
+
+## README.md
+- Situación: En Proceso
+- Análisis del Ingeniero de Software: Actualizar con información sobre nuevas funcionalidades y cambios, especialmente en la sección de instalación y configuración.
+
+## requirements.txt
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Verificar y actualizar las dependencias para asegurar compatibilidad con la última versión de Python.
+
+## TODO.md
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Actualizar regularmente con tareas pendientes y seguimiento de progreso.
+
+## config/
+- Situación: En Proceso
+- Análisis del Ingeniero de Software: Revisar y actualizar los archivos de configuración y prompts para reflejar las mejoras y cambios recientes en el proyecto.
+
+## SCR/gestion\_archivos.py
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Mejorar el manejo de errores y la eficiencia en la gestión de archivos.
+
+## SCR/interfaz\_usuario.py
+- Situación: En Proceso
+- Análisis del Ingeniero de Software: Mejorar la usabilidad y accesibilidad de la interfaz de usuario.
+
+## SCR/main.py
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Incrementar la cobertura de pruebas unitarias y mejorar la modularidad del código.
+
+## SCR/manipulacion\_archivos.py
+- Situación: En Proceso
+- Análisis del Ingeniero de Software: Optimizar la lógica de filtrado de archivos y mejorar la seguridad en la manipulación de archivos.
+
+## SCR/salida\_datos.py
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Desarrollar una interfaz de usuario más interactiva para la visualización de datos y agregar opciones de exportación.
+
+## SCR/utilidades\_sistema.py
+- Situación: Finalizado
+- Análisis del Ingeniero de Software: Mantener y actualizar según sea necesario para compatibilidad con nuevas versiones del sistema.
+
+## SCR/logs/config\_logger.py
+- Situación: En Proceso
+- Análisis del Ingeniero de Software: Mejorar la configuración del logger para facilitar la depuración y el seguimiento de errores.
+
+## test/test\_gestion\_archivos.py
+- Situación: Pendiente
+- Análisis del Ingeniero de Software: Aumentar la cobertura de pruebas, incluyendo pruebas para escenarios de error y casos límite.
+
+```
+
 ### C:\AppServ\www\AnalizadorDeProyecto\config\path.txt
 ```plaintext
 C:\AppServ\www\AnalizadorDeProyecto
@@ -494,53 +556,7 @@ Este prompt está diseñado para asistir en la identificación y resolución de 
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_1.md
-```plaintext
-
-# SYSTEM
-
-## Contexto del Proyecto
-Este prompt se utiliza para generar automáticamente un archivo TODO.txt en formato Markdown. Está diseñado para proyectos de software, con énfasis en la programación, diseño UX/UI y machine learning.
-
-## Objetivo
-El objetivo es proporcionar un TODO.txt detallado, resaltando áreas específicas para aplicar mejores prácticas de programación, diseño UX/UI y técnicas de machine learning. Se enfoca en optimización y automatización, basándose en el análisis del proyecto de software. La respuesta debe omitir descripción del análisis ya que debe limitarse al archivo TXT dentro de "\`\`\`" 
-
-# USER
-
-/start
-
-### Contenido del TODO.txt
-El archivo TODO.txt debe incluir tareas pendientes específicas para la mejora del proyecto, estructuradas de la siguiente manera en formato Markdown:
-\`\`\`
-# To Do List
-
-## \[nombre\_del\_archivo\]
-- Situación: \[Pendiente/En\_Proceso/Finalizado\]
-- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_propuesta\_a\_partir\_del\_análisis\_realizado\]
-
-## \[nombre\_del\_archivo2\]
-- Situación: \[Pendiente/En\_Proceso/Finalizado\]
-- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_propuesta\_a\_partir\_del\_análisis\_realizado\_2\]
-
-\`\`\`
-\(Continuar con más archivos y tareas según sea necesario\)
-
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_2.md
-```plaintext
-Proporcioname código modificado para implementar la siguiente mejora entre triple comillas 
-"""
-\[viene\_desde\_TODO.txt\]
-"""
-
-Código a mejorar:
-"""
-\[contenido\_filename\]
-"""
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_old.md
+### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_0.md
 ```plaintext
 
 # SYSTEM
@@ -592,6 +608,52 @@ El objetivo es analizar un proyecto de software para identificar áreas específ
    - Mantener una documentación detallada de todos los cambios y mejoras para facilitar el aprendizaje y la mejora continua.
 
 
+```
+
+### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_1.md
+```plaintext
+
+# SYSTEM
+
+## Contexto del Proyecto
+Este prompt se utiliza para generar automáticamente un archivo TODO.txt en formato Markdown. Está diseñado para proyectos de software, con énfasis en la programación, diseño UX/UI y machine learning.
+
+## Objetivo
+El objetivo es proporcionar un TODO.txt detallado, resaltando áreas específicas para aplicar mejores prácticas de programación, diseño UX/UI y técnicas de machine learning. Se enfoca en optimización y automatización, basándose en el análisis del proyecto de software. La respuesta debe omitir descripción del análisis ya que debe limitarse al archivo TXT dentro de "\`\`\`" 
+
+# USER
+
+/start
+
+### Contenido del TODO.txt
+El archivo TODO.txt debe incluir tareas pendientes específicas para la mejora del proyecto, estructuradas de la siguiente manera en formato Markdown:
+\`\`\`
+# To Do List
+
+## \[nombre\_del\_archivo\]
+- Situación: \[Pendiente/En\_Proceso/Finalizado\]
+- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_propuesta\_a\_partir\_del\_análisis\_realizado\]
+
+## \[nombre\_del\_archivo2\]
+- Situación: \[Pendiente/En\_Proceso/Finalizado\]
+- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_propuesta\_a\_partir\_del\_análisis\_realizado\_2\]
+
+\`\`\`
+\(Continuar con más archivos y tareas según sea necesario\)
+
+```
+
+### C:\AppServ\www\AnalizadorDeProyecto\config\prompt_upd_2.md
+```plaintext
+Proporcioname código modificado para implementar la siguiente mejora entre triple comillas 
+"""
+\[viene\_desde\_TODO.txt\]
+"""
+
+Código a mejorar:
+"""
+\[contenido\_filename\]
+"""
 ```
 
 ### C:\AppServ\www\AnalizadorDeProyecto\config\recomendaciones.md
@@ -688,68 +750,6 @@ Siguiendo estas recomendaciones, puedes mejorar significativamente la calidad y 
 - Si tienes alguna pregunta o necesitas ayuda, no dudes en abrir un 'issue' solicitando asistencia o dirigiéndote a nuestros canales de comunicación.
 
 ¡Gracias por contribuir al \`AnalizadorDeProyecto\`\!
-
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\DOCS\TODO.md
-```plaintext
-# To Do List
-
-## CONTRIBUTING.md
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Revisar y actualizar las directrices para contribuir, asegurándose de que reflejen las prácticas y herramientas actuales.
-
-## installer.py
-- Situación: Finalizado
-- Análisis del Ingeniero de Software: Optimizar la creación del acceso directo y mejorar la validación y manejo de errores.
-
-## README.md
-- Situación: En Proceso
-- Análisis del Ingeniero de Software: Actualizar con información sobre nuevas funcionalidades y cambios, especialmente en la sección de instalación y configuración.
-
-## requirements.txt
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Verificar y actualizar las dependencias para asegurar compatibilidad con la última versión de Python.
-
-## TODO.md
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Actualizar regularmente con tareas pendientes y seguimiento de progreso.
-
-## config/
-- Situación: En Proceso
-- Análisis del Ingeniero de Software: Revisar y actualizar los archivos de configuración y prompts para reflejar las mejoras y cambios recientes en el proyecto.
-
-## SCR/gestion\_archivos.py
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Mejorar el manejo de errores y la eficiencia en la gestión de archivos.
-
-## SCR/interfaz\_usuario.py
-- Situación: En Proceso
-- Análisis del Ingeniero de Software: Mejorar la usabilidad y accesibilidad de la interfaz de usuario.
-
-## SCR/main.py
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Incrementar la cobertura de pruebas unitarias y mejorar la modularidad del código.
-
-## SCR/manipulacion\_archivos.py
-- Situación: En Proceso
-- Análisis del Ingeniero de Software: Optimizar la lógica de filtrado de archivos y mejorar la seguridad en la manipulación de archivos.
-
-## SCR/salida\_datos.py
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Desarrollar una interfaz de usuario más interactiva para la visualización de datos y agregar opciones de exportación.
-
-## SCR/utilidades\_sistema.py
-- Situación: Finalizado
-- Análisis del Ingeniero de Software: Mantener y actualizar según sea necesario para compatibilidad con nuevas versiones del sistema.
-
-## SCR/logs/config\_logger.py
-- Situación: En Proceso
-- Análisis del Ingeniero de Software: Mejorar la configuración del logger para facilitar la depuración y el seguimiento de errores.
-
-## test/test\_gestion\_archivos.py
-- Situación: Pendiente
-- Análisis del Ingeniero de Software: Aumentar la cobertura de pruebas, incluyendo pruebas para escenarios de error y casos límite.
 
 ```
 
@@ -1062,7 +1062,7 @@ def control\_de\_flujo\(ruta\_proyecto\):
             logger.error\("Número máximo de intentos alcanzado. Abortando."\)
             break
 
-        nombre\_archivo\_salida = procesar\_archivos\(ruta, modo\_prompt, ruta\_proyecto\)
+        procesar\_archivos\(ruta, modo\_prompt, ruta\_proyecto\)
 
         opcion, nueva\_ruta = mostrar\_opciones\(ruta\)
         if opcion == 'S':
@@ -1082,8 +1082,8 @@ def procesar\_archivos\(ruta, modo\_prompt, ruta\_proyecto\):
     Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
     """
     extensiones = \['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt'\]
-    archivos, estructura = listar\_archivos\(ruta, extensiones\)
-    return generar\_archivo\_salida\(ruta, archivos, estructura, modo\_prompt, extensiones, ruta\_proyecto\)
+    listar\_archivos\(ruta, extensiones\)
+    return generar\_archivo\_salida\(ruta, modo\_prompt, extensiones, ruta\_proyecto\)
 
 def main\(\):
     ruta\_proyecto = inicializar\(\)
@@ -1151,26 +1151,19 @@ def listar\_archivos\(ruta, extensiones=None\):
 
     return archivos\_encontrados, estructura
 
-# Ejemplo de uso
-# ruta = 'ruta/a/tu/directorio'
-# extensiones = \['.txt', '.py'\]
-# archivos, estructura = listar\_archivos\(ruta, extensiones\)
-
 ```
 
 ### C:\AppServ\www\AnalizadorDeProyecto\SCR\salida_datos.py
 ```plaintext
 #salida\_datos.py
 import os
-import datetime
 from gestion\_archivos import leer\_archivo, copiar\_contenido\_al\_portapapeles
 from logs.config\_logger import configurar\_logging
-import datetime
 
 # Configuración del logger
 logger = configurar\_logging\(\)
 
-def generar\_archivo\_salida\(ruta, archivos, estructura, modo\_prompt, extensiones, ruta\_proyecto\):
+def generar\_archivo\_salida\(ruta, modo\_prompt, extensiones, ruta\_proyecto\):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -1265,7 +1258,7 @@ def escapar\_caracteres\_md\(texto\):
         texto = texto.replace\(char, f'\\{char}'\)
     return texto
 
-def generar\_nombre\_archivo\_salida\(ruta, nombre\_base='listado'\):
+def generar\_nombre\_archivo\_salida\(ruta\):
     """
     Genera el nombre del archivo de salida basado en la ruta y un nombre base.
 
@@ -1277,8 +1270,7 @@ def generar\_nombre\_archivo\_salida\(ruta, nombre\_base='listado'\):
         str: Ruta completa del archivo de salida.
     """
     # Formatear la ruta para el nombre del archivo
-    ruta\_formateada = ruta.replace\("\\", "%"\).replace\(":", "\_"\)
-    nombre\_archivo\_salida = f"DOCS\LIST-{ruta\_formateada}.md"
+    nombre\_archivo\_salida = f"AMIS\\00-Prompt-for-ProjectAnalysis.md" #AMIS = Analysis and Modification Improvement System
     return os.path.join\(ruta, nombre\_archivo\_salida\)
 
 def escribir\_archivo\_salida\(nombre\_archivo, contenido\):

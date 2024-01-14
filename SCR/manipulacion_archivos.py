@@ -52,8 +52,3 @@ def listar_archivos(ruta, extensiones=None):
     logger.debug(f"Listado de archivos completo. Total de archivos encontrados: {len(archivos_encontrados)}")
 
     return archivos_encontrados, estructura
-
-# Ejemplo de uso
-# ruta = 'ruta/a/tu/directorio'
-# extensiones = ['.txt', '.py']
-# archivos, estructura = listar_archivos(ruta, extensiones)

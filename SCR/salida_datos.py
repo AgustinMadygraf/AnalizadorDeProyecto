@@ -1,14 +1,12 @@
 #salida_datos.py
 import os
-import datetime
 from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
-import datetime
 
 # Configuración del logger
 logger = configurar_logging()
 
-def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto):
+def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -103,7 +101,7 @@ def escapar_caracteres_md(texto):
         texto = texto.replace(char, f'\\{char}')
     return texto
 
-def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
+def generar_nombre_archivo_salida(ruta):
     """
     Genera el nombre del archivo de salida basado en la ruta y un nombre base.
 
@@ -115,8 +113,7 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
         str: Ruta completa del archivo de salida.
     """
     # Formatear la ruta para el nombre del archivo
-    ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
-    nombre_archivo_salida = f"DOCS\LIST-{ruta_formateada}.md"
+    nombre_archivo_salida = f"AMIS\\00-Prompt-for-ProjectAnalysis.md" #AMIS = Analysis and Modification Improvement System
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):

@@ -128,7 +128,7 @@ def control_de_flujo(ruta_proyecto):
             logger.error("Número máximo de intentos alcanzado. Abortando.")
             break
 
-        nombre_archivo_salida = procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
 
         opcion, nueva_ruta = mostrar_opciones(ruta)
         if opcion == 'S':
@@ -148,8 +148,8 @@ def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
     """
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
-    archivos, estructura = listar_archivos(ruta, extensiones)
-    return generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto)
+    listar_archivos(ruta, extensiones)
+    return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto)
 
 def main():
     ruta_proyecto = inicializar()
