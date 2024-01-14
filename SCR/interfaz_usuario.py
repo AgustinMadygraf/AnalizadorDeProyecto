@@ -50,8 +50,7 @@ def elegir_modo():
     while True:
         try:
             logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
-            #opcion_str = 1##################################################################################
-            opcion_str = input("")  ########################################
+            opcion_str = input("")  
             opcion = int(opcion_str)  
 
             if opcion == 1:

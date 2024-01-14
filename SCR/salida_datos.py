@@ -8,7 +8,7 @@ import datetime
 # Configuración del logger
 logger = configurar_logging()
 
-def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones):
+def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones, ruta_proyecto):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -17,11 +17,12 @@ def generar_archivo_salida(ruta, archivos, estructura, modo_prompt, extensiones)
         estructura (list): Estructura de directorios y archivos a incluir en el archivo de salida.
         modo_prompt (str): Modo seleccionado para la salida.
         extensiones (list of str): Extensiones para filtrar archivos.
+        ruta_proyecto (str): Ruta base del proyecto.
     """
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta_proyecto)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     return nombre_archivo_salida
@@ -41,7 +42,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta_proyecto):
     """
     Prepara el contenido de salida para un archivo Markdown.
 
@@ -59,8 +60,8 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
     """
 
     logger.info("Preparando contenido de salida")
-    ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"
-    nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
+    nombre_archivo = os.path.join(ruta_proyecto, modo_prompt)
+    contenido_prompt = leer_archivo(nombre_archivo)
     contenido_prompt = leer_archivo(nombre_archivo)
 
     # Comprobación y asignación del contenido inicial basado en el prompt.
@@ -138,31 +139,80 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
 
 def contenido_archivo(archivos_seleccionados):
+    """
+    Concatena el contenido de una lista de archivos seleccionados en un solo string.
+
+    Esta función itera sobre una lista de rutas de archivos, leyendo y agregando el contenido de cada uno a una cadena.
+    En caso de un error durante la lectura de un archivo (por ejemplo, si el archivo no existe o no es accesible),
+    se agrega un mensaje de error específico a la cadena resultante.
+
+    Args:
+        archivos_seleccionados (list of str): Una lista de rutas de archivos cuyos contenidos se desean concatenar.
+
+    Returns:
+        str: Una cadena que contiene el contenido concatenado de todos los archivos seleccionados, 
+             con cada contenido de archivo precedido por un encabezado que indica el nombre del archivo,
+             y seguido de cualquier mensaje de error que ocurra durante la lectura de los archivos.
+
+    Nota:
+        Esta función está diseñada para manejar texto. No es adecuada para archivos binarios.
+    """
     contenido_total = ""
+
+    # Itera a través de cada archivo en la lista de archivos seleccionados
     for archivo in archivos_seleccionados:
         try:
+            # Intenta leer el contenido del archivo
             with open(archivo, 'r', encoding='utf-8') as file:
                 contenido = file.read()
+                # Añade un encabezado y el contenido del archivo a la cadena total
                 contenido_total += f"\n--- Contenido de {archivo} ---\n"
                 contenido_total += contenido + "\n"
         except Exception as e:
+            # En caso de error, añade un mensaje de error a la cadena total
             contenido_total += f"\nError al leer el archivo {archivo}: {e}\n"
+
     return contenido_total
     
 def listar_archivos(ruta, extensiones):
+    """
+    Genera una lista de archivos y su estructura de directorio basada en una ruta y extensiones específicas.
+
+    Esta función recorre recursivamente todos los directorios y subdirectorios a partir de una ruta dada,
+    filtrando los archivos según las extensiones proporcionadas. Ignora explícitamente los directorios '.git'.
+    Genera dos listas: una con las rutas completas de los archivos filtrados y otra con la estructura
+    de directorios y archivos representada en forma de texto para su presentación.
+
+    Args:
+        ruta (str): La ruta del directorio raíz desde donde iniciar el escaneo de archivos.
+        extensiones (list of str): Una lista de extensiones de archivo para filtrar los archivos.
+
+    Returns:
+        tuple: 
+            - Una lista de rutas completas de archivos que cumplen con las extensiones dadas.
+            - Una lista de cadenas que representa la estructura de directorios y archivos.
+            
+    Raises:
+        Exception: Proporciona información sobre cualquier error que ocurra durante la ejecución de la función.
+    """
     try:
         archivos_encontrados = []
         estructura = []
 
         for raiz, _, archivos in os.walk(ruta):
-            if '.git' in raiz:  # Ignorar directorios .git
+            # Ignora los directorios .git
+            if '.git' in raiz:
                 continue
 
+            # Calcula el nivel de indentación basado en la profundidad del directorio.
             nivel = raiz.replace(ruta, '').count(os.sep)
             indentacion = ' ' * 4 * nivel
             estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
+
+            # Aplica una subindentación para los archivos dentro de cada directorio.
             subindentacion = ' ' * 4 * (nivel + 1)
 
+            # Filtra y procesa los archivos en el directorio actual.
             archivos_en_raiz = [os.path.join(raiz, archivo) for archivo in archivos]
             archivos_filtrados = filtrar_archivos_por_extension(archivos_en_raiz, extensiones)
             estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
