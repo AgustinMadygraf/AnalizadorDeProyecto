@@ -1,4 +1,4 @@
-LIST-C_%AppServ%www%AnalizadorDeProyecto.md
+DOSC/LIST-C_%AppServ%www%AnalizadorDeProyecto.md
 AnalizadorDeProyecto.bat
 SCR/logs/sistema.log
 __pycache__
@@ -6,4 +6,4 @@ SCR/__pycache__
 SCR/logs/__pycache__
 config/path.txt
 analizador_env/
-TODO.txt
+DOCS/TODO.txt

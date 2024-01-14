@@ -116,7 +116,7 @@ def generar_nombre_archivo_salida(ruta, nombre_base='listado'):
     """
     # Formatear la ruta para el nombre del archivo
     ruta_formateada = ruta.replace("\\", "%").replace(":", "_")
-    nombre_archivo_salida = f"LIST-{ruta_formateada}.md"
+    nombre_archivo_salida = f"DOCS\LIST-{ruta_formateada}.md"
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
@@ -132,6 +132,7 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         contenido = "Contenido no disponible o error al leer el archivo."
 
     try:
+        print("\n\nnombre_archivo: ",nombre_archivo,"\n\n")
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
         logger.info(f"Archivo de salida generado: {nombre_archivo}")

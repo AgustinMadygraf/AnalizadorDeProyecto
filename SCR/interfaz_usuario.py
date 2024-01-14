@@ -10,8 +10,9 @@ def solicitar_ruta():
     ruta = input().strip()
     return ruta
 
-def mostrar_opciones(ruta_anterior):
+def mostrar_opciones(ruta_anterior): ############################################################################### MENU 2
     while True:
+        print("ahora debe ingresar la respuesta de GPT4")
         logger.info("Opciones:\n")
         logger.info("         S - Salir")
         logger.info("         R - Repetir con la misma ruta")
@@ -46,7 +47,7 @@ def mostrar_ayuda():
     logger.info(" H - Mostrar este mensaje de ayuda.\n")
 
 def elegir_modo():
-    logger.info("Inicio de la selección del modo de operación.")
+    logger.info("Inicio de la selección del modo de operación.")#################################################### MENU 1
     while True:
         try:
             logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
