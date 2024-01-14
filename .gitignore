@@ -1,4 +1,6 @@
-DOSC/LIST-C_%AppServ%www%AnalizadorDeProyecto.md
+AMIS/00-Prompt-for-ProjectAnalysis.md
+AMIS/01-ProjectAnalysis.md
+AMIS/02-TODO.txt
 AnalizadorDeProyecto.bat
 SCR/logs/sistema.log
 __pycache__
@@ -6,4 +8,3 @@ SCR/__pycache__
 SCR/logs/__pycache__
 config/path.txt
 analizador_env/
-DOCS/TODO.txt
