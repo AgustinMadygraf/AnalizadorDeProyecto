@@ -4,11 +4,57 @@ from importlib import metadata
 from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
 from utilidades_sistema import obtener_version_python, limpieza_pantalla
-from interfaz_usuario import mostrar_opciones, elegir_modo, solicitar_ruta
+from HMI import mostrar_opciones, elegir_modo, solicitar_ruta
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()
+
+
+def main():
+    ruta_proyecto = inicializar()
+    control_de_flujo(ruta_proyecto)
+
+def inicializar():
+    """
+    Inicializa el entorno del script.
+
+    Limpia la pantalla, muestra la versión de Python en uso y calcula la ruta del proyecto
+    basándose en la ubicación del script actual. Imprime y devuelve la ruta del proyecto.
+
+    Returns:
+        str: La ruta del proyecto.
+    """
+    limpieza_pantalla()
+    logger.debug(f"Versión de Python en uso: {obtener_version_python()}")
+    ruta_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
+    return ruta_proyecto
+
+def control_de_flujo(ruta_proyecto):
+    modo_prompt = elegir_modo() #### - HMI - ###
+    intentos = 0
+    intentos_maximos = 5
+
+    while True:
+        ruta = obtener_ruta_default()  
+
+        if not validar_ruta(ruta) and intentos < intentos_maximos:
+            ruta = solicitar_ruta()
+            guardar_nueva_ruta_default(ruta)
+            intentos += 1
+        elif intentos >= intentos_maximos:
+            logger.error("Número máximo de intentos alcanzado. Abortando.")
+            break
+        print("ruta: ",ruta)
+        print("ruta_proyecto: ",ruta_proyecto)
+        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+
+        opcion, nueva_ruta = mostrar_opciones(ruta)
+        if opcion == 'S':
+            break
+        elif opcion == 'C':
+            guardar_nueva_ruta_default(nueva_ruta)
 
 def obtener_ruta_default():
     """
@@ -49,6 +95,24 @@ def obtener_ruta_script():
     """
     return os.path.dirname(os.path.abspath(__file__))
 
+def validar_ruta(ruta):
+    """
+    Verifica si la ruta proporcionada es un directorio y si es accesible para lectura.
+
+    Args:
+        ruta (str): La ruta del directorio a validar.
+
+    Returns:
+        bool: True si la ruta es un directorio y es accesible para lectura, False en caso contrario.
+    """
+    # Verifica si la ruta es un directorio
+    es_directorio = os.path.isdir(ruta)
+
+    # Verifica si el directorio es accesible para lectura
+    es_accesible = os.access(ruta, os.R_OK)
+
+    return es_directorio and es_accesible
+
 def guardar_nueva_ruta_default(nueva_ruta):
     """
     Guarda la nueva ruta por defecto en un archivo de configuración.
@@ -78,64 +142,6 @@ def guardar_nueva_ruta_default(nueva_ruta):
         # Captura otros errores inesperados
         logger.error(f"Error inesperado al guardar la nueva ruta por defecto: {e}")
 
-def validar_ruta(ruta):
-    """
-    Verifica si la ruta proporcionada es un directorio y si es accesible para lectura.
-
-    Args:
-        ruta (str): La ruta del directorio a validar.
-
-    Returns:
-        bool: True si la ruta es un directorio y es accesible para lectura, False en caso contrario.
-    """
-    # Verifica si la ruta es un directorio
-    es_directorio = os.path.isdir(ruta)
-
-    # Verifica si el directorio es accesible para lectura
-    es_accesible = os.access(ruta, os.R_OK)
-
-    return es_directorio and es_accesible
-
-def inicializar():
-    """
-    Inicializa el entorno del script.
-
-    Limpia la pantalla, muestra la versión de Python en uso y calcula la ruta del proyecto
-    basándose en la ubicación del script actual. Imprime y devuelve la ruta del proyecto.
-
-    Returns:
-        str: La ruta del proyecto.
-    """
-    limpieza_pantalla()
-    logger.debug(f"Versión de Python en uso: {obtener_version_python()}")
-    ruta_script = os.path.dirname(os.path.abspath(__file__))
-    ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
-    return ruta_proyecto
-
-def control_de_flujo(ruta_proyecto):
-    modo_prompt = elegir_modo()
-    intentos = 0
-    intentos_maximos = 5
-
-    while True:
-        ruta = obtener_ruta_default()  # Obtener la ruta por defecto
-
-        if not validar_ruta(ruta) and intentos < intentos_maximos:
-            ruta = solicitar_ruta()
-            guardar_nueva_ruta_default(ruta)
-            intentos += 1
-        elif intentos >= intentos_maximos:
-            logger.error("Número máximo de intentos alcanzado. Abortando.")
-            break
-
-        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-
-        opcion, nueva_ruta = mostrar_opciones(ruta)
-        if opcion == 'S':
-            break
-        elif opcion == 'C':
-            guardar_nueva_ruta_default(nueva_ruta)
-
 def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     """
     Procesa los archivos en una ruta de proyecto dada.
@@ -151,9 +157,6 @@ def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto)
 
-def main():
-    ruta_proyecto = inicializar()
-    control_de_flujo(ruta_proyecto)
 
 if __name__ == "__main__":
     main()
