@@ -41,25 +41,42 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados):
+    """
+    Prepara el contenido de salida para un archivo Markdown.
+
+    Esta función genera una sección de Markdown que incluye tanto la estructura
+    de carpetas y archivos del proyecto como el contenido de archivos seleccionados.
+    Cada sección se formatea adecuadamente para una visualización clara en Markdown.
+
+    Args:
+        estructura (list): Lista que representa la estructura de carpetas y archivos.
+        modo_prompt (str): Nombre del archivo que contiene el prompt inicial o plantilla.
+        archivos_seleccionados (list): Lista de rutas de archivos cuyo contenido se incluirá.
+
+    Returns:
+        str: El contenido completo formateado para Markdown.
+    """
+
     logger.info("Preparando contenido de salida")
     ruta_proyecto2 = "C:\\AppServ\\www\\AnalizadorDeProyecto\\config"
     nombre_archivo = os.path.join(ruta_proyecto2, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo)
 
+    # Comprobación y asignación del contenido inicial basado en el prompt.
     contenido = contenido_prompt if contenido_prompt else "\n\nprompt:\nNo hay prompt. falla.\n\n"
 
-    # Encabezado para la estructura de carpetas y archivos
+    # Añadiendo la estructura de directorios y archivos en formato Markdown.
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n"
     contenido += '\n'.join(estructura) + "\n```\n"
 
-    # Sección para contenido de archivos seleccionados
+    # Procesamiento y adición de contenido de archivos seleccionados.
     if archivos_seleccionados:
         contenido += "\n\n## Contenido de Archivos Seleccionados\n"
         for archivo in archivos_seleccionados:
             contenido_archivo = leer_archivo(archivo)
             if contenido_archivo:
+                # Formatear el contenido del archivo para Markdown.
                 contenido += f"\n### {archivo}\n```plaintext\n"
                 contenido += escapar_caracteres_md(contenido_archivo) + "\n```\n"
             else:
@@ -79,6 +96,7 @@ def escapar_caracteres_md(texto):
     Returns:
         str: Texto con caracteres de Markdown escapados.
     """
+    # Lista de caracteres que pueden interferir con el formato Markdown.
     caracteres_a_escapar = ['*', '_', '`', '!', '[', ']', '(', ')']
     for char in caracteres_a_escapar:
         texto = texto.replace(char, f'\\{char}')
