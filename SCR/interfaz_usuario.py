@@ -5,13 +5,33 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def solicitar_ruta():
-    logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
-    ruta = input().strip()
-    return ruta
-
-def mostrar_opciones(ruta_anterior):
+def elegir_modo():
+    logger.debug("Inicio de la selección del modo de operación.")#################################################### MENU 1
     while True:
+        try:
+            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
+            opcion_str = input("")  
+            opcion = int(opcion_str)  
+
+            if opcion == 1:
+                logger.info("Modo seleccionado: Implementar mejoras en la programación.")
+                return 'config\prompt_upd_0.md'
+            elif opcion == 2:
+                logger.info("Modo seleccionado: Solucionar errores.")
+                return 'config\prompt_error.md'
+            elif opcion == 3:
+                logger.info("Modo seleccionado: Solucionar errores.")
+                return 'config\prompt_aprender.md'
+            else:
+                logger.warning("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación.")
+                return 'config\prompt_upd_0.txt'
+        except ValueError:
+            logger.warning("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
+            return 'config\prompt_upd_0.txt'
+
+def mostrar_opciones(ruta_anterior): ############################################################################### MENU 2
+    while True:
+        print("ahora debe ingresar la respuesta de GPT4")
         logger.info("Opciones:\n")
         logger.info("         S - Salir")
         logger.info("         R - Repetir con la misma ruta")
@@ -45,28 +65,7 @@ def mostrar_ayuda():
     logger.info(" C - Cambiar la ruta de la carpeta para la operación.")
     logger.info(" H - Mostrar este mensaje de ayuda.\n")
 
-def elegir_modo():
-    logger.info("Inicio de la selección del modo de operación.")
-    while True:
-        try:
-            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
-            #opcion_str = 1##################################################################################
-            opcion_str = input("")  ########################################
-            opcion = int(opcion_str)  
-
-            if opcion == 1:
-                logger.info("Modo seleccionado: Implementar mejoras en la programación.")
-                return 'prompt_mejora.md'
-            elif opcion == 2:
-                logger.info("Modo seleccionado: Solucionar errores.")
-                return 'prompt_error.md'
-            elif opcion == 3:
-                logger.info("Modo seleccionado: Solucionar errores.")
-                return 'prompt_aprender.md'
-            else:
-                logger.warning("Opción no válida. Debes elegir 1 o 2. Seleccionando modo por defecto: Mejoras en la programación.")
-                return 'prompt_mejora.txt'
-        except ValueError:
-            logger.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
-            return 'prompt_mejora.txt'
-
+def solicitar_ruta():
+    logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
+    ruta = input().strip()
+    return ruta

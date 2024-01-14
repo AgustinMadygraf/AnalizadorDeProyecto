@@ -1,6 +1,3 @@
-Basándome en la información proporcionada y los puntos identificados anteriormente, aquí tienes un borrador actualizado para el archivo `README.md` del proyecto `AnalizadorDeProyecto`. He realizado modificaciones en varias secciones para reflejar los cambios y mejoras recientes en el proyecto:
-
----
 
 # AnalizadorDeProyecto
 
@@ -37,7 +34,3 @@ Para utilizar `AnalizadorDeProyecto` de manera efectiva:
 - Nueva capacidad de visualización gráfica para una mejor comprensión de la estructura del proyecto.
 
 **Advertencia:** Asegúrate de tener Python 3.6 o una versión más reciente instalada en tu sistema antes de ejecutar `AnalizadorDeProyecto`.
-
----
-
-Este borrador incorpora los cambios sugeridos manteniendo el tono original y la estructura del documento. ¿Hay algo más que te gustaría modificar o añadir a este borrador?
