@@ -1,4 +1,5 @@
-LIST-C_%AppServ%www%AnalizadorDeProyecto.md
+AMIS/
+AMIS/00-Prompt-for-ProjectAnalysis.md
 AnalizadorDeProyecto.bat
 SCR/logs/sistema.log
 __pycache__
