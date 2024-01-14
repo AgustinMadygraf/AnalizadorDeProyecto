@@ -1,4 +1,3 @@
-#logs/config_logger.py
 import logging
 from logging.handlers import RotatingFileHandler
 import datetime
@@ -12,10 +11,6 @@ def configurar_logging():
     # Establecer un nombre de archivo fijo para el log
     filename = 'SCR/logs/sistema.log'
 
-    # Asegurarse de que el directorio 'logs' existe
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-
     format = '%(asctime)s - %(levelname)s - %(module)s: %(message)s'
     maxBytes = 10485760  # 10MB
     backupCount = 5
@@ -24,9 +19,12 @@ def configurar_logging():
 
     # Cambiar a un RotatingFileHandler con un nombre de archivo fijo
     file_handler = RotatingFileHandler(filename, maxBytes=maxBytes, backupCount=backupCount)
+    file_handler.setLevel(logging.DEBUG)  # Captura todos los niveles para el archivo
     file_handler.setFormatter(formatter)
 
+    # Configurar console_handler para mostrar solo INFO y ERROR
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)  # Configurar para mostrar solo INFO y ERROR
     console_handler.setFormatter(formatter)
 
     logger.setLevel(logging.DEBUG)  # Nivel más bajo para capturar todos los logs
