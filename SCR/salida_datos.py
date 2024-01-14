@@ -17,6 +17,7 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto):
         extensiones (list of str): Extensiones para filtrar archivos.
         ruta_proyecto (str): Ruta base del proyecto.
     """
+    asegurar_directorio_AMIS(ruta_proyecto)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
@@ -235,3 +236,17 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
+def asegurar_directorio_AMIS(ruta):
+    """
+    Asegura que exista el directorio AMIS en la ruta dada.
+    Si el directorio no existe, lo crea.
+
+    Args:
+        ruta (str): Ruta base donde se debe encontrar o crear el directorio AMIS.
+    """
+    directorio_amis = os.path.join(ruta, 'AMIS')
+    if not os.path.exists(directorio_amis):
+        os.makedirs(directorio_amis)
+        logger.info(f"Directorio AMIS creado en {directorio_amis}")
+    else:
+        logger.info(f"Directorio AMIS ya existe en {directorio_amis}")

@@ -1,28 +1,57 @@
+https://flowchart.fun/#
 
-# SYSTEM
 
-## Contexto del Proyecto
-Este prompt se utiliza para generar automáticamente un archivo TODO.txt en formato Markdown. Está diseñado para proyectos de software, con énfasis en la programación, diseño UX/UI y machine learning.
+Comienza a escribir
+  Considere: Agregar una etiqueta
+    Sí: Opción A
+      Usa un ID para conectar #connect
+    No: Opción B
+      (#connect)
+        ¡Ahora borra el texto y pruebalo tú mismo!
 
-## Objetivo
-El objetivo es proporcionar un TODO.txt detallado, resaltando áreas específicas para aplicar mejores prácticas de programación, diseño UX/UI y técnicas de machine learning. Se enfoca en optimización y automatización, basándose en el análisis del proyecto de software. La respuesta debe omitir descripción del análisis ya que debe limitarse al archivo TXT dentro de "```" 
 
-# USER
+Etiqueta de nodo
+El texto en una línea crea un nodo con el texto como etiqueta
 
-/start
+ID de nodo, clases, atributos
+ID
+Valor de texto único para identificar un nodo
 
-### Contenido del TODO.txt
-El archivo TODO.txt debe incluir tareas pendientes específicas para la mejora del proyecto, estructuradas de la siguiente manera en formato Markdown:
-```
-# To Do List
+Clases
+Usar clases para agrupar nodos
 
-## [nombre_del_archivo]
-- Situación: [Pendiente/En_Proceso/Finalizado]
-- Análisis del Ingeniero de Software: [Detalle_de_la_mejora_propuesta_a_partir_del_análisis_realizado]
+Atributos
+Almacenar cualquier dato asociado a un nodo
 
-## [nombre_del_archivo2]
-- Situación: [Pendiente/En_Proceso/Finalizado]
-- Análisis del Ingeniero de Software: [Detalle_de_la_mejora_propuesta_a_partir_del_análisis_realizado_2]
+Bordes
+Crear un borde entre dos nodos se realiza al sangrar el segundo nodo debajo del primero
 
-```
-(Continuar con más archivos y tareas según sea necesario)
+Etiqueta de borde
+El texto seguido de dos puntos y un espacio crea un borde con el texto como etiqueta
+
+ID de borde, Clases, Atributos
+Los bordes también pueden tener ID, clases y atributos antes de la etiqueta
+
+Referencias
+Las referencias se utilizan para crear bordes entre los nodos creados en otro lugar del documento
+
+Referencia por etiqueta
+Referenciando un nodo por su etiqueta exacta
+
+Referencia por ID
+Referenciando un nodo por su ID único
+
+Referencia por clase
+Referenciando múltiples nodos con la misma clase asignada
+
+Contenedores
+Los contenedores son nodos que contienen otros nodos. Se declaran usando llaves.
+
+Clases de Estilo
+La mejor manera de cambiar los estilos es hacer clic derecho en un nodo o un borde y seleccionar el estilo deseado.
+
+Colores de nodo
+Los colores incluyen rojo, naranja, amarillo, azul, morado, negro, blanco y gris.
+
+Formas de nodo
+Las formas posibles son: rectangle, roundrectangle, ellipse, triangle, pentagon, hexagon, heptagon, octagon, star, barrel, diamond, vee, rhomboid, right-rhomboid, polygon, tag, round-rectangle, cut-rectangle, bottom-round-rectangle, and concave-hexagon
