@@ -5,7 +5,7 @@ from importlib import metadata
 from manipulacion_archivos import listar_archivos
 from salida_datos import generar_archivo_salida
 from utilidades_sistema import obtener_version_python, limpieza_pantalla
-from HMI import menu_2, elegir_modo, solicitar_ruta
+from HMI import menu_2, menu_1, menu_0
 from logs.config_logger import configurar_logging
 
 
@@ -39,7 +39,7 @@ def control_de_flujo(ruta_proyecto):
     logger.info("¿Desea analizar el directorio por defecto? (S/N): ")
     respuesta = input("").upper()
     if respuesta == 'N':
-        ruta = solicitar_ruta()
+        ruta = menu_0()
         guardar_nueva_ruta_default(ruta)
     else:
         ruta = obtener_ruta_default()
@@ -50,13 +50,11 @@ def control_de_flujo(ruta_proyecto):
         return
 
     # Segunda consulta al usuario sobre el modo de operación
-    modo_prompt = elegir_modo()
+    modo_prompt = menu_1()
 
-    # Procesamiento de archivos y opciones adicionales
     procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-    opcion, nueva_ruta = menu_2(ruta)
-    if opcion == 'C':
-        guardar_nueva_ruta_default(nueva_ruta)
+    menu_2(modo_prompt,ruta)
+
 
 
 def obtener_ruta_default():
