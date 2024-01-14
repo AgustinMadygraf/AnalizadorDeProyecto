@@ -12,7 +12,6 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-
 def main():
     ruta_proyecto = inicializar()
     control_de_flujo(ruta_proyecto)
@@ -54,8 +53,6 @@ def control_de_flujo(ruta_proyecto):
 
     procesar_archivos(ruta, modo_prompt, ruta_proyecto)
     menu_2(modo_prompt,ruta)
-
-
 
 def obtener_ruta_default():
     """
@@ -157,6 +154,7 @@ def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto)
+
 
 
 if __name__ == "__main__":
