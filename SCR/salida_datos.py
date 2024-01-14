@@ -38,7 +38,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
         # Abrir el archivo en modo de escritura, lo que borrará su contenido
         with open(nombre_archivo_salida, 'w', encoding='utf-8') as archivo:
             archivo.write('')  # Escribir un contenido vacío
-        logger.info(f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
+        logger.debug(f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
@@ -59,7 +59,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
         str: El contenido completo formateado para Markdown.
     """
 
-    logger.info("Preparando contenido de salida")
+    logger.debug("Preparando contenido de salida")
     nombre_archivo = os.path.join(ruta_proyecto, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo)
     contenido_prompt = leer_archivo(nombre_archivo)
@@ -132,7 +132,6 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         contenido = "Contenido no disponible o error al leer el archivo."
 
     try:
-        print("\n\nnombre_archivo: ",nombre_archivo,"\n\n")
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
         logger.info(f"Archivo de salida generado: {nombre_archivo}")

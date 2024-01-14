@@ -47,7 +47,7 @@ def mostrar_ayuda():
     logger.info(" H - Mostrar este mensaje de ayuda.\n")
 
 def elegir_modo():
-    logger.info("Inicio de la selección del modo de operación.")#################################################### MENU 1
+    logger.debug("Inicio de la selección del modo de operación.")#################################################### MENU 1
     while True:
         try:
             logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
@@ -67,6 +67,6 @@ def elegir_modo():
                 logger.warning("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación.")
                 return 'config\prompt_upd_1.txt'
         except ValueError:
-            logger.error("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
+            logger.warning("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación.")
             return 'config\prompt_upd_1.txt'
 

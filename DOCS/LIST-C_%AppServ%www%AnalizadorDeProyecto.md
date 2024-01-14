@@ -904,7 +904,7 @@ def mostrar\_ayuda\(\):
     logger.info\(" H - Mostrar este mensaje de ayuda.\n"\)
 
 def elegir\_modo\(\):
-    logger.info\("Inicio de la selección del modo de operación."\)#################################################### MENU 1
+    logger.debug\("Inicio de la selección del modo de operación."\)#################################################### MENU 1
     while True:
         try:
             logger.info\("Elige un modo \(1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje\): "\)
@@ -924,7 +924,7 @@ def elegir\_modo\(\):
                 logger.warning\("Opción no válida. Debes elegir 1, 2 o 3. Seleccionando modo por defecto: Mejoras en la programación."\)
                 return 'config\prompt\_upd\_1.txt'
         except ValueError:
-            logger.error\("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación."\)
+            logger.warning\("Entrada no válida. Debes ingresar un número. Seleccionando modo por defecto: Mejoras en la programación."\)
             return 'config\prompt\_upd\_1.txt'
 
 
@@ -1041,7 +1041,7 @@ def inicializar\(\):
         str: La ruta del proyecto.
     """
     limpieza\_pantalla\(\)
-    logger.info\(f"Versión de Python en uso: {obtener\_version\_python\(\)}"\)
+    logger.debug\(f"Versión de Python en uso: {obtener\_version\_python\(\)}"\)
     ruta\_script = os.path.dirname\(os.path.abspath\(\_\_file\_\_\)\)
     ruta\_proyecto = os.path.normpath\(os.path.join\(ruta\_script, ".."\)\)
     return ruta\_proyecto
@@ -1131,7 +1131,7 @@ def listar\_archivos\(ruta, extensiones=None\):
     archivos\_encontrados = \[\]
     estructura = \[\]
 
-    logger.info\(f"Iniciando listado de archivos en la ruta: {ruta}"\)
+    logger.debug\(f"Iniciando listado de archivos en la ruta: {ruta}"\)
 
     for raiz, \_, archivos in os.walk\(ruta\):
         if '.git' in raiz:  # Ignorar directorios .git
@@ -1147,7 +1147,7 @@ def listar\_archivos\(ruta, extensiones=None\):
         estructura.extend\(f"{subindentacion}{os.path.basename\(archivo\)}" for archivo in archivos\_filtrados\)
         archivos\_encontrados.extend\(archivos\_filtrados\)
 
-    logger.info\(f"Listado de archivos completo. Total de archivos encontrados: {len\(archivos\_encontrados\)}"\)
+    logger.debug\(f"Listado de archivos completo. Total de archivos encontrados: {len\(archivos\_encontrados\)}"\)
 
     return archivos\_encontrados, estructura
 
@@ -1200,7 +1200,7 @@ def formatear\_archivo\_salida\(nombre\_archivo\_salida\):
         # Abrir el archivo en modo de escritura, lo que borrará su contenido
         with open\(nombre\_archivo\_salida, 'w', encoding='utf-8'\) as archivo:
             archivo.write\(''\)  # Escribir un contenido vacío
-        logger.info\(f"El contenido de {nombre\_archivo\_salida} ha sido eliminado."\)
+        logger.debug\(f"El contenido de {nombre\_archivo\_salida} ha sido eliminado."\)
     except Exception as e:
         logger.warning\(f"Error al intentar formatear el archivo {nombre\_archivo\_salida}: {e}"\)
 
@@ -1221,7 +1221,7 @@ def preparar\_contenido\_salida\(estructura, modo\_prompt, archivos\_seleccionad
         str: El contenido completo formateado para Markdown.
     """
 
-    logger.info\("Preparando contenido de salida"\)
+    logger.debug\("Preparando contenido de salida"\)
     nombre\_archivo = os.path.join\(ruta\_proyecto, modo\_prompt\)
     contenido\_prompt = leer\_archivo\(nombre\_archivo\)
     contenido\_prompt = leer\_archivo\(nombre\_archivo\)
@@ -1294,7 +1294,6 @@ def escribir\_archivo\_salida\(nombre\_archivo, contenido\):
         contenido = "Contenido no disponible o error al leer el archivo."
 
     try:
-        print\("\n\nnombre\_archivo: ",nombre\_archivo,"\n\n"\)
         with open\(nombre\_archivo, 'w', encoding='utf-8'\) as archivo:
             archivo.write\(contenido\)
         logger.info\(f"Archivo de salida generado: {nombre\_archivo}"\)
@@ -1436,38 +1435,43 @@ from logging.handlers import RotatingFileHandler
 import datetime
 import os
 
+class InfoErrorFilter\(logging.Filter\):
+    def filter\(self, record\):
+        # Permitir solo registros de nivel INFO y ERROR
+        return record.levelno in \(logging.INFO, logging.ERROR\)
+
 def configurar\_logging\(\):
     logger = logging.getLogger\(\)
     if logger.hasHandlers\(\):
         return logger
 
-    # Establecer un nombre de archivo fijo para el log
+    # Configuración básica
     filename = 'SCR/logs/sistema.log'
-
     format = '%\(asctime\)s - %\(levelname\)s - %\(module\)s: %\(message\)s'
     maxBytes = 10485760  # 10MB
     backupCount = 5
-
     formatter = logging.Formatter\(format\)
 
-    # Cambiar a un RotatingFileHandler con un nombre de archivo fijo
+    # File Handler
     file\_handler = RotatingFileHandler\(filename, maxBytes=maxBytes, backupCount=backupCount\)
-    file\_handler.setLevel\(logging.DEBUG\)  # Captura todos los niveles para el archivo
+    file\_handler.setLevel\(logging.DEBUG\)
     file\_handler.setFormatter\(formatter\)
 
-    # Configurar console\_handler para mostrar solo INFO y ERROR
+    # Console Handler con filtro personalizado
     console\_handler = logging.StreamHandler\(\)
-    console\_handler.setLevel\(logging.INFO\)  # Configurar para mostrar solo INFO y ERROR
+    console\_handler.addFilter\(InfoErrorFilter\(\)\)  # Aplicar el filtro
     console\_handler.setFormatter\(formatter\)
 
-    logger.setLevel\(logging.DEBUG\)  # Nivel más bajo para capturar todos los logs
+    logger.setLevel\(logging.DEBUG\)
     logger.addHandler\(file\_handler\)
     logger.addHandler\(console\_handler\)
 
-    # Escribir un delimitador de sesión al inicio de cada ejecución
     logger.info\("\n\n--------------- Nueva Sesión - {} ---------------\n\n".format\(datetime.datetime.now\(\).strftime\("%Y-%m-%d %H:%M:%S"\)\)\)
 
     return logger
+
+# Configurar el logger
+configurar\_logging\(\)
 
 ```
 

@@ -107,7 +107,7 @@ def inicializar():
         str: La ruta del proyecto.
     """
     limpieza_pantalla()
-    logger.info(f"Versión de Python en uso: {obtener_version_python()}")
+    logger.debug(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
     return ruta_proyecto
