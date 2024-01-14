@@ -2,7 +2,7 @@
 import os
 import time
 from logs.config_logger import configurar_logging
-from SCR.GestArch import copiar_contenido_al_portapapeles
+from GestArch import copiar_contenido_al_portapapeles
 
 # Configuración del logger
 logger = configurar_logging()
@@ -25,7 +25,6 @@ def menu_1():
                 logger.info("Modo seleccionado: Implementar mejoras en la programación.")
                 time.sleep(1)
                 print("")
-
                 return 'config\prompt_upd_0.md'
             elif opcion == 2:
                 logger.info("Modo seleccionado: Solucionar errores.")
@@ -74,7 +73,36 @@ def menu_2(modo_prompt, ruta):
             print("Por favor pegue abajo en el centro, donde dice 'Message ChatGPT...' y luego presione enter")
             input("Presione Enter una vez haya pegado el texto y recibido una respuesta.\n")
 
-        print("Ahora el siguiente paso es crear un diagrama de flujo")
+        
+        # Aquí puedes incluir más instrucciones relacionadas con la creación del diagrama de flujo
+
+    else:
+        input("Presione una tecla para salir")
+def menu_3(modo_prompt, ruta):
+
+    instrucciones = [
+        f"Vaya a {ruta}\AMIS\\02-diagrama_flujo.txt",
+        "Seleccione el contenido, copie",
+        "Abra el navegador",
+        "ingresa a https://flowchart.fun/ ",
+        "Seleccione todo, borre",
+        "Click derecho, pegar",
+        "Listo, ya tiene el diagrama de flujo"
+    ]
+
+    if modo_prompt == 'config\prompt_upd_0.md':
+        print("\nAhora el siguiente paso es crear un diagrama de flujo")
+        while True:
+            for instruccion in instrucciones:
+                print(instruccion)
+                input("Presione Enter para continuar...\n")
+
+            menu_3_0 = input("¿Ya pudo realizar el procedimiento sugerido? (S/N): ").upper()
+            if menu_3_0 == 'S':
+                break
+            print("Por favor, intente nuevamente el procedimiento o solicite asistencia.")
+
+
         # Aquí puedes incluir más instrucciones relacionadas con la creación del diagrama de flujo
 
     else:

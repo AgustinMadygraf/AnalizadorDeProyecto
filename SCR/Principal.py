@@ -2,10 +2,10 @@
 import os
 import time
 from importlib import metadata
-from SCR.ManiArch import listar_archivos
-from SCR.SalidDatos import generar_archivo_salida
-from SCR.UtilSist import obtener_version_python, limpieza_pantalla
-from SCR.InterfazHM import menu_2, menu_1, menu_0
+from ManiArch import listar_archivos
+from SalidDatos import generar_archivo_salida
+from UtilSist import obtener_version_python, limpieza_pantalla
+from InterfazHM import  menu_0,menu_1, menu_2,menu_3, menu_4
 from logs.config_logger import configurar_logging
 
 
@@ -53,6 +53,8 @@ def control_de_flujo(ruta_proyecto):
 
     procesar_archivos(ruta, modo_prompt, ruta_proyecto)
     menu_2(modo_prompt,ruta)
+    menu_3(modo_prompt, ruta)
+    menu_4(modo_prompt, ruta)
 
 def obtener_ruta_default():
     """

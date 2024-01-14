@@ -1,5 +1,4 @@
 #SCR/UtilSist.py
-import subprocess
 import sys
 from importlib import metadata
 import os
