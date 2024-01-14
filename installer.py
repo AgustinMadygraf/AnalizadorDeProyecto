@@ -9,6 +9,16 @@ from packaging import version
 
 logger = configurar_logging()
 
+#installer.py
+import subprocess
+import os
+import sys
+from SCR.logs.config_logger import configurar_logging
+import winshell
+from win32com.client import Dispatch
+
+logger = configurar_logging()
+
 def crear_acceso_directo(ruta_archivo_bat):
     escritorio = winshell.desktop()
     ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
@@ -20,20 +30,26 @@ def crear_acceso_directo(ruta_archivo_bat):
         return False
 
     try:
-        if not os.path.isfile(ruta_acceso_directo):
-            shell = Dispatch('WScript.Shell')
+        shell = Dispatch('WScript.Shell')
+        if os.path.isfile(ruta_acceso_directo):
+            logger.info("El acceso directo ya existe en el escritorio. Actualizando el acceso directo.")
             acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
-            acceso_directo.Targetpath = ruta_archivo_bat
-            acceso_directo.WorkingDirectory = directorio_script
-            acceso_directo.IconLocation = ruta_icono  
-            acceso_directo.save()
-            logger.info("Acceso directo en el escritorio creado exitosamente.")
         else:
-            logger.info("El acceso directo ya existe en el escritorio.")
+            logger.info("Creando un nuevo acceso directo en el escritorio.")
+            acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
+        
+        acceso_directo.Targetpath = ruta_archivo_bat
+        acceso_directo.WorkingDirectory = directorio_script
+        acceso_directo.IconLocation = ruta_icono  
+        acceso_directo.save()
+        logger.info("Acceso directo en el escritorio creado/actualizado exitosamente.")
         return True
     except Exception as e:
-        logger.error(f"Error al crear el acceso directo: {e}", exc_info=True)
+        logger.error(f"Error al crear/actualizar el acceso directo: {e}", exc_info=True)
         return False
+
+# Resto del código (incluyendo las funciones main, instalar_dependencias, check_archivo_bat, crear_archivo_bat, obtener_version_python, limpieza_pantalla) permanece igual
+
 
 def main():
     limpieza_pantalla()

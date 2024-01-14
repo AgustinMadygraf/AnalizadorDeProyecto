@@ -110,12 +110,10 @@ def inicializar():
     logger.info(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
-    print("ruta_proyecto: ", ruta_proyecto)
     return ruta_proyecto
 
 def control_de_flujo(ruta_proyecto):
     modo_prompt = elegir_modo()
-    print("modo_prompt: ",modo_prompt)
     intentos = 0
     intentos_maximos = 5
 
