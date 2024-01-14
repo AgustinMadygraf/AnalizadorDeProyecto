@@ -8,36 +8,32 @@ from GestArch import copiar_contenido_al_portapapeles
 logger = configurar_logging()
 
 
+OPCIONES_MENU_1 = {
+    1: 'config\prompt_upd_0.md',
+    2: 'config\prompt_error.md',
+    3: 'config\prompt_aprender.md'
+}
+
 def menu_0():
     logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
-    ruta = input().strip()
-    return ruta
+    return input().strip()
 
-def menu_1():
+def solicitar_opcion(mensaje, opciones):
     logger.debug("Inicio de la selección del modo de operación.")
     while True:
+        logger.info(mensaje)
         try:
-            logger.info("Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): ")
-            opcion_str = input("")  
-            opcion = int(opcion_str)  
-
-            if opcion == 1:
-                logger.info("Modo seleccionado: Implementar mejoras en la programación.")
-                time.sleep(1)
-                print("")
-                return 'config\prompt_upd_0.md'
-            elif opcion == 2:
-                logger.info("Modo seleccionado: Solucionar errores.")
-                return 'config\prompt_error.md'
-            elif opcion == 3:
-                logger.info("Modo seleccionado: Aprendizaje.")
-                return 'config\prompt_aprender.md'
+            opcion = int(input())
+            if opcion in opciones:
+                return opciones[opcion]
             else:
-                logger.warning("Opción no válida. Debes elegir 1, 2 o 3.")
-                return 'config\prompt_upd_0.md'
+                logger.warning("Opción no válida. Intente de nuevo.")
         except ValueError:
             logger.warning("Entrada no válida. Debes ingresar un número.")
-            continue
+
+def menu_1():
+    mensaje = "Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): "
+    return solicitar_opcion(mensaje, OPCIONES_MENU_1)
 
 def menu_2(modo_prompt, ruta): 
     instrucciones = [

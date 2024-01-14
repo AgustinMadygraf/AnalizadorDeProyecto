@@ -12,9 +12,35 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
+def obtener_ruta_analisis():
+    """
+    Obtiene la ruta a analizar, ya sea por defecto o proporcionada por el usuario.
+    """
+    respuesta = input("¿Desea analizar el directorio por defecto? (S/N): ").upper()
+    if respuesta == 'N':
+        return menu_0()  # Solicita al usuario una nueva ruta
+    return obtener_ruta_default()
+
 def main():
     ruta_proyecto = inicializar()
-    control_de_flujo(ruta_proyecto)
+    ruta = obtener_ruta_analisis()
+    if ruta and validar_ruta(ruta):
+        modo_prompt = seleccionar_modo_operacion()
+        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+        realizar_pasos_adicionales(modo_prompt, ruta)
+
+def seleccionar_modo_operacion():
+    """
+    Permite al usuario seleccionar el modo de operación y devuelve el prompt correspondiente.
+    """
+    return menu_1()
+
+def realizar_pasos_adicionales(modo_prompt, ruta):
+    """
+    Realiza pasos adicionales basados en el modo de operación seleccionado.
+    """
+    menu_2(modo_prompt, ruta)
+    menu_3(modo_prompt, ruta)
 
 def inicializar():
     """
@@ -31,30 +57,6 @@ def inicializar():
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
     return ruta_proyecto
-
-def control_de_flujo(ruta_proyecto):
-    logger.info(f"Directorio por defecto: {ruta_proyecto}")
-    time.sleep(1)
-    logger.info("¿Desea analizar el directorio por defecto? (S/N): ")
-    respuesta = input("").upper()
-    if respuesta == 'N':
-        ruta = menu_0()
-        guardar_nueva_ruta_default(ruta)
-    else:
-        ruta = obtener_ruta_default()
-
-    # Validar ruta después de la elección del usuario
-    if not validar_ruta(ruta):
-        logger.error("La ruta proporcionada no es válida o no existe.")
-        return
-
-    # Segunda consulta al usuario sobre el modo de operación
-    modo_prompt = menu_1()
-
-    procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-    menu_2(modo_prompt,ruta)
-    menu_3(modo_prompt, ruta)
-    #menu_4(modo_prompt, ruta)
 
 def obtener_ruta_default():
     """
@@ -112,35 +114,6 @@ def validar_ruta(ruta):
     es_accesible = os.access(ruta, os.R_OK)
 
     return es_directorio and es_accesible
-
-def guardar_nueva_ruta_default(nueva_ruta):
-    """
-    Guarda la nueva ruta por defecto en un archivo de configuración.
-
-    Args:
-        nueva_ruta (str): La nueva ruta a guardar como ruta por defecto.
-
-    Esta función escribe la nueva ruta en un archivo 'path.txt' dentro de un directorio 'config'.
-    Si el directorio 'config' no existe, la función intentará crearlo.
-    """
-    try:
-        ruta_script = obtener_ruta_script()
-        directorio_config = os.path.join(ruta_script, '../config')
-        archivo_default = os.path.join(directorio_config, 'path.txt')
-
-        # Crear directorio 'config' si no existe
-        if not os.path.exists(directorio_config):
-            os.makedirs(directorio_config)
-
-        with open(archivo_default, 'w', encoding='utf-8') as file:
-            file.write(nueva_ruta)
-
-    except OSError as e:
-        # Captura errores específicos relacionados con el sistema de archivos
-        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
-    except Exception as e:
-        # Captura otros errores inesperados
-        logger.error(f"Error inesperado al guardar la nueva ruta por defecto: {e}")
 
 def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     """

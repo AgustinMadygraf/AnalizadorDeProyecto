@@ -2,12 +2,12 @@
 import os
 from logs.config_logger import configurar_logging
 
-# Configuración del logger
 logger = configurar_logging()
 
 def filtrar_archivos_por_extension(archivos, extensiones):
     """
-    Filtra una lista de archivos, retornando aquellos que coinciden con las extensiones dadas.
+    Filtra una lista de archivos, retornando aquellos que coinciden con las extensiones dadas,
+    utilizando un conjunto para una búsqueda más eficiente.
 
     Args:
         archivos (list of str): Lista de nombres de archivos a filtrar.
@@ -16,7 +16,8 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     Returns:
         list of str: Lista de archivos filtrados que coinciden con las extensiones.
     """
-    return [archivo for archivo in archivos if any(archivo.endswith(ext) for ext in extensiones)]
+    extensiones_set = set(extensiones)  # Conversión a conjunto para una búsqueda más rápida
+    return [archivo for archivo in archivos if os.path.splitext(archivo)[1] in extensiones_set]
 
 def listar_archivos(ruta, extensiones=None):
     """

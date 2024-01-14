@@ -10,10 +10,22 @@ logger = configurar_logging()
 def obtener_version_python():
     return sys.version
 
+def limpieza_pantalla(habilitar=True):
+    """
+    Limpia la pantalla de la consola, si está habilitado.
 
-def limpieza_pantalla():
-    logger.info("Limpiando pantalla.")
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
+    Args:
+        habilitar (bool): Indica si la función de limpieza está habilitada.
+    """
+    if not habilitar:
+        logger.info("Limpieza de pantalla deshabilitada.")
+        return
+
+    try:
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+        logger.info("Pantalla limpiada.")
+    except Exception as e:
+        logger.error(f"No se pudo limpiar la pantalla: {e}")

@@ -3,6 +3,7 @@ import pyperclip
 import os
 import time
 import fnmatch
+import re
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
@@ -11,7 +12,7 @@ ruta_proyecto = "C:\AppServ\www\AnalizadorDeProyecto"
 
 def esta_en_gitignore(ruta_archivo, ruta_proyecto):
     """
-    Verifica si un archivo está listado en .gitignore.
+    Verifica si un archivo está listado en .gitignore utilizando expresiones regulares para mejorar la eficiencia.
 
     Args:
         ruta_archivo (str): Ruta del archivo a verificar.
@@ -23,8 +24,11 @@ def esta_en_gitignore(ruta_archivo, ruta_proyecto):
     ruta_gitignore = os.path.join(ruta_proyecto, '.gitignore')
     try:
         with open(ruta_gitignore, 'r', encoding='utf-8') as gitignore:
-            for linea in gitignore:
-                if fnmatch.fnmatch(ruta_archivo, linea.strip()):
+            gitignore_content = gitignore.read()
+            # Crear una expresión regular basada en cada línea del .gitignore
+            for pattern in gitignore_content.splitlines():
+                regex = fnmatch.translate(pattern.strip())
+                if re.match(regex, ruta_archivo):
                     return True
     except FileNotFoundError:
         logger.warning(f"No se encontró el archivo .gitignore en {ruta_proyecto}")
