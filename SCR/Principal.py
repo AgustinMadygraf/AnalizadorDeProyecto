@@ -1,6 +1,8 @@
 #SCR/Principal.py
 import os
 import time
+import threading
+import sys
 from importlib import metadata
 from ManiArch import listar_archivos
 from SalidDatos import generar_archivo_salida
@@ -34,6 +36,7 @@ def guardar_nueva_ruta_default(nueva_ruta):
 def main():
     ruta_proyecto = inicializar() #############################
     ruta = obtener_ruta_analisis(ruta_proyecto)
+    print("\n\nruta: ",ruta,"\n\n")
     if ruta and validar_ruta(ruta):
         modo_prompt = seleccionar_modo_operacion()
         procesar_archivos(ruta, modo_prompt, ruta_proyecto)
@@ -63,10 +66,40 @@ def inicializar():
         str: La ruta del proyecto.
     """
     limpieza_pantalla()
+    bienvenida()
     logger.debug(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
     return ruta_proyecto
+
+def bienvenida():
+    mensaje = """Bienvenido al AnalizadorDeProyecto 🌟\nEste software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!\n\n\nPresiona Enter para continuar...\n"""
+
+    mostrar_todo = False
+
+    # Función que maneja la visualización del mensaje
+    def mostrar_mensaje():
+        nonlocal mostrar_todo
+        for caracter in mensaje:
+            if mostrar_todo:
+                print(mensaje[mensaje.index(caracter):], end='', flush=True)
+                break
+            print(caracter, end='', flush=True)
+            time.sleep(0.05)  # Ajusta este valor según sea necesario
+        print()  # Asegura una nueva línea después del mensaje
+
+    # Thread para mostrar el mensaje
+    hilo_mensaje = threading.Thread(target=mostrar_mensaje)
+    hilo_mensaje.start()
+
+    # Espera a que el usuario presione Enter
+    input()
+    mostrar_todo = True
+    hilo_mensaje.join()  # Espera a que el hilo termine
+
+    # Avanza a la siguiente etapa después de la segunda pulsación de Enter
+
+
 
 def obtener_ruta_default():
     """

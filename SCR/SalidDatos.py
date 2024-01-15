@@ -112,6 +112,7 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         nombre_archivo (str): Ruta del archivo donde se escribirá el contenido.
         contenido (str): Contenido a escribir en el archivo.
     """
+    print("")
     if contenido is None:
         logger.error(f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
         return False
