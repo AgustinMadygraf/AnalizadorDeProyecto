@@ -1,6 +1,7 @@
-#salida_datos.py
+#SCR/SalidDatos.py
 import os
-from gestion_archivos import leer_archivo, copiar_contenido_al_portapapeles
+import time
+from GestArch import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
 
 # Configuración del logger
@@ -119,22 +120,27 @@ def generar_nombre_archivo_salida(ruta):
 
 def escribir_archivo_salida(nombre_archivo, contenido):
     """
-    Escribe el contenido dado en el archivo de salida especificado.
+    Escribe el contenido dado en el archivo de salida especificado y maneja los errores de manera más detallada.
 
     Args:
         nombre_archivo (str): Ruta del archivo donde se escribirá el contenido.
         contenido (str): Contenido a escribir en el archivo.
     """
     if contenido is None:
-        logger.error(f"Intento de escribir contenido 'None' en el archivo {nombre_archivo}")
-        contenido = "Contenido no disponible o error al leer el archivo."
+        logger.error(f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
+        return False
 
     try:
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
-        logger.info(f"Archivo de salida generado: {nombre_archivo}")
+        logger.info(f"Archivo de salida generado exitosamente: {nombre_archivo}")
+        return True
+    except IOError as e:
+        logger.error(f"Error de E/S al escribir en el archivo {nombre_archivo}: {e}")
     except Exception as e:
-        logger.error(f"Error al escribir en el archivo de salida {nombre_archivo}: {e}")
+        logger.error(f"Error inesperado al escribir en el archivo {nombre_archivo}: {e}")
+    
+    return False
 
 def contenido_archivo(archivos_seleccionados):
     """
@@ -249,4 +255,4 @@ def asegurar_directorio_AMIS(ruta):
         os.makedirs(directorio_amis)
         logger.info(f"Directorio AMIS creado en {directorio_amis}")
     else:
-        logger.info(f"Directorio AMIS ya existe en {directorio_amis}")
+        logger.debug(f"Directorio AMIS ya existe en {directorio_amis}")

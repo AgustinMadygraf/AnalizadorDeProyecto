@@ -1,3 +1,4 @@
+#SCR/logs/config_logger.py
 import logging
 from logging.handlers import RotatingFileHandler
 import datetime
@@ -8,14 +9,14 @@ class InfoErrorFilter(logging.Filter):
         # Permitir solo registros de nivel INFO y ERROR
         return record.levelno in (logging.INFO, logging.ERROR)
 
-def configurar_logging():
+def configurar_logging(nivel=logging.INFO):
     logger = logging.getLogger()
     if logger.hasHandlers():
         return logger
 
     # Configuración básica
     filename = 'SCR/logs/sistema.log'
-    format = '%(asctime)s - %(levelname)s - %(module)s: %(message)s'
+    format = '%(asctime)s - %(levelname)s - %(module)s - %(filename)s:%(lineno)d: %(message)s'
     maxBytes = 10485760  # 10MB
     backupCount = 5
     formatter = logging.Formatter(format)
@@ -30,13 +31,14 @@ def configurar_logging():
     console_handler.addFilter(InfoErrorFilter())  # Aplicar el filtro
     console_handler.setFormatter(formatter)
 
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(nivel)
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 
-    logger.info("\n\n--------------- Nueva Sesión - {} ---------------\n\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    logger.info("\n\n--------------- Nueva Sesión - {} - Nivel de Registro: {} ---------------\n\n".format(
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), logging.getLevelName(logger.getEffectiveLevel())))
 
     return logger
 
-# Configurar el logger
-configurar_logging()
+# Configurar el logger con un nivel específico
+configurar_logging(nivel=logging.DEBUG)
