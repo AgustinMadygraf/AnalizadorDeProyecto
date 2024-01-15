@@ -34,10 +34,9 @@ def guardar_nueva_ruta_default(nueva_ruta):
 def main():
     ruta_proyecto = inicializar() #############################
     ruta = obtener_ruta_analisis(ruta_proyecto)
-    print("\n\nruta: ",ruta,"\n\n")
     if ruta and validar_ruta(ruta):
         modo_prompt = seleccionar_modo_operacion()
-        procesar_archivos(ruta, modo_prompt)
+        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
         realizar_pasos_adicionales(modo_prompt, ruta)
 
 def seleccionar_modo_operacion():
@@ -126,7 +125,7 @@ def validar_ruta(ruta):
 
     return es_directorio and es_accesible
 
-def procesar_archivos(ruta, modo_prompt):
+def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     """
     Procesa los archivos en una ruta de proyecto dada.
 
@@ -139,7 +138,7 @@ def procesar_archivos(ruta, modo_prompt):
     """
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
     listar_archivos(ruta, extensiones)
-    return generar_archivo_salida(ruta, modo_prompt, extensiones)
+    return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos)
 
 
 if __name__ == "__main__":

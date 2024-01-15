@@ -7,7 +7,7 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def generar_archivo_salida(ruta, modo_prompt, extensiones):
+def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -22,7 +22,7 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones):
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta, ruta_archivos)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     return nombre_archivo_salida
@@ -42,30 +42,16 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta):
-    """
-    Prepara el contenido de salida para un archivo Markdown.
-
-    Esta función genera una sección de Markdown que incluye tanto la estructura
-    de carpetas y archivos del proyecto como el contenido de archivos seleccionados.
-    Cada sección se formatea adecuadamente para una visualización clara en Markdown.
-
-    Args:
-        estructura (list): Lista que representa la estructura de carpetas y archivos.
-        modo_prompt (str): Nombre del archivo que contiene el prompt inicial o plantilla.
-        archivos_seleccionados (list): Lista de rutas de archivos cuyo contenido se incluirá.
-
-    Returns:
-        str: El contenido completo formateado para Markdown.
-    """
-
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
     logger.debug("Preparando contenido de salida")
-    nombre_archivo = os.path.join(ruta, modo_prompt)
+    nombre_archivo = os.path.join(ruta_archivo, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo)
-    contenido_prompt = leer_archivo(nombre_archivo)
-
     # Comprobación y asignación del contenido inicial basado en el prompt.
-    contenido = contenido_prompt if contenido_prompt else "\n\nprompt:\nNo hay prompt. falla.\n\n"
+    if contenido_prompt:
+        contenido = contenido_prompt
+    else:
+        logger.error("No se pudo leer el prompt")
+        contenido = "\n\nprompt:\nNo hay prompt. falla.\n\n"
 
     # Añadiendo la estructura de directorios y archivos en formato Markdown.
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n"
@@ -249,9 +235,7 @@ def asegurar_directorio_AMIS(ruta):
     Args:
         ruta (str): Ruta base donde se debe encontrar o crear el directorio AMIS.
     """
-    print("\nruta_proyecto: ",ruta)
     directorio_amis = os.path.join(ruta, 'AMIS')
-    print("\ndirectorio_amis: ",directorio_amis,"\n")
     if not os.path.exists(directorio_amis):
         os.makedirs(directorio_amis)
         logger.info(f"Directorio AMIS creado en {directorio_amis}")
