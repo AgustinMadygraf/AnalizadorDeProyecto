@@ -12,10 +12,11 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def obtener_ruta_analisis():
+def obtener_ruta_analisis(ruta_proyecto):
     """
     Obtiene la ruta a analizar, ya sea por defecto o proporcionada por el usuario.
     """
+    logger.info(f"Directorio por defecto: {ruta_proyecto}")
     respuesta = input("¿Desea analizar el directorio por defecto? (S/N): ").upper()
     if respuesta == 'N':
         return menu_0()  # Solicita al usuario una nueva ruta
@@ -23,7 +24,7 @@ def obtener_ruta_analisis():
 
 def main():
     ruta_proyecto = inicializar()
-    ruta = obtener_ruta_analisis()
+    ruta = obtener_ruta_analisis(ruta_proyecto)
     if ruta and validar_ruta(ruta):
         modo_prompt = seleccionar_modo_operacion()
         procesar_archivos(ruta, modo_prompt, ruta_proyecto)
