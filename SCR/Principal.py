@@ -2,7 +2,6 @@
 import os
 import time
 import threading
-import sys
 from importlib import metadata
 from ManiArch import listar_archivos
 from SalidDatos import generar_archivo_salida
@@ -36,7 +35,6 @@ def guardar_nueva_ruta_default(nueva_ruta):
 def main():
     ruta_proyecto = inicializar() #############################
     ruta = obtener_ruta_analisis(ruta_proyecto)
-    print("\n\nruta: ",ruta,"\n\n")
     if ruta and validar_ruta(ruta):
         modo_prompt = seleccionar_modo_operacion()
         procesar_archivos(ruta, modo_prompt, ruta_proyecto)
@@ -98,6 +96,7 @@ def bienvenida():
     hilo_mensaje.join()  # Espera a que el hilo termine
 
     # Avanza a la siguiente etapa después de la segunda pulsación de Enter
+
 
 
 
