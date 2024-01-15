@@ -32,7 +32,8 @@ def solicitar_opcion(mensaje, opciones):
             logger.warning("Entrada no válida. Debes ingresar un número.")
 
 def menu_1():
-    mensaje = "Elige un modo (1 - Implementar mejoras en la programación, 2 - Solucionar errores, 3 - Aprendizaje): "
+    print("")
+    mensaje = "Elige un modo \n\n1 - Implementar mejoras en la programación\n2- Solucionar errores\n3- Aprendizaje\n"
     return solicitar_opcion(mensaje, OPCIONES_MENU_1)
 
 def menu_2(modo_prompt, ruta): 
@@ -50,6 +51,7 @@ def menu_2(modo_prompt, ruta):
 
     if modo_prompt == 'config\prompt_upd_0.md':
         while True:
+            print("")
             for instruccion in instrucciones:
                 print(instruccion)
                 input("Presione Enter para continuar...\n")

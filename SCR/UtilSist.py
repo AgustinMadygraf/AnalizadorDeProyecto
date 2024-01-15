@@ -18,7 +18,7 @@ def limpieza_pantalla(habilitar=True):
         habilitar (bool): Indica si la función de limpieza está habilitada.
     """
     if not habilitar:
-        logger.info("Limpieza de pantalla deshabilitada.")
+        logger.debug("Limpieza de pantalla deshabilitada.")
         return
 
     try:
@@ -26,6 +26,6 @@ def limpieza_pantalla(habilitar=True):
             os.system('cls')
         else:
             os.system('clear')
-        logger.info("Pantalla limpiada.")
+        logger.debug("Pantalla limpiada.")
     except Exception as e:
         logger.error(f"No se pudo limpiar la pantalla: {e}")
