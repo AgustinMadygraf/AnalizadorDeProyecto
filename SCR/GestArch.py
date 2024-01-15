@@ -63,15 +63,34 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
         return None
+    
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()
-            logger.debug(f"Archivo '{nombre_archivo}' leído exitosamente.")
-            return contenido
     except (FileNotFoundError, OSError, UnicodeDecodeError) as e:
-        # Manejo unificado de errores de lectura de archivo y decodificación
         logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
         return None
+
+    if nombre_archivo.endswith('.sql'):
+        return procesar_sql(contenido)
+    else:
+        return contenido
+
+def procesar_sql(contenido_sql):
+    lineas = contenido_sql.split('\n')
+    lineas_procesadas = []
+    dentro_de_insert = False
+    for linea in lineas:
+        if 'INSERT INTO' in linea:
+            dentro_de_insert = True
+            lineas_procesadas.append(linea)  # Añadir la primera línea del INSERT
+        elif dentro_de_insert and ';' in linea:
+            lineas_procesadas.append(linea)  # Añadir la última línea del INSERT
+            dentro_de_insert = False
+        elif dentro_de_insert:
+            # Opcional: Añadir alguna indicación de que se han omitido líneas
+            pass
+    return '\n'.join(lineas_procesadas)
 
 def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     """

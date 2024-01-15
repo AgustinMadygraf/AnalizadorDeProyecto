@@ -7,7 +7,7 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto):
+def generar_archivo_salida(ruta, modo_prompt, extensiones):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -18,11 +18,11 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto):
         extensiones (list of str): Extensiones para filtrar archivos.
         ruta_proyecto (str): Ruta base del proyecto.
     """
-    asegurar_directorio_AMIS(ruta_proyecto)
+    asegurar_directorio_AMIS(ruta)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta_proyecto)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     return nombre_archivo_salida
@@ -42,7 +42,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta_proyecto):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta):
     """
     Prepara el contenido de salida para un archivo Markdown.
 
@@ -60,7 +60,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     """
 
     logger.debug("Preparando contenido de salida")
-    nombre_archivo = os.path.join(ruta_proyecto, modo_prompt)
+    nombre_archivo = os.path.join(ruta, modo_prompt)
     contenido_prompt = leer_archivo(nombre_archivo)
     contenido_prompt = leer_archivo(nombre_archivo)
 
@@ -129,7 +129,7 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     if contenido is None:
         logger.error(f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
         return False
-
+    logger.debug(f"Intentando escribir en el archivo: {nombre_archivo}")
     try:
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
@@ -139,7 +139,6 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         logger.error(f"Error de E/S al escribir en el archivo {nombre_archivo}: {e}")
     except Exception as e:
         logger.error(f"Error inesperado al escribir en el archivo {nombre_archivo}: {e}")
-    
     return False
 
 def contenido_archivo(archivos_seleccionados):
@@ -250,7 +249,9 @@ def asegurar_directorio_AMIS(ruta):
     Args:
         ruta (str): Ruta base donde se debe encontrar o crear el directorio AMIS.
     """
+    print("\nruta_proyecto: ",ruta)
     directorio_amis = os.path.join(ruta, 'AMIS')
+    print("\ndirectorio_amis: ",directorio_amis,"\n")
     if not os.path.exists(directorio_amis):
         os.makedirs(directorio_amis)
         logger.info(f"Directorio AMIS creado en {directorio_amis}")
