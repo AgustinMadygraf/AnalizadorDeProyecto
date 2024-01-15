@@ -11,16 +11,25 @@ from logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()
-
 def obtener_ruta_analisis(ruta_proyecto):
-    """
-    Obtiene la ruta a analizar, ya sea por defecto o proporcionada por el usuario.
-    """
-    logger.info(f"Directorio por defecto: {ruta_proyecto}")
+    ruta_default = obtener_ruta_default()
+    logger.info(f"Directorio por defecto: {ruta_default}")
     respuesta = input("¿Desea analizar el directorio por defecto? (S/N): ").upper()
     if respuesta == 'N':
-        return menu_0()  # Solicita al usuario una nueva ruta
-    return obtener_ruta_default()
+        nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
+        if nueva_ruta != ruta_default:
+            guardar_nueva_ruta_default(nueva_ruta)
+        return nueva_ruta
+    return ruta_default
+
+def guardar_nueva_ruta_default(nueva_ruta):
+    archivo_default = 'config/path.txt'
+    try:
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            file.write(nueva_ruta)
+        logger.info(f"Nueva ruta por defecto guardada: {nueva_ruta}")
+    except IOError as e:
+        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def main():
     ruta_proyecto = inicializar()
@@ -130,7 +139,6 @@ def procesar_archivos(ruta, modo_prompt, ruta_proyecto):
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_proyecto)
-
 
 
 if __name__ == "__main__":
