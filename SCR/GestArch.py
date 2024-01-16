@@ -62,7 +62,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
         return None
 
     if os.path.getsize(nombre_archivo) > 10240:
-        logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
+        logger.error(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
         return None
 
     try:
@@ -101,6 +101,8 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
         nombre_archivo_salida (str): Ruta del archivo cuyo contenido se copiará.
     """
     contenido = leer_archivo(nombre_archivo_salida)
+    print("\n\ncopiar_contenido_al_portapapeles()\nnombre_archivo_salida: ",nombre_archivo_salida,"\n\n")
+    print("\n\ncopiar_contenido_al_portapapeles()\ncontenido: ",contenido,"\n\n")
     if contenido is not None:
         try:
             pyperclip.copy(contenido)
@@ -109,6 +111,7 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
             print("")
         except pyperclip.PyperclipException as e:
             logger.error(f"No se pudo copiar al portapapeles: {e}")
+    
 
 def verificar_existencia_archivo(nombre_archivo):
     """

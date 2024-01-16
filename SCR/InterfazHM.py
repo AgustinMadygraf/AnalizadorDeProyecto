@@ -76,6 +76,7 @@ def menu_2(modo_prompt, ruta):
 
     else:
         input("Presione una tecla para salir")
+
 def menu_3(modo_prompt, ruta):
 
     instrucciones = [

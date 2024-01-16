@@ -9,9 +9,9 @@ from UtilSist import obtener_version_python, limpieza_pantalla
 from InterfazHM import  menu_0,menu_1, menu_2,menu_3 #, menu_4
 from logs.config_logger import configurar_logging
 
-
 # Configuración del logger
 logger = configurar_logging()
+
 def obtener_ruta_analisis(ruta_proyecto):
     ruta_default = obtener_ruta_default()
     logger.info(f"Directorio por defecto: {ruta_default}")
@@ -96,9 +96,6 @@ def bienvenida():
     hilo_mensaje.join()  # Espera a que el hilo termine
 
     # Avanza a la siguiente etapa después de la segunda pulsación de Enter
-
-
-
 
 def obtener_ruta_default():
     """
