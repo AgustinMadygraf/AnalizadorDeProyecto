@@ -61,7 +61,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
         return None
 
-    if os.path.getsize(nombre_archivo) > 10240:
+    if os.path.getsize(nombre_archivo) > 20480:
         logger.error(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
         return None
 

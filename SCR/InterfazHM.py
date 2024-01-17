@@ -9,9 +9,9 @@ logger = configurar_logging()
 
 
 OPCIONES_MENU_1 = {
-    1: 'config\prompt_upd_0.md',
+    1: 'config\prompt_upd_all.md',
     2: 'config\prompt_error.md',
-    3: 'config\prompt_aprender.md'
+    3: 'config\prompt_upd_especifico.md'
 }
 
 def menu_0():
@@ -33,7 +33,7 @@ def solicitar_opcion(mensaje, opciones):
 
 def menu_1():
     print("")
-    mensaje = "Elige un modo \n\n1 - Implementar mejoras en la programación\n2- Solucionar errores\n3- Aprendizaje\n"
+    mensaje = "Elige un modo \n\n1 - Análsiis general\n2- Solucionar errores\n3- mejora específica\n"
     return solicitar_opcion(mensaje, OPCIONES_MENU_1)
 
 def menu_2(modo_prompt, ruta): 
