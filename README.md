@@ -21,7 +21,8 @@ Este proyecto utiliza `pipenv` para la gestión de dependencias y el entorno vir
 
 2. **Clonar el repositorio del proyecto**:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+
+   git clone https://github.com/AgustinMadygraf/AnalizadorDeProyecto
    cd <DIRECTORIO_DEL_PROYECTO>
    ```
 
