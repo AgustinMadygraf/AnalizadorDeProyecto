@@ -1,4 +1,4 @@
-#src/user_interface.py
+#AnalizadorDeProyectos\src\user_interface.py
 import os
 import time
 from logs.config_logger import configurar_logging
@@ -8,11 +8,6 @@ from file_manager import copiar_contenido_al_portapapeles
 logger = configurar_logging()
 
 
-OPCIONES_MENU_1 = {
-    1: 'config\prompt_upd_0.md',
-    2: 'config\prompt_error.md',
-    3: 'config\prompt_aprender.md'
-}
 
 def menu_0():
     logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
@@ -32,9 +27,15 @@ def solicitar_opcion(mensaje, opciones):
             logger.warning("Entrada no válida. Debes ingresar un número.")
 
 def menu_1():
-    print("")
-    mensaje = "Elige un modo \n\n1 - Implementar mejoras en la programación\n2- Solucionar errores\n3- Aprendizaje\n"
-    return solicitar_opcion(mensaje, OPCIONES_MENU_1)
+    """
+    Actualmente, solo hay una opción disponible en el menú. 
+    Este método podría retornar directamente el valor de esta opción.
+    Si se añaden más opciones en el futuro, este método puede ser ajustado para incluir la lógica de selección.
+    """
+    print("El modo actualmente disponible es: Implementar mejoras en la programación")
+    time.sleep(2)  # Dar tiempo al usuario para leer el mensaje antes de continuar automáticamente.
+    return 'config\\prompt_upd_0.md'
+
 
 def menu_2(modo_prompt, ruta): 
     instrucciones = [
