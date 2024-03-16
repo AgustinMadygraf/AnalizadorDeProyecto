@@ -1,4 +1,4 @@
-#installer.py
+# installer.py
 import subprocess
 import os
 import sys
@@ -36,49 +36,33 @@ def main():
     limpieza_pantalla()
     logger.info("Iniciando instalador")
 
-    #instalar_dependencias(directorio_script)
+    # Crear archivo BAT que utiliza Pipenv
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
     if not os.path.isfile(ruta_archivo_bat):
         logger.info("Creando archivo 'AnalizadorDeProyecto.bat'")
-        crear_archivo_bat(directorio_script, sys.executable)
+        crear_archivo_bat_con_pipenv(directorio_script, sys.executable)
     
     crear_acceso_directo(ruta_archivo_bat, directorio_script)
 
-def instalar_dependencias(directorio_script):
-    ruta_requirements = os.path.join(directorio_script, 'requirements.txt')
-    if os.path.isfile(ruta_requirements):
-        with open(ruta_requirements) as file:
-            for package in [line.strip() for line in file if line.strip() and not line.startswith('#')]:
-                try:
-                    subprocess.run([sys.executable, "-m", "pip", "install",
-
- package], capture_output=True, text=True, check=True)
-                    logger.info(f"Instalado o actualizado: {package}")
-                except subprocess.CalledProcessError as e:
-                    logger.error(f"Error al instalar la dependencia {package}: {e.output}")
-        logger.info("Verificación y actualización de dependencias completada.")
-    else:
-        logger.warning("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales.")
-
-def crear_archivo_bat(directorio_script, python_executable):
+def crear_archivo_bat_con_pipenv(directorio_script, python_executable):
     ruta_main_py = os.path.join(directorio_script, 'src', 'main.py')
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
 
+    # Se ajusta el contenido para activar el entorno virtual de Pipenv
     contenido_bat = (
         "@echo off\n"
         "setlocal\n"
         "\n"
-        "set \"SCRIPT_DIR=%~dp0\"\n"
-        "\n"
-        "cd /d \"%SCRIPT_DIR%\"\n"
-        "\"{}\" \"{}\"\n".format(python_executable, ruta_main_py) +
+        "cd /d \"%~dp0\"\n"
+        "pipenv shell\n"
+        "pipenv run python \"{}\"\n".format(ruta_main_py) +
         "pause\n"
         "endlocal\n"
     )
 
     with open(ruta_archivo_bat, 'w') as archivo_bat:
         archivo_bat.write(contenido_bat)
-    logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
+    logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente con Pipenv.")
 
 def limpieza_pantalla():
     try:

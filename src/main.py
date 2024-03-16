@@ -4,6 +4,10 @@ import time
 import threading
 import sys
 from importlib import metadata
+# Añadir el directorio raíz del proyecto y el directorio src al sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # Directorio raíz
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  # Directorio src
+
 from file_operations import listar_archivos
 from data_output import generar_archivo_salida
 from utilities import obtener_version_python, limpieza_pantalla
