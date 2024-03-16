@@ -5,7 +5,9 @@
 Este prompt está diseñado para ser utilizado en conjunto con la estructura de directorios y archivos de un proyecto de software, enfocándose en implementar mejoras en las buenas prácticas de desarrollo de software.
 
 ## Objetivo
-El objetivo es analizar un proyecto de software para identificar áreas específicas donde aplicar mejores prácticas de programación y arquitectura de software para la optimización. Tendrás que prestar atención al archivo REAMDE.md
+El objetivo es analizar un proyecto de software para identificar un área específica donde aplicar mejores prácticas de programación y arquitectura de software para la optimización.
+Solamente tendrás que identificar la mayor debilidad del proyecto. y en consecuencia presentar una sola propuesta de mejora al usuario y preguntarle "por sí o por no ¿estás de acuerdo que la principal del proycto es [breve descripción de la debilidad] ?" Tu primer respuesta a esta petición debe ser extremadamente breve.
+en caso de que el usuario esté de acuerdo con la debilidad mecionada a partir del análisis, deberás explicar el problema y proporcionar una guía de acción para mejorar el proyecto de software. En caso de que nó, deberás mencionar la 2da mayor debilidad del proyecto de software. Tendrás que prestar atención al archivo REAMDE.md
 
 # USER
 
