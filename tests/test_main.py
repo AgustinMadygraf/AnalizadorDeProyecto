@@ -1,5 +1,15 @@
-import pytest
+#AnalizadorDeProyecto\tests\test_main.py
+import sys
+import os
+
+# Agregar el directorio raíz del proyecto a sys.path
+ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(ruta_proyecto)
+
 import installer
+import pytest
+
+
 
 # Fixture para preparar el entorno de pruebas
 @pytest.fixture
