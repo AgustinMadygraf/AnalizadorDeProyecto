@@ -42317,3 +42317,49 @@ Por favor, introduzca la ruta de la carpeta:
 2024-03-15 23:04:55,806 - DEBUG - SalidDatos - SalidDatos.py:119: Intentando escribir en el archivo: C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md
 2024-03-15 23:04:55,808 - INFO - SalidDatos - SalidDatos.py:123: Archivo de salida generado exitosamente: C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md
 2024-03-15 23:04:55,808 - WARNING - GestArch - GestArch.py:65: El archivo 'C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md' excede el tamaño máximo permitido de 10KB.
+2024-03-15 23:43:21,586 - INFO - config_logger - config_logger.py:38: 
+
+--------------- Nueva Sesión - 2024-03-15 23:43:21 - Nivel de Registro: DEBUG ---------------
+
+
+2024-03-15 23:43:21,800 - INFO - installer - installer.py:86: Pantalla limpiada.
+2024-03-15 23:43:21,802 - INFO - installer - installer.py:37: Iniciando instalador
+2024-03-15 23:43:21,829 - INFO - installer - installer.py:28: Acceso directo actualizado exitosamente.
+2024-03-15 23:43:37,952 - INFO - config_logger - config_logger.py:38: 
+
+--------------- Nueva Sesión - 2024-03-15 23:43:37 - Nivel de Registro: DEBUG ---------------
+
+
+2024-03-15 23:43:38,040 - INFO - installer - installer.py:86: Pantalla limpiada.
+2024-03-15 23:43:38,041 - INFO - installer - installer.py:37: Iniciando instalador
+2024-03-15 23:43:38,041 - INFO - installer - installer.py:42: Creando archivo 'AnalizadorDeProyecto.bat'
+2024-03-15 23:43:38,043 - INFO - installer - installer.py:81: Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.
+2024-03-15 23:43:38,066 - INFO - installer - installer.py:28: Acceso directo actualizado exitosamente.
+2024-03-15 23:43:43,941 - INFO - config_logger - config_logger.py:38: 
+
+--------------- Nueva Sesión - 2024-03-15 23:43:43 - Nivel de Registro: DEBUG ---------------
+
+
+2024-03-15 23:43:43,973 - DEBUG - UtilSist - UtilSist.py:29: Pantalla limpiada.
+2024-03-15 23:43:45,567 - DEBUG - Principal - Principal.py:70: Versión de Python en uso: 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)]
+2024-03-15 23:43:45,567 - INFO - Principal - Principal.py:18: Directorio por defecto: C:\AppServ\www\AnalizadorDeProyecto
+2024-03-15 23:43:49,063 - DEBUG - InterfazHM - InterfazHM.py:22: Inicio de la selección del modo de operación.
+2024-03-15 23:43:49,064 - INFO - InterfazHM - InterfazHM.py:24: Elige un modo 
+
+1 - Implementar mejoras en la programación
+2- Solucionar errores
+3- Aprendizaje
+
+2024-03-15 23:43:52,973 - DEBUG - ManiArch - ManiArch.py:37: Iniciando listado de archivos en la ruta: C:\AppServ\www\AnalizadorDeProyecto
+2024-03-15 23:43:53,011 - DEBUG - ManiArch - ManiArch.py:53: Listado de archivos completo. Total de archivos encontrados: 21
+2024-03-15 23:43:53,021 - DEBUG - SalidDatos - SalidDatos.py:244: Directorio DOCS ya existe en C:\AppServ\www\AnalizadorDeProyecto\DOCS
+2024-03-15 23:43:53,057 - DEBUG - SalidDatos - SalidDatos.py:41: El contenido de C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md ha sido eliminado.
+2024-03-15 23:43:53,057 - DEBUG - SalidDatos - SalidDatos.py:46: Preparando contenido de salida
+2024-03-15 23:43:53,064 - WARNING - SalidDatos - SalidDatos.py:70: No se pudo obtener el contenido del archivo: C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md
+2024-03-15 23:43:53,065 - WARNING - GestArch - GestArch.py:53: Extensión de archivo no permitida para lectura: C:\AppServ\www\AnalizadorDeProyecto\DOCS\QUICKSTART.MD
+2024-03-15 23:43:53,065 - WARNING - SalidDatos - SalidDatos.py:70: No se pudo obtener el contenido del archivo: C:\AppServ\www\AnalizadorDeProyecto\DOCS\QUICKSTART.MD
+2024-03-15 23:43:53,068 - WARNING - GestArch - GestArch.py:65: El archivo 'C:\AppServ\www\AnalizadorDeProyecto\src\SalidDatos.py' excede el tamaño máximo permitido de 10KB.
+2024-03-15 23:43:53,068 - WARNING - SalidDatos - SalidDatos.py:70: No se pudo obtener el contenido del archivo: C:\AppServ\www\AnalizadorDeProyecto\src\SalidDatos.py
+2024-03-15 23:43:53,069 - DEBUG - SalidDatos - SalidDatos.py:119: Intentando escribir en el archivo: C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md
+2024-03-15 23:43:53,069 - INFO - SalidDatos - SalidDatos.py:123: Archivo de salida generado exitosamente: C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md
+2024-03-15 23:43:53,069 - WARNING - GestArch - GestArch.py:65: El archivo 'C:\AppServ\www\AnalizadorDeProyecto\DOCS\00-Prompt-for-ProjectAnalysis.md' excede el tamaño máximo permitido de 10KB.

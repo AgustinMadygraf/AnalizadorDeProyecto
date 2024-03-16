@@ -1,4 +1,4 @@
-#SCR/logs/config_logger.py
+#src/logs/config_logger.py
 import logging
 from logging.handlers import RotatingFileHandler
 import datetime
@@ -15,7 +15,7 @@ def configurar_logging(nivel=logging.INFO):
         return logger
 
     # Configuración básica
-    filename = 'SCR/logs/sistema.log'
+    filename = 'src/logs/sistema.log'
     format = '%(asctime)s - %(levelname)s - %(module)s - %(filename)s:%(lineno)d: %(message)s'
     maxBytes = 10485760  # 10MB
     backupCount = 5

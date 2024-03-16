@@ -46,11 +46,6 @@ AnalizadorDeProyecto/
     installer.py
     README.md
     requirements.txt
-    AMIS/
-        00-Prompt-for-ProjectAnalysis.md
-        01-ProjectAnalysis.md
-        02-diagrama_flujo.txt
-        03-ToDoList.md
     config/
         path.txt
         prompt_aprender.md
@@ -61,9 +56,11 @@ AnalizadorDeProyecto/
         prompt_upd_3.md
         recomendaciones.md
     DOCS/
+        00-Prompt-for-ProjectAnalysis.md
+        02-diagrama_flujo.txt
         CONTRIBUTING.md
         QUICKSTART.MD
-    SCR/
+    src/
         GestArch.py
         InterfazHM.py
         ManiArch.py
@@ -75,8 +72,6 @@ AnalizadorDeProyecto/
             config_logger.py
             __pycache__/
         __pycache__/
-    test/
-        test_gestion_archivos.py
     __pycache__/
 ```
 
@@ -89,7 +84,7 @@ AnalizadorDeProyecto/
 import subprocess
 import os
 import sys
-from SCR.logs.config\_logger import configurar\_logging
+from src.logs.config\_logger import configurar\_logging
 import winshell
 from win32com.client import Dispatch
 
@@ -148,7 +143,7 @@ def instalar\_dependencias\(directorio\_script\):
         logger.warning\("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales."\)
 
 def crear\_archivo\_bat\(directorio\_script, python\_executable\):
-    ruta\_main\_py = os.path.join\(directorio\_script, 'SCR', 'Principal.py'\)
+    ruta\_main\_py = os.path.join\(directorio\_script, 'src', 'Principal.py'\)
     ruta\_archivo\_bat = os.path.join\(directorio\_script, 'AnalizadorDeProyecto.bat'\)
 
     contenido\_bat = \(
@@ -289,116 +284,6 @@ wheel==0.41.3
 winshell==0.6
 zipp==3.17.0
 zope.interface==6.1
-
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\AMIS\01-ProjectAnalysis.md
-```plaintext
-# Análisis del Proyecto: "AnalizadorDeProyecto"
-
-## Estructura de Carpetas y Archivos
-
-1. \*\*Organización General:\*\*
-   - La estructura sigue una división lógica \(\`installer.py\`, \`README.md\`, \`requirements.txt\`, \`AMIS\`, \`config\`, \`DOCS\`, \`SCR\`, \`test\`, \`\_\_pycache\_\_\`\).
-   - \*\*Recomendación:\*\* Mantener esta organización clara, asegurando que cada componente esté correctamente ubicado. 
-
-2. \*\*Carpeta \`AMIS\`:\*\*
-   - Contiene archivos de análisis y mejoras.
-   - \*\*Recomendación:\*\* Verificar la actualización y relevancia de estos documentos. Podría integrarse una automatización para generar análisis periódicos.
-
-3. \*\*Carpeta \`config\`:\*\*
-   - Alberga archivos de configuración y prompts.
-   - \*\*Recomendación:\*\* Asegurarse de que los archivos de configuración sean claros y bien documentados. Los prompts deben ser actualizados según sea necesario.
-
-4. \*\*Carpeta \`DOCS\`:\*\*
-   - Incluye documentación adicional.
-   - \*\*Recomendación:\*\* Mantener la documentación actualizada y ampliarla para cubrir todos los aspectos del proyecto.
-
-5. \*\*Carpeta \`SCR\`:\*\*
-   - Contiene scripts de Python.
-   - \*\*Recomendación:\*\* Revisar el código para optimizar la eficiencia y la claridad. Aplicar principios de limpieza de código y refactorización donde sea necesario.
-
-6. \*\*Directorio \`\_\_pycache\_\_\`:\*\*
-   - Archivos compilados de Python.
-   - \*\*Recomendación:\*\* Asegurarse de que no se incluyan en el control de versiones \(generalmente incluidos en \`.gitignore\`\).
-
-## Análisis de Archivos Seleccionados
-
-1. \*\*\`installer.py\`:\*\*
-   - Automatiza la instalación y configuración.
-   - \*\*Recom
-
-endación:\*\* Evaluar la posibilidad de simplificar el script y reducir la duplicación de código. Además, garantizar que los mensajes de error sean claros y útiles para los usuarios finales.
-
-2. \*\*\`README.md\`:\*\*
-   - Proporciona una descripción general y guía de uso.
-   - \*\*Recomendación:\*\* Asegurarse de que la información esté siempre actualizada, especialmente las versiones de Python y las dependencias. Incluir secciones para contribuyentes podría ser beneficioso.
-
-3. \*\*\`requirements.txt\`:\*\*
-   - Enumera las dependencias del proyecto.
-   - \*\*Recom
-
-endación:\*\* Revisar regularmente las dependencias para mantenerlas actualizadas y eliminar las que sean innecesarias. Asegurar compatibilidad con versiones recientes.
-
-4. \*\*Scripts en \`SCR\`:\*\*
-   - \`gestion\_archivos.py\`, \`HMI.py\`, \`main.py\`, entre otros.
-   - \*\*Recomendación:\*\* Estos scripts deben revisarse para optimizar la lógica, mejorar la claridad y asegurar que siguen las mejores prácticas de codificación. Considerar la implementación de patrones de diseño para una mejor mantenibilidad.
-
-5. \*\*Documentación en \`DOCS\`:\*\*
-   - \`CONTRIBUTING.md\` y otros.
-   - \*\*Recomendación:\*\* Animar a la colaboración cl
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\AMIS\02-diagrama_flujo.txt
-```plaintext
-https://flowchart.fun/#
-
-Principal.py\nmain\(\)
-  Principal.py\ninicializar\(\)
-    UtilSist.py\nLimpieza\_pantalla\(\)
-      Principal.py\ncontrol\_de\_flujo\(\)
-        ¿Desea analizar el directorio por defecto?
-          Sí: Principal.py\nobtener\_ruta\_default\(\)
-            InterfazHM.py\nMenu\_01 #connect
-          No: Principal.py\nguardar\_nueva\_ruta\_default\(\)
-            \(#connect\)
-              Elige un modo
-                1 : Implementar mejoras en la programación
-                  Principal.py\nprocesar\_archivos\(\) #connect2
-                2 : Solucionar errores
-                  \(#connect2\)
-                3 : Aprendizaje
-                  \(#connect2\)
-
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\AMIS\03-ToDoList.md
-```plaintext
-
-# SYSTEM
-
-## Contexto del Proyecto
-Este prompt se utiliza para generar automáticamente un archivo TODO.txt en formato Markdown. Está diseñado para proyectos de software, con énfasis en la programación, diseño UX/UI y machine learning.
-
-## Objetivo
-El objetivo es proporcionar un TODO.txt, resaltando áreas específicas para aplicar mejores prácticas de programación, diseño UX/UI y técnicas de machine learning. Se enfoca en optimización y automatización, basándose en el análisis del proyecto de software. La respuesta debe omitir descripción del análisis ya que debe limitarse al archivo TXT dentro de "\`\`\`" 
-
-# USER
-
-/start
-
-### Contenido del TODO.txt
-El archivo TODO.txt debe incluir tareas pendientes específicas para la mejora del proyecto, estructuradas de la siguiente manera en formato Markdown:
-\`\`\`
-# To Do List
-
-## \[nombre\_del\_archivo\]
-- Situación: \[Pendiente/En\_Proceso/Finalizado\]
-- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_específica\_propuesta\_a\_partir\_del\_análisis\_realizado\]
-
-## \[nombre\_del\_archivo2\]
-- Situación: \[Pendiente/En\_Proceso/Finalizado\]
-- Análisis del Ingeniero de Software: \[Detalle\_de\_la\_mejora\_específica\_propuesta\_a\_partir\_del\_análisis\_realizado\]
 
 ```
 
@@ -681,6 +566,29 @@ Siguiendo estas recomendaciones, puedes mejorar significativamente la calidad y 
 
 ```
 
+### C:\AppServ\www\AnalizadorDeProyecto\DOCS\02-diagrama_flujo.txt
+```plaintext
+https://flowchart.fun/#
+
+Principal.py\nmain\(\)
+  Principal.py\ninicializar\(\)
+    UtilSist.py\nLimpieza\_pantalla\(\)
+      Principal.py\ncontrol\_de\_flujo\(\)
+        ¿Desea analizar el directorio por defecto?
+          Sí: Principal.py\nobtener\_ruta\_default\(\)
+            InterfazHM.py\nMenu\_01 #connect
+          No: Principal.py\nguardar\_nueva\_ruta\_default\(\)
+            \(#connect\)
+              Elige un modo
+                1 : Implementar mejoras en la programación
+                  Principal.py\nprocesar\_archivos\(\) #connect2
+                2 : Solucionar errores
+                  \(#connect2\)
+                3 : Aprendizaje
+                  \(#connect2\)
+
+```
+
 ### C:\AppServ\www\AnalizadorDeProyecto\DOCS\CONTRIBUTING.md
 ```plaintext
 # Contribuyendo a AnalizadorDeProyecto
@@ -731,7 +639,7 @@ Siguiendo estas recomendaciones, puedes mejorar significativamente la calidad y 
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\GestArch.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\GestArch.py
 ```plaintext
 #SCR/GestArch.py
 import pyperclip
@@ -859,7 +767,7 @@ def verificar\_existencia\_archivo\(nombre\_archivo\):
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\InterfazHM.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\InterfazHM.py
 ```plaintext
 #SCR/InterfazHM.py
 import os
@@ -970,7 +878,7 @@ def menu\_3\(modo\_prompt, ruta\):
         input\("Presione una tecla para salir"\)
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\ManiArch.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\ManiArch.py
 ```plaintext
 #SCR/ManiArch.py
 import os
@@ -1030,7 +938,7 @@ def listar\_archivos\(ruta, extensiones=None\):
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\Principal.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\Principal.py
 ```plaintext
 #SCR/Principal.py
 import os
@@ -1213,7 +1121,7 @@ if \_\_name\_\_ == "\_\_main\_\_":
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\UtilSist.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\UtilSist.py
 ```plaintext
 #SCR/UtilSist.py
 import sys
@@ -1249,9 +1157,9 @@ def limpieza\_pantalla\(habilitar=True\):
 
 ```
 
-### C:\AppServ\www\AnalizadorDeProyecto\SCR\logs\config_logger.py
+### C:\AppServ\www\AnalizadorDeProyecto\src\logs\config_logger.py
 ```plaintext
-#SCR/logs/config\_logger.py
+#src/logs/config\_logger.py
 import logging
 from logging.handlers import RotatingFileHandler
 import datetime
@@ -1268,7 +1176,7 @@ def configurar\_logging\(nivel=logging.INFO\):
         return logger
 
     # Configuración básica
-    filename = 'SCR/logs/sistema.log'
+    filename = 'src/logs/sistema.log'
     format = '%\(asctime\)s - %\(levelname\)s - %\(module\)s - %\(filename\)s:%\(lineno\)d: %\(message\)s'
     maxBytes = 10485760  # 10MB
     backupCount = 5
@@ -1295,28 +1203,5 @@ def configurar\_logging\(nivel=logging.INFO\):
 
 # Configurar el logger con un nivel específico
 configurar\_logging\(nivel=logging.DEBUG\)
-
-```
-
-### C:\AppServ\www\AnalizadorDeProyecto\test\test_gestion_archivos.py
-```plaintext
-import sys
-import os
-import unittest
-sys.path.append\(os.path.abspath\(os.path.join\(os.path.dirname\(\_\_file\_\_\), '..'\)\)\)
-from gestion\_archivos import filtrar\_archivos\_por\_extension
-
-
-class TestFiltrarArchivosPorExtension\(unittest.TestCase\):
-
-    def test\_filtrado\_correcto\(self\):
-        archivos = \["foto.jpg", "documento.txt", "script.py", "tabla.xlsx"\]
-        extensiones = \[".txt", ".py"\]
-        esperado = \["documento.txt", "script.py"\]
-        resultado = filtrar\_archivos\_por\_extension\(archivos, extensiones\)
-        self.assertEqual\(resultado, esperado\)
-
-if \_\_name\_\_ == '\_\_main\_\_':
-    unittest.main\(\)
 
 ```
