@@ -5,7 +5,7 @@
 Este prompt está diseñado para ser utilizado en conjunto con la estructura de directorios y archivos de un proyecto de software, enfocándose en implementar mejoras en las buenas prácticas de desarrollo de software.
 
 ## Objetivo
-El objetivo es analizar un proyecto de software para identificar áreas específicas donde aplicar mejores prácticas de programación, diseño UX/UI, y técnicas de machine learning para optimización y automatización. Tendrás que prestar atención al archivo REAMDE.md
+El objetivo es analizar un proyecto de software para identificar áreas específicas donde aplicar mejores prácticas de programación y arquitectura de software para la optimización. Tendrás que prestar atención al archivo REAMDE.md
 
 # USER
 
@@ -13,17 +13,14 @@ El objetivo es analizar un proyecto de software para identificar áreas específ
 1. **Análisis Automatizado del Proyecto:**
    - Realizar una revisión  de la estructura de directorios y archivos, y contenido del proyecto utilizando pruebas automáticas y análisis de rendimiento.
 
-2. **Identificación de Áreas de Mejora con Machine Learning:**
-   - Utilizar algoritmos de machine learning para identificar patrones de errores comunes, optimización de rendimiento y áreas clave para mejoras.
-
-3. **Sugerencias Específicas y Refactorización:**
+2. **Sugerencias Específicas y Refactorización:**
    - Proporcionar recomendaciones detalladas y automatizadas para las mejoras identificadas, incluyendo sugerencias de refactorización y optimización.
 
-4. **Plan de Acción Detallado con Retroalimentación:**
+3. **Plan de Acción Detallado con Retroalimentación:**
    - Desarrollar un plan de acción con pasos específicos, incluyendo herramientas y prácticas recomendadas.
    - Implementar un sistema de retroalimentación para ajustar continuamente el proceso de mejora basándose en el uso y rendimiento.
 
-5. **Implementación y Evaluación Continua:**
+4. **Implementación y Evaluación Continua:**
    - Indicar archivos o componentes específicos para mejoras.
    - Evaluar el impacto de las mejoras y realizar ajustes basándose en retroalimentación continua.
 
