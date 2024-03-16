@@ -4,51 +4,57 @@
 El `AnalizadorDeProyecto` es una herramienta avanzada en Python, diseñada para analizar, documentar y mejorar la estructura de proyectos de software. Ideal para la gestión y mantenimiento del código, esta herramienta ofrece funciones mejoradas de verificación, instalación de dependencias, enumeración avanzada de archivos por extensión y generación de informes detallados sobre la arquitectura del proyecto con capacidades de visualización.
 
 ## Versión de Python
-El `AnalizadorDeProyecto` es compatible y ha sido testeado en Python 3.12.2, asegurando una mayor eficiencia y compatibilidad con las últimas versiones. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
+El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
 
-## Instalación
-Para asegurar un entorno de desarrollo consistente, utilizamos Pipenv para manejar las dependencias y el entorno virtual. Asegúrate de tener Pipenv instalado en tu sistema. Si no lo tienes, puedes instalarlo con pip:
+## Instalación y configuración del entorno de desarrollo
 
-```bash
-pip install pipenv
-```
+Este proyecto utiliza `pipenv` para la gestión de dependencias y el entorno virtual, facilitando la configuración del entorno de desarrollo y promoviendo prácticas de desarrollo consistentes.
 
-Después de clonar el proyecto, navega a la carpeta raíz del mismo y ejecuta:
+### Pasos para configurar el entorno:
 
-```bash
-pipenv install
-```
+1. **Instalar `pipenv`**:
+   Asegúrate de tener `pipenv` instalado en tu sistema. Si no, puedes instalarlo con:
 
-Este comando creará un entorno virtual para el proyecto e instalará las dependencias necesarias a partir del `Pipfile` proporcionado.
+   ```bash
+   pip install pipenv
+   ```
 
-## Uso
-Para activar el entorno virtual y empezar a trabajar en el proyecto, ejecuta:
+2. **Clonar el repositorio del proyecto**:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <DIRECTORIO_DEL_PROYECTO>
+   ```
 
-```bash
-pipenv shell
-```
+3. **Instalar las dependencias y activar el entorno virtual**:
+   Para instalar las dependencias a partir del `Pipfile` proporcionado y activar el entorno virtual, ejecuta:
 
-Luego, puedes ejecutar `AnalizadorDeProyecto.py` dentro del entorno virtual:
+   ```bash
+   pipenv install
+   pipenv shell
+   ```
 
-1. Navega a la carpeta raíz de tu proyecto.
-2. Ejecuta `AnalizadorDeProyecto.py`.
-3. Cuando se solicite, proporciona la ruta de la carpeta a analizar.
+4. **Ejecutar la aplicación**:
+   Una vez activado el entorno virtual, inicia la aplicación con:
 
-Disfruta de las funcionalidades mejoradas del analizador, incluida la enumeración inteligente de archivos y la generación de informes exhaustivos sobre la estructura del proyecto.
+   ```bash
+   python src/main.py
+   ```
+
+   Sigue las instrucciones en pantalla para analizar la estructura de tu proyecto de software.
 
 ## Preguntas Frecuentes (FAQ)
 
 ### ¿Cómo puedo empezar a usar el AnalizadorDeProyecto?
-Para comenzar, asegúrate de que el entorno virtual esté activo ejecutando `pipenv shell`, y luego ejecuta `AnalizadorDeProyecto.py` en la raíz de tu proyecto.
+Asegúrate de que el entorno virtual esté activo ejecutando `pipenv shell`, y luego ejecuta `src/main.py` en la raíz de tu proyecto para comenzar el análisis.
 
 ### ¿En qué sistemas operativos funciona el AnalizadorDeProyecto?
-Actualmente, se ha probado en sistemas Windows con Python 3.12.2. Planeamos probar y asegurar la compatibilidad con otras plataformas en un futuro cercano.
+El proyecto se ha actualizado para asegurar la compatibilidad con sistemas operativos que soporten Python 3.9, mejorando así nuestra cobertura en distintas plataformas.
 
 ### ¿Puedo contribuir al proyecto?
-Aunque no estamos buscando contribuciones activas en este momento, cualquier feedback es siempre bienvenido. No dudes en compartir tus ideas o sugerencias.
+Aunque no estamos buscando contribuciones activas en este momento, valoramos tu feedback. No dudes en compartir tus ideas o sugerencias a través de la sección de 'issues' de nuestro repositorio de GitHub.
 
 ### ¿Qué hago si encuentro un error o un problema?
-Por favor, reporta cualquier error o problema en la sección de 'issues' de nuestro repositorio de GitHub.
+Si encuentras un error o tienes algún problema con el proyecto, por favor, reportalo en la sección de 'issues' de nuestro repositorio de GitHub.
 
 ---
 
