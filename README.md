@@ -8,45 +8,61 @@ El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido test
 
 ## Instalación y configuración del entorno de desarrollo
 
-Este proyecto utiliza `pipenv` para la gestión de dependencias y el entorno virtual, facilitando la configuración del entorno de desarrollo y promoviendo prácticas de desarrollo consistentes.
+Este proyecto soporta `pipenv` para la gestión de dependencias y el entorno virtual, y también ofrece soporte para `pip` y un entorno virtual estándar, facilitando así la configuración del entorno de desarrollo y promoviendo prácticas de desarrollo consistentes para una amplia gama de usuarios.
 
-### Pasos para configurar el entorno:
+### Configuración usando `pipenv`
 
 1. **Instalar `pipenv`**:
    Asegúrate de tener `pipenv` instalado en tu sistema. Si no, puedes instalarlo con:
-
    ```bash
    pip install pipenv
    ```
 
 2. **Clonar el repositorio del proyecto**:
    ```bash
-
    git clone https://github.com/AgustinMadygraf/AnalizadorDeProyecto
    cd <DIRECTORIO_DEL_PROYECTO>
    ```
 
 3. **Instalar las dependencias y activar el entorno virtual**:
-   Para instalar las dependencias a partir del `Pipfile` proporcionado y activar el entorno virtual, ejecuta:
-
    ```bash
    pipenv install
    pipenv shell
    ```
 
 4. **Ejecutar la aplicación**:
-   Una vez activado el entorno virtual, inicia la aplicación con:
-
    ```bash
    python src/main.py
    ```
 
-   Sigue las instrucciones en pantalla para analizar la estructura de tu proyecto de software.
+### Configuración usando `pip` y un entorno virtual estándar
+
+1. **Clonar el repositorio del proyecto**:
+   Sigue los mismos pasos que en la sección anterior.
+
+2. **Crear un entorno virtual**:
+   ```bash
+   python -m venv venv
+   ```
+
+3. **Activar el entorno virtual**:
+   - En Windows: `.\venv\Scripts\activate`
+   - En Unix o MacOS: `source venv/bin/activate`
+
+4. **Instalar las dependencias**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **Ejecutar la aplicación**:
+   ```bash
+   python src/main.py
+   ```
 
 ## Preguntas Frecuentes (FAQ)
 
 ### ¿Cómo puedo empezar a usar el AnalizadorDeProyecto?
-Asegúrate de que el entorno virtual esté activo ejecutando `pipenv shell`, y luego ejecuta `src/main.py` en la raíz de tu proyecto para comenzar el análisis.
+Dependiendo del método de instalación elegido, asegúrate de que el entorno virtual esté activo (`pipenv shell` para pipenv o activar el entorno virtual estándar) y luego ejecuta `src/main.py` en la raíz de tu proyecto para comenzar el análisis.
 
 ### ¿En qué sistemas operativos funciona el AnalizadorDeProyecto?
 El proyecto se ha actualizado para asegurar la compatibilidad con sistemas operativos que soporten Python 3.9, mejorando así nuestra cobertura en distintas plataformas.
@@ -55,7 +71,7 @@ El proyecto se ha actualizado para asegurar la compatibilidad con sistemas opera
 Aunque no estamos buscando contribuciones activas en este momento, valoramos tu feedback. No dudes en compartir tus ideas o sugerencias a través de la sección de 'issues' de nuestro repositorio de GitHub.
 
 ### ¿Qué hago si encuentro un error o un problema?
-Si encuentras un error o tienes algún problema con el proyecto, por favor, reportalo en la sección de 'issues' de nuestro repositorio de GitHub.
+Si encuentras un error o tienes algún problema con el proyecto, por favor, repórtalo en la sección de 'issues' de nuestro repositorio de GitHub.
 
 ---
 
