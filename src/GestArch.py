@@ -56,6 +56,12 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     if not os.path.isfile(nombre_archivo):
         logger.warning(f"El nombre del archivo no corresponde a un archivo: {nombre_archivo}")
         return None
+    
+    #quiero omitir los archivos que están dentro de la carpeta "DOCS"
+    if "DOCS" in nombre_archivo:
+        logger.warning(f'El archivo "{nombre_archivo}" se encuentra dentro de la carpeta "DOCS" y no será leído.')
+        return None
+    
 
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
