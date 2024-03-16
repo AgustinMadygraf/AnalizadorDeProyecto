@@ -18,7 +18,7 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
         extensiones (list of str): Extensiones para filtrar archivos.
         ruta_proyecto (str): Ruta base del proyecto.
     """
-    asegurar_directorio_AMIS(ruta)
+    asegurar_directorio_DOCS(ruta)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
@@ -101,7 +101,7 @@ def generar_nombre_archivo_salida(ruta):
         str: Ruta completa del archivo de salida.
     """
     # Formatear la ruta para el nombre del archivo
-    nombre_archivo_salida = f"AMIS\\00-Prompt-for-ProjectAnalysis.md" #AMIS = Analysis and Modification Improvement System
+    nombre_archivo_salida = f"DOCS\\00-Prompt-for-ProjectAnalysis.md" #DOCS = Analysis and Modification Improvement System
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
@@ -228,17 +228,17 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
-def asegurar_directorio_AMIS(ruta):
+def asegurar_directorio_DOCS(ruta):
     """
-    Asegura que exista el directorio AMIS en la ruta dada.
+    Asegura que exista el directorio DOCS en la ruta dada.
     Si el directorio no existe, lo crea.
 
     Args:
-        ruta (str): Ruta base donde se debe encontrar o crear el directorio AMIS.
+        ruta (str): Ruta base donde se debe encontrar o crear el directorio DOCS.
     """
-    directorio_amis = os.path.join(ruta, 'AMIS')
-    if not os.path.exists(directorio_amis):
-        os.makedirs(directorio_amis)
-        logger.info(f"Directorio AMIS creado en {directorio_amis}")
+    directorio_DOCS = os.path.join(ruta, 'DOCS')
+    if not os.path.exists(directorio_DOCS):
+        os.makedirs(directorio_DOCS)
+        logger.info(f"Directorio DOCS creado en {directorio_DOCS}")
     else:
-        logger.debug(f"Directorio AMIS ya existe en {directorio_amis}")
+        logger.debug(f"Directorio DOCS ya existe en {directorio_DOCS}")
