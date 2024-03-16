@@ -48,21 +48,19 @@ def crear_archivo_bat_con_pipenv(directorio_script, python_executable):
     ruta_main_py = os.path.join(directorio_script, 'src', 'main.py')
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
 
-    # Se ajusta el contenido para activar el entorno virtual de Pipenv
+    # Ajustamos el contenido para ejecutar directamente main.py a través de pipenv
     contenido_bat = (
         "@echo off\n"
-        "setlocal\n"
-        "\n"
-        "cd /d \"%~dp0\"\n"
-        "pipenv shell\n"
-        "pipenv run python \"{}\"\n".format(ruta_main_py) +
-        "pause\n"
-        "endlocal\n"
+        "cd /d \"%~dp0\"\n"  # Cambia al directorio donde se encuentra el script .bat
+        "pipenv run python \"{}\"\n".format(ruta_main_py) +  # Ejecuta main.py directamente
+        "echo.\n"  # Agrega una línea en blanco al final de la ejecución
+        "pause\n"  # Mantiene la ventana abierta para que puedas ver la salida del script
     )
 
     with open(ruta_archivo_bat, 'w') as archivo_bat:
         archivo_bat.write(contenido_bat)
-    logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente con Pipenv.")
+    logger.info("Archivo 'AnalizadorDeProyecto.bat' creado exitosamente.")
+
 
 def limpieza_pantalla():
     try:
