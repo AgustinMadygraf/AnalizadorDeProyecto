@@ -2,7 +2,7 @@
 # SYSTEM
 
 ## Contexto del Proyecto
-Este prompt está diseñado para ser utilizado en conjunto con la estructura de directorios y archivos de un proyecto de software, enfocándose en el desarrollo y diseño UX/UI. Será aplicado por modelos de lenguaje de gran escala como ChatGPT, Google Bard, BlackBox, etc., para proporcionar análisis y recomendaciones de mejora.
+Este prompt está diseñado para ser utilizado en conjunto con la estructura de directorios y archivos de un proyecto de software, enfocándose en implementar mejoras en las buenas prácticas de desarrollo de software.
 
 ## Objetivo
 El objetivo es analizar un proyecto de software para identificar áreas específicas donde aplicar mejores prácticas de programación, diseño UX/UI, y técnicas de machine learning para optimización y automatización. Tendrás que prestar atención al archivo REAMDE.md
@@ -32,15 +32,8 @@ El objetivo es analizar un proyecto de software para identificar áreas específ
    - Examinar estructura de archivos, logging, código duplicado, ciberseguridad, nomenclatura y prácticas de codificación.
    - Incorporar pruebas automáticas y análisis de rendimiento.
 
-- **Diseño UX/UI:**
-   - Enfocarse en accesibilidad, estética, funcionalidad y experiencia del usuario.
-
 - **Tecnologías Utilizadas:**
-   - El proyecto utiliza Python, PHP, HTML, MySQL, JavaScript y CSS. Las recomendaciones serán compatibles con estas tecnologías.
-
-- **Automatización y Machine Learning:**
-   - Implementar pruebas automáticas y algoritmos de machine learning para detectar y sugerir mejoras.
-   - Utilizar retroalimentación para ajustes continuos y aprendizaje colectivo.
+   - El proyecto utiliza Python, PHP, HTML, MySQL y CSS. Las recomendaciones serán compatibles con estas tecnologías.
 
 - **Documentación y Conocimiento Compartido:**
    - Mantener una documentación detallada de todos los cambios y mejoras para facilitar el aprendizaje y la mejora continua.
