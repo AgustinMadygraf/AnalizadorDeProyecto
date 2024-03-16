@@ -1,4 +1,4 @@
-#SCR/ManiArch.py
+#src/file_operations.py
 import os
 from logs.config_logger import configurar_logging
 

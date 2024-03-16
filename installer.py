@@ -61,7 +61,7 @@ def instalar_dependencias(directorio_script):
         logger.warning("Archivo 'requirements.txt' no encontrado. No se instalaron dependencias adicionales.")
 
 def crear_archivo_bat(directorio_script, python_executable):
-    ruta_main_py = os.path.join(directorio_script, 'src', 'Principal.py')
+    ruta_main_py = os.path.join(directorio_script, 'src', 'main.py')
     ruta_archivo_bat = os.path.join(directorio_script, 'AnalizadorDeProyecto.bat')
 
     contenido_bat = (

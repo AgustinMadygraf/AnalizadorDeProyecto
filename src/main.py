@@ -1,13 +1,13 @@
-#SCR/Principal.py
+#src/main.py
 import os
 import time
 import threading
 import sys
 from importlib import metadata
-from ManiArch import listar_archivos
-from SalidDatos import generar_archivo_salida
-from UtilSist import obtener_version_python, limpieza_pantalla
-from InterfazHM import  menu_0,menu_1, menu_2,menu_3 #, menu_4
+from file_operations import listar_archivos
+from data_output import generar_archivo_salida
+from utilities import obtener_version_python, limpieza_pantalla
+from user_interface import  menu_0,menu_1, menu_2,menu_3 #, menu_4
 from logs.config_logger import configurar_logging
 
 

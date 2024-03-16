@@ -1,4 +1,4 @@
-#SCR/GestArch.py
+#src/file_manager.py
 import pyperclip
 import os
 import time
