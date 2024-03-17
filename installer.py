@@ -5,6 +5,7 @@ from pathlib import Path
 from src.logs.config_logger import configurar_logging
 import winshell
 from win32com.client import Dispatch
+from pywintypes import com_error
 from pathlib import Path
 import os
 
@@ -16,14 +17,11 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script):
     ruta_acceso_directo = escritorio / "AnalizadorDeProyecto.lnk"
     ruta_icono = directorio_script / "config" / "AnalizadorDeProyecto.ico"
 
+# Verificación de existencia del archivo de icono
     if not ruta_icono.is_file():
         logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
         return False
 
-
-    if not Path.is_file(ruta_icono):
-        logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
-        return False
 
     try:
         shell = Dispatch('WScript.Shell')
@@ -34,11 +32,12 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script):
         acceso_directo.save()
         logger.info(f"Acceso directo {'actualizado' if ruta_acceso_directo.exists() else 'creado'} exitosamente.")
         return True
+    except com_error as e:
+        logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error de COM: {e}", exc_info=True)
     except OSError as e:
         logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error del sistema operativo: {e}", exc_info=True)
-    except Exception as e:
-        logger.error(f"Error inesperado al crear/actualizar el acceso directo: {e}", exc_info=True)
         return False
+
 
 
 def main():

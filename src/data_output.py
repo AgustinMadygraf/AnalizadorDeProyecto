@@ -3,6 +3,7 @@ import os
 import time
 from file_manager import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
+import logging
 
 # Configuración del logger
 logger = configurar_logging()
@@ -65,7 +66,8 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
             if contenido_archivo:
                 # Formatear el contenido del archivo para Markdown.
                 contenido += f"\n### {archivo}\n```plaintext\n"
-                contenido += escapar_caracteres_md(contenido_archivo) + "\n```\n"
+                #contenido += escapar_caracteres_md(contenido_archivo) + "\n```\n"
+                contenido += (contenido_archivo) + "\n```\n"
             else:
                 logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
     else:
