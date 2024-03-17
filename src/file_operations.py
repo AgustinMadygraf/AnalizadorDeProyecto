@@ -1,4 +1,3 @@
-#src/file_operations.py
 import os
 from logs.config_logger import configurar_logging
 
@@ -16,25 +15,15 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     Returns:
         list of str: Lista de archivos filtrados que coinciden con las extensiones.
     """
-    extensiones_set = set(extensiones)  # Conversión a conjunto para una búsqueda más rápida
+    if not extensiones:  # Si no se proporcionan extensiones, devolver todos los archivos
+        return archivos
+    extensiones_set = set(extensiones)  # Convertir lista a conjunto para búsqueda eficiente
     return [archivo for archivo in archivos if os.path.splitext(archivo)[1] in extensiones_set]
 
 def listar_archivos(ruta, extensiones=None):
-    """
-    Lista los archivos en una ruta dada, opcionalmente filtrando por extensiones.
-
-    Args:
-        ruta (str): Ruta del directorio a explorar.
-        extensiones (list of str, optional): Extensiones para filtrar archivos. Si es None, lista todos los archivos.
-
-    Returns:
-        list of str: Lista de archivos encontrados.
-        list of str: Estructura de directorio y archivos.
-    """
+    """Listar archivos en una ruta dada, opcionalmente filtrados por extensiones."""
     archivos_encontrados = []
     estructura = []
-
-    logger.debug(f"Iniciando listado de archivos en la ruta: {ruta}")
 
     for raiz, _, archivos in os.walk(ruta):
         if '.git' in raiz:  # Ignorar directorios .git
@@ -45,11 +34,11 @@ def listar_archivos(ruta, extensiones=None):
         estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
         subindentacion = ' ' * 4 * (nivel + 1)
 
-        archivos_en_raiz = [os.path.join(raiz, archivo) for archivo in archivos]
-        archivos_filtrados = archivos_en_raiz if extensiones is None else filtrar_archivos_por_extension(archivos_en_raiz, extensiones)
-        estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
-        archivos_encontrados.extend(archivos_filtrados)
+        for archivo in archivos:
+            archivo_completo = os.path.join(raiz, archivo)
+            archivos_encontrados.append(archivo_completo)
 
-    logger.debug(f"Listado de archivos completo. Total de archivos encontrados: {len(archivos_encontrados)}")
+    archivos_filtrados = filtrar_archivos_por_extension(archivos_encontrados, extensiones)
+    estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
 
-    return archivos_encontrados, estructura
+    return archivos_filtrados, estructura
