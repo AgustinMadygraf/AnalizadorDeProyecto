@@ -28,13 +28,33 @@ def solicitar_opcion(mensaje, opciones):
 
 def menu_1():
     """
-    Actualmente, solo hay una opción disponible en el menú. 
-    Este método podría retornar directamente el valor de esta opción.
-    Si se añaden más opciones en el futuro, este método puede ser ajustado para incluir la lógica de selección.
+    Presenta al usuario un menú con cuatro opciones de configuración y devuelve el archivo de configuración seleccionado.
     """
-    print("El modo actualmente disponible es: Implementar mejoras en la programación")
-    time.sleep(2)  # Dar tiempo al usuario para leer el mensaje antes de continuar automáticamente.
-    return 'config\\prompt_upd_0.md'
+    opciones = {
+        '1': 'config\\prompt_1.md', #mejora
+        '2': 'config\\prompt_2.md', #testing
+        '3': 'config\\prompt_3.md', #depuracion
+        '4': 'config\\prompt_4.md'  #readme 
+    }
+
+    print("Por favor, seleccione una opción de configuración:")
+    print("1: Mejora")
+    print("2: Depuración")
+    print("3: Testing")
+    print("4: Readme")
+    
+    eleccion = input("Ingrese el número de la opción deseada: ")
+
+    # Validar la entrada del usuario y asegurarse de que sea una opción válida
+    while eleccion not in opciones:
+        print("Opción no válida. Por favor, intente de nuevo.")
+        eleccion = input("Ingrese el número de la opción deseada: ")
+
+    # Devolver el archivo de configuración basado en la selección del usuario
+    archivo_seleccionado = opciones[eleccion]
+    print(f"Ha seleccionado la opción {eleccion}: {archivo_seleccionado}")
+    return archivo_seleccionado
+
 
 
 def menu_2(modo_prompt, ruta): 

@@ -34,7 +34,7 @@ def esta_en_gitignore(ruta_archivo, ruta_proyecto):
         logger.warning(f"No se encontró el archivo .gitignore en {ruta_proyecto}")
     return False
 
-def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
+def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.lock']):
     """
     Lee el contenido de un archivo de texto y lo devuelve, aplicando validaciones de seguridad
     para asegurar que solo se acceda a archivos permitidos y se evite la exposición de datos sensibles.
@@ -75,7 +75,7 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     if os.path.getsize(nombre_archivo) > 10240:
         logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
         return None
-
+        
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()
