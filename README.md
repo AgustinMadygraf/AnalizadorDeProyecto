@@ -59,18 +59,35 @@ Este proyecto soporta `pipenv` para la gestión de dependencias y el entorno vir
    python src/main.py
    ```
 
+## Manteniendo tu repositorio limpio
+
+Es vital para la integridad y seguridad de tu código mantener ciertos archivos y directorios fuera del control de versiones. Por ello, te recordamos incluir el directorio `.pytest_cache/` en tu archivo `.gitignore`. Esto evitará la subida accidental de datos de prueba y configuraciones específicas de tu entorno de desarrollo al repositorio.
+
+```plaintext
+# Ejemplo de contenido para .gitignore
+.pytest_cache/
+.env
+*.log
+```
+
+Asegurarte de que tu `.gitignore` esté correctamente configurado puede ahorrarte problemas de seguridad y mantenimiento a largo plazo.
+
 ## Preguntas Frecuentes (FAQ)
 
 ### ¿Cómo puedo empezar a usar el AnalizadorDeProyecto?
+
 Dependiendo del método de instalación elegido, asegúrate de que el entorno virtual esté activo (`pipenv shell` para pipenv o activar el entorno virtual estándar) y luego ejecuta `src/main.py` en la raíz de tu proyecto para comenzar el análisis.
 
 ### ¿En qué sistemas operativos funciona el AnalizadorDeProyecto?
+
 El proyecto se ha actualizado para asegurar la compatibilidad con sistemas operativos que soporten Python 3.9, mejorando así nuestra cobertura en distintas plataformas.
 
 ### ¿Puedo contribuir al proyecto?
+
 Aunque no estamos buscando contribuciones activas en este momento, valoramos tu feedback. No dudes en compartir tus ideas o sugerencias a través de la sección de 'issues' de nuestro repositorio de GitHub.
 
 ### ¿Qué hago si encuentro un error o un problema?
+
 Si encuentras un error o tienes algún problema con el proyecto, por favor, repórtalo en la sección de 'issues' de nuestro repositorio de GitHub.
 
 ---
