@@ -6,14 +6,23 @@ from src.logs.config_logger import configurar_logging
 import winshell
 import os
 from win32com.client import Dispatch
+from pathlib import Path
+
 
 # Configuración del logger
 logger = configurar_logging()
 
 def crear_acceso_directo(ruta_archivo_bat, directorio_script):
-    escritorio = winshell.desktop()
-    ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
+
+    # Asumiendo que `directorio_script` ya es un objeto Path
+    escritorio = Path(winshell.desktop())
+    ruta_acceso_directo = escritorio / "AnalizadorDeProyecto.lnk"
     ruta_icono = directorio_script / "config" / "AnalizadorDeProyecto.ico"
+
+    if not ruta_icono.is_file():
+        logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
+        return False
+
 
     if not os.path.isfile(ruta_icono):
         logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
@@ -22,15 +31,18 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script):
     try:
         shell = Dispatch('WScript.Shell')
         acceso_directo = shell.CreateShortCut(ruta_acceso_directo)
-        acceso_directo.Targetpath = ruta_archivo_bat
-        acceso_directo.WorkingDirectory = directorio_script
-        acceso_directo.IconLocation = ruta_icono  
+        acceso_directo.Targetpath = str(ruta_archivo_bat)
+        acceso_directo.WorkingDirectory = str(directorio_script)
+        acceso_directo.IconLocation = str(ruta_icono)
         acceso_directo.save()
-        logger.info(f"Acceso directo {'actualizado' if os.path.isfile(ruta_acceso_directo) else 'creado'} exitosamente.")
+        logger.info(f"Acceso directo {'actualizado' if ruta_acceso_directo.exists() else 'creado'} exitosamente.")
         return True
+    except OSError as e:
+        logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error del sistema operativo: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Error al crear/actualizar el acceso directo: {e}", exc_info=True)
+        logger.error(f"Error inesperado al crear/actualizar el acceso directo: {e}", exc_info=True)
         return False
+
 
 def main():
     directorio_script = Path(__file__).parent.resolve()

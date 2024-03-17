@@ -34,69 +34,48 @@ def esta_en_gitignore(ruta_archivo, ruta_proyecto):
         logger.warning(f"No se encontró el archivo .gitignore en {ruta_proyecto}")
     return False
 
-def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.lock']):
-    """
-    Lee el contenido de un archivo de texto y lo devuelve, aplicando validaciones de seguridad
-    para asegurar que solo se acceda a archivos permitidos y se evite la exposición de datos sensibles.
-
-    Args:
-        nombre_archivo (str): Ruta del archivo a leer.
-        extensiones_permitidas (list): Lista de extensiones permitidas para leer.
-
-    Returns:
-        str: Contenido del archivo, None si el archivo no cumple con las condiciones de seguridad o de filtrado.
-    """
-    # Validación inicial del tipo de dato para nombre_archivo
+def validar_nombre_archivo(nombre_archivo):
+    """Valida el tipo de dato del nombre del archivo."""
     if not isinstance(nombre_archivo, str):
         logger.warning(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
+        return False
+    return True
+
+def archivo_permitido(nombre_archivo, extensiones_permitidas):
+    """Verifica si el archivo tiene una extensión permitida."""
+    return any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas)
+
+def leer_contenido_archivo(nombre_archivo):
+    """Lee y retorna el contenido de un archivo de texto."""
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            return archivo.read()
+    except (FileNotFoundError, PermissionError, UnicodeDecodeError) as e:
+        logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
         return None
 
-    # Filtrado por extensiones permitidas
-    if not any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas):
+def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
+    """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
+    if not validar_nombre_archivo(nombre_archivo) or not os.path.isfile(nombre_archivo):
+        return None
+
+    if not archivo_permitido(nombre_archivo, extensiones_permitidas):
         logger.warning(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
         return None
 
-    # Validación de la existencia del archivo
-    if not os.path.isfile(nombre_archivo):
-        logger.warning(f"El nombre del archivo no corresponde a un archivo: {nombre_archivo}")
-        return None
-
-    # Seguridad: Prevenir la lectura de archivos fuera del directorio permitido
     if '..' in os.path.abspath(nombre_archivo) or "DOCS" in nombre_archivo:
         logger.error("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
         return None
 
-    # Comprobación contra .gitignore
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
         return None
 
-    # Restricción de tamaño de archivo
     if os.path.getsize(nombre_archivo) > 10240:
         logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
         return None
-        
-    try:
-        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
-            contenido = archivo.read()
-    except FileNotFoundError:
-        logger.error(f"No se encontró el archivo especificado: {nombre_archivo}")
-        return None
-    except PermissionError:
-        logger.error(f"Permiso denegado para leer el archivo: {nombre_archivo}")
-        return None
-    except UnicodeDecodeError:
-        logger.error(f"Error de codificación al leer el archivo: {nombre_archivo}")
-        return None
-    except OSError as e:
-        logger.error(f"Error del sistema operativo al leer el archivo {nombre_archivo}: {e}")
-        return None
 
-    # Procesamiento específico para archivos .sql
-    if nombre_archivo.endswith('.sql'):
-        return procesar_sql(contenido)
-    else:
-        return contenido
+    return leer_contenido_archivo(nombre_archivo)
 
 
 def procesar_sql(contenido_sql):
