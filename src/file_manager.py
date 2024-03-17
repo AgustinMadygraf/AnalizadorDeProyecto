@@ -79,8 +79,17 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()
-    except (FileNotFoundError, OSError, UnicodeDecodeError) as e:
-        logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
+    except FileNotFoundError:
+        logger.error(f"No se encontró el archivo especificado: {nombre_archivo}")
+        return None
+    except PermissionError:
+        logger.error(f"Permiso denegado para leer el archivo: {nombre_archivo}")
+        return None
+    except UnicodeDecodeError:
+        logger.error(f"Error de codificación al leer el archivo: {nombre_archivo}")
+        return None
+    except OSError as e:
+        logger.error(f"Error del sistema operativo al leer el archivo {nombre_archivo}: {e}")
         return None
 
     # Procesamiento específico para archivos .sql

@@ -1,9 +1,10 @@
 # installer.py
 import subprocess
-import os
 import sys
+from pathlib import Path
 from src.logs.config_logger import configurar_logging
 import winshell
+import os
 from win32com.client import Dispatch
 
 # Configuración del logger
@@ -12,7 +13,7 @@ logger = configurar_logging()
 def crear_acceso_directo(ruta_archivo_bat, directorio_script):
     escritorio = winshell.desktop()
     ruta_acceso_directo = os.path.join(escritorio, "AnalizadorDeProyecto.lnk")
-    ruta_icono = os.path.join(directorio_script, "config", "AnalizadorDeProyecto.ico")
+    ruta_icono = directorio_script / "config" / "AnalizadorDeProyecto.ico"
 
     if not os.path.isfile(ruta_icono):
         logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
@@ -32,7 +33,7 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script):
         return False
 
 def main():
-    directorio_script = os.path.dirname(os.path.abspath(__file__))
+    directorio_script = Path(__file__).parent.resolve()
     limpieza_pantalla()
     logger.info("Iniciando instalador")
 
