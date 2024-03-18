@@ -31,17 +31,19 @@ def menu_1():
     Presenta al usuario un menú con cuatro opciones de configuración y devuelve el archivo de configuración seleccionado.
     """
     opciones = {
-        '1': 'config\\prompt_1.md', #mejora
-        '2': 'config\\prompt_2.md', #testing
-        '3': 'config\\prompt_3.md', #depuracion
-        '4': 'config\\prompt_4.md'  #readme 
+        '1': 'config\\prompt_1.md',
+        '2': 'config\\prompt_2.md',
+        '3': 'config\\prompt_3.md',
+        '4': 'config\\prompt_4.md',
+        '5': 'config\\prompt_5.md' 
     }
 
     print("Por favor, seleccione una opción de configuración:")
-    print("1: Mejora")
-    print("2: Depuración")
-    print("3: Testing")
-    print("4: Readme")
+    print("1: Scrum Master")
+    print("2: Backend")
+    print("3: Frontend")
+    print("4: Data Engineer")
+    print("5: IA & ML Specialist")
     
     eleccion = input("Ingrese el número de la opción deseada: ")
 
