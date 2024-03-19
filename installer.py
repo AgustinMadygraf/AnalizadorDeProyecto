@@ -1,4 +1,4 @@
-# installer.py
+#AnalizadordeProyecto/installer.py
 import subprocess
 import sys
 from pathlib import Path
@@ -73,7 +73,10 @@ def crear_archivo_bat_con_pipenv(directorio_script, python_executable):
 
 def limpieza_pantalla():
     try:
-        os.system('cls' if os.name == 'nt' else 'clear')
+        if os.name == 'nt':  # Windows
+            subprocess.call('cls', shell=True)
+        else:  # macOS y Linux
+            subprocess.call('clear', shell=True)
         logger.info("Pantalla limpiada.")
     except Exception as e:
         logger.error(f"Error al limpiar la pantalla: {e}")

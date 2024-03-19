@@ -6,58 +6,45 @@ El `AnalizadorDeProyecto` es una herramienta avanzada en Python, diseñada para 
 ## Versión de Python
 El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
 
-## Instalación y configuración del entorno de desarrollo
+## Configuración del Entorno de Desarrollo
 
-Este proyecto soporta `pipenv` para la gestión de dependencias y el entorno virtual, y también ofrece soporte para `pip` y un entorno virtual estándar, facilitando así la configuración del entorno de desarrollo y promoviendo prácticas de desarrollo consistentes para una amplia gama de usuarios.
+Para configurar el entorno de desarrollo y asegurar que todas las dependencias estén correctamente instaladas, siga los siguientes pasos:
 
-### Configuración usando `pipenv`
+### Crear un Entorno Virtual
 
-1. **Instalar `pipenv`**:
-   Asegúrate de tener `pipenv` instalado en tu sistema. Si no, puedes instalarlo con:
-   ```bash
-   pip install pipenv
-   ```
-
-2. **Clonar el repositorio del proyecto**:
-   ```bash
-   git clone https://github.com/AgustinMadygraf/AnalizadorDeProyecto
-   cd <DIRECTORIO_DEL_PROYECTO>
-   ```
-
-3. **Instalar las dependencias y activar el entorno virtual**:
-   ```bash
-   pipenv install
-   pipenv shell
-   ```
-
-4. **Ejecutar la aplicación**:
-   ```bash
-   python src/main.py
-   ```
-
-### Configuración usando `pip` y un entorno virtual estándar
-
-1. **Clonar el repositorio del proyecto**:
-   Sigue los mismos pasos que en la sección anterior.
-
-2. **Crear un entorno virtual**:
+1. Abra una terminal en el directorio raíz del proyecto.
+2. Ejecute el siguiente comando para crear un entorno virtual:
    ```bash
    python -m venv venv
    ```
+   Esto creará un nuevo directorio `venv` en el directorio del proyecto, el cual contendrá el entorno virtual.
 
-3. **Activar el entorno virtual**:
-   - En Windows: `.\venv\Scripts\activate`
-   - En Unix o MacOS: `source venv/bin/activate`
+### Activar el Entorno Virtual
 
-4. **Instalar las dependencias**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+- En Windows, ejecute:
+  ```bash
+  .\venv\Scripts\activate
+  ```
+- En macOS y Linux, ejecute:
+  ```bash
+  source venv/bin/activate
+  ```
+  Al activar el entorno virtual, cualquier instalación de paquetes de Python se realizará dentro de este entorno, aislando así las dependencias del proyecto.
 
-5. **Ejecutar la aplicación**:
-   ```bash
-   python src/main.py
-   ```
+### Instalar las Dependencias
+
+Con el entorno virtual activado, instale las dependencias del proyecto ejecutando:
+```bash
+pip install -r requirements.txt
+```
+Esto leerá el archivo `requirements.txt` en el directorio raíz del proyecto e instalará las dependencias especificadas.
+
+### Ejecutar el Proyecto
+
+Con el entorno configurado y las dependencias instaladas, ahora puede ejecutar el proyecto utilizando:
+```bash
+python src/main.py
+```
 
 ## Manteniendo tu repositorio limpio
 
@@ -89,7 +76,3 @@ Aunque no estamos buscando contribuciones activas en este momento, valoramos tu 
 ### ¿Qué hago si encuentro un error o un problema?
 
 Si encuentras un error o tienes algún problema con el proyecto, por favor, repórtalo en la sección de 'issues' de nuestro repositorio de GitHub.
-
----
-
-*Este documento se actualizará regularmente para reflejar los cambios más recientes en el proyecto y responder a las preguntas de la comunidad.*
