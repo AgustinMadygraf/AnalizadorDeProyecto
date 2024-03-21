@@ -45,7 +45,7 @@ def menu_1():
     print("2: Backend")
     print("3: Frontend")
     print("4: Data Engineer")
-    print("5: IA & ML Specialist")
+    print("5: Vision Artificial & ML Specialist")
     
     eleccion = input("Ingrese el número de la opción deseada: ")
 
