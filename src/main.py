@@ -4,9 +4,8 @@ import time
 import threading
 import sys
 from importlib import metadata
-# Añadir el directorio raíz del proyecto y el directorio src al sys.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # Directorio raíz
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  # Directorio src
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
 
 from file_operations import listar_archivos
 from src.output_generation import generar_archivo_salida
@@ -39,12 +38,12 @@ def guardar_nueva_ruta_default(nueva_ruta):
 
 def main():
     ruta_proyecto = inicializar() #############################
+    
     ruta = obtener_ruta_analisis(ruta_proyecto)
     print("\n\nruta: ",ruta,"\n\n")
     if ruta and validar_ruta(ruta):
         modo_prompt = seleccionar_modo_operacion()
         procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-        realizar_pasos_adicionales(modo_prompt, ruta)
 
 def seleccionar_modo_operacion():
     """
@@ -52,11 +51,6 @@ def seleccionar_modo_operacion():
     """
     return menu_1()
 
-def realizar_pasos_adicionales(modo_prompt, ruta):
-    """
-    Realiza pasos adicionales basados en el modo de operación seleccionado.
-    """
-    print("\n saliendo del programa")
 
 def inicializar():
     """
