@@ -37,13 +37,18 @@ def guardar_nueva_ruta_default(nueva_ruta):
         logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def main():
-    ruta_proyecto = inicializar() #############################
-    
-    ruta = obtener_ruta_analisis(ruta_proyecto)
-    print("\n\nruta: ",ruta,"\n\n")
-    if ruta and validar_ruta(ruta):
-        modo_prompt = seleccionar_modo_operacion()
-        procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+    ruta_proyecto = inicializar()
+    while True:
+        ruta = obtener_ruta_analisis(ruta_proyecto)
+        print("\n\nruta: ",ruta,"\n\n")
+        if ruta and validar_ruta(ruta):
+            modo_prompt = seleccionar_modo_operacion()
+            procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+            print("El archivo de salida ha sido generado con éxito.\n\n")
+        else:
+            logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
+
+
 
 def seleccionar_modo_operacion():
     """
