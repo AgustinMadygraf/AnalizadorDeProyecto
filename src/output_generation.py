@@ -43,7 +43,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
     logger.debug("Preparando contenido de salida")
     nombre_archivo = os.path.join(ruta_archivo, modo_prompt)
-    contenido_prompt = leer_archivo(nombre_archivo)
+    contenido_prompt = leer_archivo(nombre_archivo,permiso = True)
     # Comprobación y asignación del contenido inicial basado en el prompt.
     if contenido_prompt:
         contenido = contenido_prompt
@@ -59,7 +59,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     if archivos_seleccionados:
         contenido += "\n\n## Contenido de Archivos Seleccionados\n"
         for archivo in archivos_seleccionados:
-            contenido_archivo = leer_archivo(archivo)
+            contenido_archivo = leer_archivo(archivo, permiso = True)
             if contenido_archivo:
                 # Formatear el contenido del archivo para Markdown.
                 contenido += f"\n### {archivo}\n```plaintext\n"

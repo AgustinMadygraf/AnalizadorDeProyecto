@@ -54,7 +54,7 @@ def leer_contenido_archivo(nombre_archivo):
         logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
         return None
 
-def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
+def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
     """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
     if not validar_nombre_archivo(nombre_archivo) or not os.path.isfile(nombre_archivo):
         return None
@@ -63,16 +63,17 @@ def leer_archivo(nombre_archivo, extensiones_permitidas=['.html', '.css', '.php'
         logger.warning(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
         return None
 
-    if '..' in os.path.abspath(nombre_archivo) or "DOCS" in nombre_archivo:
-        logger.error("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
-        return None
+    if permiso:
+        if '..' in os.path.abspath(nombre_archivo) or "DOCS" in nombre_archivo:
+            logger.error("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
+            return None
+        
+        if os.path.getsize(nombre_archivo) > 10240:
+            logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
+            return None
 
     if esta_en_gitignore(nombre_archivo, ruta_proyecto):
         logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
-        return None
-
-    if os.path.getsize(nombre_archivo) > 10240:
-        logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
         return None
 
     return leer_contenido_archivo(nombre_archivo)
@@ -101,15 +102,27 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     Args:
         nombre_archivo_salida (str): Ruta del archivo cuyo contenido se copiará.
     """
-    contenido = leer_archivo(nombre_archivo_salida)
-    if contenido is not None:
+    # Verificar si el archivo existe
+    if not os.path.exists(nombre_archivo_salida):
+        logger.error(f"El archivo '{nombre_archivo_salida}' no existe.")
+        print(f"Error: El archivo '{nombre_archivo_salida}' no existe.")
+        return
+
+    print("Copiando contenido al portapapeles...\n\n")
+    permiso = False
+    contenido = leer_archivo(nombre_archivo_salida,permiso)
+    if contenido:
         try:
             pyperclip.copy(contenido)
             logger.info(f"El contenido del archivo '{nombre_archivo_salida}' ha sido copiado al portapapeles.")
-            time.sleep(1)
-            print("")
+            print("Contenido copiado al portapapeles exitosamente.")
         except pyperclip.PyperclipException as e:
             logger.error(f"No se pudo copiar al portapapeles: {e}")
+            print(f"Error: No se pudo copiar al portapapeles debido a un error del sistema: {e}")
+    else:
+        logger.warning(f"El archivo '{nombre_archivo_salida}' está vacío o no se pudo leer.")
+        print(f"Advertencia: El archivo '{nombre_archivo_salida}' está vacío o no se pudo leer.")
+
 
 def verificar_existencia_archivo(nombre_archivo):
     """
