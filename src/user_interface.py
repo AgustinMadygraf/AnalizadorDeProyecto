@@ -47,12 +47,12 @@ def menu_1():
     print("4: Data Engineer")
     print("5: Vision Artificial & ML Specialist")
     
-    eleccion = input("Ingrese el número de la opción deseada: ")
+    eleccion = input("Ingrese el número de la opción deseada (presione Enter para seleccionar 0): ") or '0'
 
     # Validar la entrada del usuario y asegurarse de que sea una opción válida
     while eleccion not in opciones:
-        print("Opción no válida. Por favor, intente de nuevo.")
-        eleccion = input("Ingrese el número de la opción deseada: ")
+        print("Opción no válida. Por defecto se seleccionará la opción 0.")
+        eleccion = 0
 
     # Devolver el archivo de configuración basado en la selección del usuario
     archivo_seleccionado = opciones[eleccion]
