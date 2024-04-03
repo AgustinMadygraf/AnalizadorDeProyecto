@@ -7,7 +7,7 @@ El `AnalizadorDeProyecto` es una herramienta poderosa diseñada para ayudar a lo
 - Instalación y configuración sencillas
 - Análisis detallado con reportes visuales
 
-Empieza rápidamente con nuestra [Guía de Inicio Rápido](#https://github.com/AgustinMadygraf/AnalizadorDeProyecto/blob/main/DOCS/QUICKSTART.MD).
+Empieza rápidamente con nuestra [Guía de Inicio Rápido](https://github.com/AgustinMadygraf/AnalizadorDeProyecto/blob/main/DOCS/QUICKSTART.MD).
 
 ## Versión de Python
 El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
