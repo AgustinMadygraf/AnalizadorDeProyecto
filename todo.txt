@@ -43,3 +43,5 @@ TODO List for AnalizadorDeProyecto Enhancements
    - Implementación: Evaluar la estructura actual del CLI y realizar cambios específicos como la adición de colores, la
      implementación de un sistema de ayuda mejorado, la simplificación de comandos, y la inclusión de ejemplos de uso.
      Considerar el uso de bibliotecas externas para mejorar la interfaz del CLI si es necesario.
+
+7- hacer un conteo de que tipo de archivos hay en el proyecto

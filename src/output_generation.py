@@ -64,8 +64,14 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
     contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
     contenido = contenido_prompt
-    contenido_todotxt = "\n "
-    contenido += contenido_todotxt
+
+    # Verificar si existe todo.txt y añadir su contenido
+    ruta_todo_txt = os.path.join(ruta, 'todo.txt')
+    if os.path.exists(ruta_todo_txt):
+        with open(ruta_todo_txt, 'r', encoding='utf-8') as todo_file:
+            contenido_todo_txt = todo_file.read()
+            contenido += "\n## TODO List from todo.txt\n" + contenido_todo_txt + "\n"
+
     # Añadiendo directamente la estructura de carpetas y archivos, incluyendo el tamaño de cada archivo.
     #print(f"\n\nestructura: {estructura}\n\n")
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
