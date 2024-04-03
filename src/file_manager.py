@@ -46,12 +46,19 @@ def archivo_permitido(nombre_archivo, extensiones_permitidas):
     return any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas)
 
 def leer_contenido_archivo(nombre_archivo):
-    """Lee y retorna el contenido de un archivo de texto."""
+    """Lee el contenido de un archivo de texto.
+
+    Args:
+        nombre_archivo (str): Ruta completa al archivo que se va a leer.
+
+    Returns:
+        str: Contenido del archivo, o None si ocurre un error o si el archivo no cumple con los requisitos de seguridad.
+    """
     try:
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             return archivo.read()
-    except (FileNotFoundError, PermissionError, UnicodeDecodeError) as e:
-        logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
+    except Exception as e:
+        logger.error(f"No se pudo leer el archivo {nombre_archivo}: {e}")
         return None
 
 def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
