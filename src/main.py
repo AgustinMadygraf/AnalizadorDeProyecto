@@ -17,14 +17,22 @@ from logs.config_logger import configurar_logging
 logger = configurar_logging()
 
 def obtener_ruta_analisis(ruta_proyecto):
-    ruta_default = obtener_ruta_default()
+    ruta_seleccionada = obtener_ruta_default()  # Esta ahora devuelve un diccionario
+    if isinstance(ruta_seleccionada, dict):
+        ruta_default = ruta_seleccionada['ruta']
+    else:
+        ruta_default = ruta_seleccionada  # En caso de que todavía soporte el formato antiguo
+
     logger.info(f"Directorio por defecto: {ruta_default}")
     respuesta = input("¿Desea analizar el directorio? (S/N): ").upper()
+
     if respuesta == 'N':
         nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
+        # Asegúrate de que guardar_nueva_ruta_default y cualquier otra función manejen correctamente el nuevo formato
         if nueva_ruta != ruta_default:
             guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
+
     return ruta_default
 
 def main():
@@ -89,6 +97,10 @@ def bienvenida():
 
     # Avanza a la siguiente etapa después de la segunda pulsación de Enter
 
+import json
+import os
+from datetime import datetime
+
 def guardar_nueva_ruta_default(nueva_ruta):
     archivo_default = 'config/path.json'
     try:
@@ -99,12 +111,13 @@ def guardar_nueva_ruta_default(nueva_ruta):
         else:
             data = {"rutas": []}
         
-        # Añadir la nueva ruta al principio de la lista (última usada)
-        if nueva_ruta not in data["rutas"]:
-            data["rutas"].insert(0, nueva_ruta)
+        # Buscar la ruta en el archivo. Si existe, actualizar el timestamp
+        ruta_existente = next((item for item in data["rutas"] if item["ruta"] == nueva_ruta), None)
+        if ruta_existente:
+            ruta_existente["ultimo_acceso"] = datetime.now().isoformat()
         else:
-            # Mover la ruta al principio si ya existe
-            data["rutas"].insert(0, data["rutas"].pop(data["rutas"].index(nueva_ruta)))
+            # Añadir la nueva ruta al principio de la lista con el timestamp actual
+            data["rutas"].insert(0, {"ruta": nueva_ruta, "ultimo_acceso": datetime.now().isoformat()})
         
         # Guardar el archivo JSON actualizado
         with open(archivo_default, 'w', encoding='utf-8') as file:
@@ -175,13 +188,22 @@ def validar_ruta(ruta):
     Returns:
         bool: True si la ruta es un directorio y es accesible para lectura, False en caso contrario.
     """
+    # Asegurarse de que 'ruta' no sea None y sea una cadena no vacía
+    if not ruta or not isinstance(ruta, str):
+        logger.error(f"Validación de ruta fallida, la ruta proporcionada es inválida: '{ruta}'")
+        return False
+
     # Verifica si la ruta es un directorio
     es_directorio = os.path.isdir(ruta)
 
     # Verifica si el directorio es accesible para lectura
     es_accesible = os.access(ruta, os.R_OK)
 
-    return es_directorio and es_accesible
+    if not es_directorio or not es_accesible:
+        logger.error(f"La ruta no es un directorio o no es accesible para lectura: '{ruta}'")
+        return False
+
+    return True
 
 def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     """
