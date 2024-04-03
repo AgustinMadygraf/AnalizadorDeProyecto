@@ -57,7 +57,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     else:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
 
-    contenido += "\nFecha y hora:\n" 
+    contenido += "Fecha y hora:\n" 
     contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
     
 

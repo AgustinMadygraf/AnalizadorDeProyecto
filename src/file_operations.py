@@ -28,7 +28,8 @@ def filtrar_archivos_por_extension(archivos, extensiones):
 def listar_archivos(ruta, extensiones=None):
     """
     Recorre de manera recursiva la ruta proporcionada, listando todos los archivos y,
-    opcionalmente, filtrando por extensiones de archivo.
+    opcionalmente, filtrando por extensiones de archivo. Además, incluye el peso de cada
+    archivo en kilobytes.
     
     Args:
         ruta (str): Ruta de la carpeta a escanear.
@@ -38,7 +39,7 @@ def listar_archivos(ruta, extensiones=None):
     Returns:
         tuple: 
         - (list): Lista de archivos filtrados encontrados.
-        - (list): Lista de cadenas representando la estructura de directorios y archivos encontrados.
+        - (list): Lista de cadenas representando la estructura de directorios y archivos encontrados, incluyendo el peso de cada archivo en kB.
     """
     archivos_encontrados = []
     estructura = []
@@ -52,9 +53,13 @@ def listar_archivos(ruta, extensiones=None):
         estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
         subindentacion = ' ' * 4 * (nivel + 1)
 
-        archivos_temp = [os.path.join(raiz, archivo) for archivo in archivos]
-        archivos_filtrados = filtrar_archivos_por_extension(archivos_temp, extensiones)
-        estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
-        archivos_encontrados.extend(archivos_filtrados)
+        for archivo in archivos:
+            archivo_completo = os.path.join(raiz, archivo)
+            if not extensiones or os.path.splitext(archivo)[1] in extensiones or archivo in {'Pipfile', 'Pipfile.lock'}:
+                archivos_encontrados.append(archivo_completo)
+                # Obtiene el tamaño del archivo en kilobytes
+                tamano_kb = os.path.getsize(archivo_completo) / 1024
+                estructura.append(f"{subindentacion}{os.path.basename(archivo)} - {tamano_kb:.2f}kB")
+    print (f"\n\nArchivos encontrados: {archivos_encontrados} \n\nEstructura: {estructura} \n")
 
     return archivos_encontrados, estructura
