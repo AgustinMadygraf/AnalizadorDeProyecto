@@ -1,7 +1,13 @@
 # AnalizadorDeProyecto
 
 ## Descripción
-El `AnalizadorDeProyecto` es una herramienta avanzada en Python, diseñada para analizar, documentar y mejorar la estructura de proyectos de software. Ideal para la gestión y mantenimiento del código, esta herramienta ofrece funciones mejoradas de verificación, instalación de dependencias, enumeración avanzada de archivos por extensión y generación de informes detallados sobre la arquitectura del proyecto con capacidades de visualización.
+El `AnalizadorDeProyecto` es una herramienta poderosa diseñada para ayudar a los desarrolladores a analizar y mejorar la estructura de sus proyectos de software. Con funcionalidades como la instalación automática de dependencias, análisis avanzado de archivos, y generación de informes detallados, esta herramienta facilita la gestión del código y mejora la eficiencia del desarrollo.
+
+- Compatible con Python 3.9
+- Instalación y configuración sencillas
+- Análisis detallado con reportes visuales
+
+Empieza rápidamente con nuestra [Guía de Inicio Rápido](#quick-start-guide-for-analizadordeproyecto).
 
 ## Versión de Python
 El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
