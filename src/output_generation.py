@@ -19,6 +19,7 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
     """
     asegurar_directorio_DOCS(ruta)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
+    print (f"\n\estructura_actualizada: {estructura_actualizada} \n")
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
     contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta, ruta_archivos)
@@ -41,23 +42,41 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
-    logger.debug("Preparando contenido de salida")
-    
-    # Construir el contenido inicial basado en el prompt o proveer un mensaje de error predeterminado
-    contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nprompt:\nNo hay prompt. falla.\n\n"
-    contenido =  contenido_prompt
+import datetime
 
-    # Añadiendo la estructura de directorios y archivos en formato Markdown.
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
+    """
+    Prepara el contenido de salida agregando la estructura de directorios y archivos con sus tamaños,
+    el contenido de archivos seleccionados, y la fecha y hora actual.
+
+    Args:
+        estructura (list): Lista de directorios y archivos con sus tamaños en kB.
+        modo_prompt (str): Ruta al archivo de configuración de prompt seleccionado.
+        archivos_seleccionados (list): Lista de rutas de archivos seleccionados para mostrar su contenido.
+        ruta (str): Ruta base donde se encuentra el proyecto.
+        ruta_archivo (str): Ruta donde se encuentran los archivos de configuración.
+
+    Returns:
+        str: El contenido completo a ser presentado o guardado.
+    """
+    logger.debug("Preparando contenido de salida")
+
+    # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
+    contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
+    contenido = contenido_prompt
+
+    # Añadiendo directamente la estructura de carpetas y archivos, incluyendo el tamaño de cada archivo.
+    #print(f"\n\nestructura: {estructura}\n\n")
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
 
-    # Procesamiento y adición de contenido de archivos seleccionados.
+    # Procesar y añadir el contenido de archivos seleccionados, si los hay.
     if archivos_seleccionados:
         contenido += construir_contenido_archivos_seleccionados(archivos_seleccionados)
     else:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
 
-    contenido += "Fecha y hora:\n" 
+    # Añadir la fecha y hora actuales al contenido.
+    contenido += "Fecha y hora:\n"
     contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
     
     return contenido

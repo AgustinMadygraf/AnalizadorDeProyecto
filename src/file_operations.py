@@ -60,6 +60,6 @@ def listar_archivos(ruta, extensiones=None):
                 # Obtiene el tamaño del archivo en kilobytes
                 tamano_kb = os.path.getsize(archivo_completo) / 1024
                 estructura.append(f"{subindentacion}{os.path.basename(archivo)} - {tamano_kb:.2f}kB")
-    print (f"\n\nArchivos encontrados: {archivos_encontrados} \n\nEstructura: {estructura} \n")
+    print (f"\n\nEstructura: {estructura} \n")
 
     return archivos_encontrados, estructura
