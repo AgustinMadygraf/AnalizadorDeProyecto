@@ -6,16 +6,15 @@ import sys
 from importlib import metadata
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
-
 from file_operations import listar_archivos
 from src.output_generation import generar_archivo_salida
 from utilities import obtener_version_python, limpieza_pantalla
 from user_interface import  menu_0,menu_1
 from logs.config_logger import configurar_logging
 
-
 # Configuración del logger
 logger = configurar_logging()
+
 def obtener_ruta_analisis(ruta_proyecto):
     ruta_default = obtener_ruta_default()
     logger.info(f"Directorio por defecto: {ruta_default}")
@@ -26,15 +25,6 @@ def obtener_ruta_analisis(ruta_proyecto):
             guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
     return ruta_default
-
-def guardar_nueva_ruta_default(nueva_ruta):
-    archivo_default = 'config/path.txt'
-    try:
-        with open(archivo_default, 'w', encoding='utf-8') as file:
-            file.write(nueva_ruta)
-        logger.info(f"Nueva ruta por defecto guardada: {nueva_ruta}")
-    except IOError as e:
-        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def main():
     ruta_proyecto = inicializar()
@@ -48,14 +38,11 @@ def main():
         else:
             logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
 
-
-
 def seleccionar_modo_operacion():
     """
     Permite al usuario seleccionar el modo de operación y devuelve el prompt correspondiente.
     """
     return menu_1()
-
 
 def inicializar():
     """
@@ -101,7 +88,14 @@ def bienvenida():
 
     # Avanza a la siguiente etapa después de la segunda pulsación de Enter
 
-
+def guardar_nueva_ruta_default(nueva_ruta):
+    archivo_default = 'config/path.txt'
+    try:
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            file.write(nueva_ruta)
+        logger.info(f"Nueva ruta por defecto guardada: {nueva_ruta}")
+    except IOError as e:
+        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def obtener_ruta_default():
     """
