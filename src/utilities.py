@@ -29,21 +29,3 @@ def limpieza_pantalla(habilitar=True):
         logger.debug("Pantalla limpiada.")
     except Exception as e:
         logger.error(f"No se pudo limpiar la pantalla: {e}")
-
-def leer_contenido_archivo(ruta_archivo):
-    """
-    Lee el contenido de un archivo dado por su ruta.
-    
-    Args:
-        ruta_archivo (str): La ruta completa al archivo.
-    
-    Returns:
-        str: El contenido del archivo.
-    """
-    try:
-        with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
-            return archivo.read()
-    except Exception as e:
-        # Considerar manejo específico de excepciones o registro
-        print(f"Error al leer el archivo: {e}")
-        return None

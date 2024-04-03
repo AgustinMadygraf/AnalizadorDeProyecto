@@ -60,7 +60,6 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     contenido += "Fecha y hora:\n" 
     contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
     
-
     return contenido
 
 def construir_contenido_archivos_seleccionados(archivos_seleccionados):
