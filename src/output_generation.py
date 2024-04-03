@@ -73,7 +73,6 @@ def construir_contenido_archivos_seleccionados(archivos_seleccionados):
             logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
     return contenido_archivos
 
-
 def escapar_caracteres_md(texto):
     """
     Escapa caracteres especiales de Markdown en un texto.

@@ -114,7 +114,6 @@ def guardar_nueva_ruta_default(nueva_ruta):
     except Exception as e:
         print(f"Error al guardar la nueva ruta por defecto: {e}")
 
-
 def obtener_ruta_default():
     archivo_default = 'config/path.json'
     try:
@@ -198,7 +197,6 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos)
-
 
 if __name__ == "__main__":
     main()
