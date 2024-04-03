@@ -3,6 +3,7 @@ import os
 import time
 import threading
 import sys
+import json
 from importlib import metadata
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
@@ -18,7 +19,7 @@ logger = configurar_logging()
 def obtener_ruta_analisis(ruta_proyecto):
     ruta_default = obtener_ruta_default()
     logger.info(f"Directorio por defecto: {ruta_default}")
-    respuesta = input("¿Desea analizar el directorio por defecto? (S/N): ").upper()
+    respuesta = input("¿Desea analizar el directorio? (S/N): ").upper()
     if respuesta == 'N':
         nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
         if nueva_ruta != ruta_default:
@@ -89,39 +90,68 @@ def bienvenida():
     # Avanza a la siguiente etapa después de la segunda pulsación de Enter
 
 def guardar_nueva_ruta_default(nueva_ruta):
-    archivo_default = 'config/path.txt'
+    archivo_default = 'config/path.json'
     try:
+        # Cargar el archivo JSON existente o crear uno nuevo si no existe
+        if os.path.exists(archivo_default):
+            with open(archivo_default, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+        else:
+            data = {"rutas": []}
+        
+        # Añadir la nueva ruta al principio de la lista (última usada)
+        if nueva_ruta not in data["rutas"]:
+            data["rutas"].insert(0, nueva_ruta)
+        else:
+            # Mover la ruta al principio si ya existe
+            data["rutas"].insert(0, data["rutas"].pop(data["rutas"].index(nueva_ruta)))
+        
+        # Guardar el archivo JSON actualizado
         with open(archivo_default, 'w', encoding='utf-8') as file:
-            file.write(nueva_ruta)
-        logger.info(f"Nueva ruta por defecto guardada: {nueva_ruta}")
-    except IOError as e:
-        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
+            json.dump(data, file, indent=4)
+        
+        print(f"Nueva ruta por defecto guardada: {nueva_ruta}")
+    except Exception as e:
+        print(f"Error al guardar la nueva ruta por defecto: {e}")
+
 
 def obtener_ruta_default():
-    """
-    Obtiene la ruta por defecto desde un archivo de configuración.
-
-    Intenta leer un archivo 'path.txt' ubicado en el directorio 'config' relativo al script actual.
-    Si el archivo no existe, lo crea con un valor predeterminado y luego devuelve ese valor.
-
-    Returns:
-        str: La ruta por defecto leída del archivo o un valor predeterminado si el archivo no existe.
-    """
-    ruta_script = obtener_ruta_script()
-    archivo_default = os.path.join(ruta_script, '../config/path.txt')
-
-    # Asegurarse de que el directorio 'config' exista
-    os.makedirs(os.path.dirname(archivo_default), exist_ok=True)
-
+    archivo_default = 'config/path.json'
     try:
         with open(archivo_default, 'r', encoding='utf-8') as file:
-            return file.read().strip()
+            data = json.load(file)
+            rutas = data.get('rutas', [])
+            
+        # Si no hay rutas guardadas, pedir al usuario que introduzca una
+        if not rutas:
+            nueva_ruta = input("No se encontraron rutas guardadas. Por favor, introduzca una nueva ruta: ").strip()
+            guardar_nueva_ruta_default(nueva_ruta)
+            return nueva_ruta
+        
+        # Mostrar rutas existentes y permitir elegir una
+        print("Seleccione una ruta:")
+        for i, ruta in enumerate(rutas, start=1):
+            print(f"{i}. {ruta}")
+        print(f"{len(rutas)+1}. Introducir una nueva ruta")
+        
+        eleccion = input("Seleccione una opción: ").strip()
+        if eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
+            # Elegir una ruta existente
+            return rutas[int(eleccion)-1]
+        elif eleccion == str(len(rutas) + 1):
+            # Añadir una nueva ruta
+            nueva_ruta = input("Introduzca la nueva ruta: ").strip()
+            guardar_nueva_ruta_default(nueva_ruta)
+            return nueva_ruta
+        else:
+            print("Opción no válida.")
+            return obtener_ruta_default()
+            
     except FileNotFoundError:
-        # Especifica un valor más significativo o deja en blanco según tus necesidades
-        valor_por_defecto = "Especifica_tu_ruta_aquí"
-        with open(archivo_default, 'w', encoding='utf-8') as file:
-            file.write(valor_por_defecto)
-        return valor_por_defecto
+        # Si no existe el archivo, pedir una ruta nueva
+        nueva_ruta = input("Por favor, introduzca una nueva ruta: ").strip()
+        guardar_nueva_ruta_default(nueva_ruta)
+        return nueva_ruta
 
 def obtener_ruta_script():
     """
