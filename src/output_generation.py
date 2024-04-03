@@ -1,4 +1,5 @@
 import os
+import datetime
 from src.file_manager import leer_archivo, copiar_contenido_al_portapapeles
 from src.logs.config_logger import configurar_logging
 from src.file_operations_extended import listar_archivos, asegurar_directorio_DOCS
@@ -42,35 +43,36 @@ def formatear_archivo_salida(nombre_archivo_salida):
 
 def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
     logger.debug("Preparando contenido de salida")
-    nombre_archivo = os.path.join(ruta_archivo, modo_prompt)
-    contenido_prompt = leer_archivo(nombre_archivo,permiso = True)
-    # Comprobación y asignación del contenido inicial basado en el prompt.
-    if contenido_prompt:
-        contenido = contenido_prompt
-    else:
-        logger.error("No se pudo leer el prompt")
-        contenido = "\n\nprompt:\nNo hay prompt. falla.\n\n"
+    
+    # Construir el contenido inicial basado en el prompt o proveer un mensaje de error predeterminado
+    contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nprompt:\nNo hay prompt. falla.\n\n"
+    contenido = "Fecha y hora:\n" 
+    contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
+    contenido += contenido_prompt
 
     # Añadiendo la estructura de directorios y archivos en formato Markdown.
-    contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n"
-    contenido += '\n'.join(estructura) + "\n```\n"
+    contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
 
     # Procesamiento y adición de contenido de archivos seleccionados.
     if archivos_seleccionados:
-        contenido += "\n\n## Contenido de Archivos Seleccionados\n"
-        for archivo in archivos_seleccionados:
-            contenido_archivo = leer_archivo(archivo, permiso = True)
-            if contenido_archivo:
-                # Formatear el contenido del archivo para Markdown.
-                contenido += f"\n### {archivo}\n```plaintext\n"
-                #contenido += escapar_caracteres_md(contenido_archivo) + "\n```\n"
-                contenido += (contenido_archivo) + "\n```\n"
-            else:
-                logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
+        contenido += construir_contenido_archivos_seleccionados(archivos_seleccionados)
     else:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
 
     return contenido
+
+def construir_contenido_archivos_seleccionados(archivos_seleccionados):
+    """Genera la sección de contenido para archivos seleccionados en Markdown."""
+    contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
+    for archivo in archivos_seleccionados:
+        contenido_archivo = leer_archivo(archivo, permiso=True)
+        if contenido_archivo:
+            # Agregar el contenido del archivo al bloque de Markdown
+            contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
+        else:
+            logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
+    return contenido_archivos
+
 
 def escapar_caracteres_md(texto):
     """
