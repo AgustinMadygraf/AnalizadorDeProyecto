@@ -46,9 +46,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     
     # Construir el contenido inicial basado en el prompt o proveer un mensaje de error predeterminado
     contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nprompt:\nNo hay prompt. falla.\n\n"
-    contenido = "Fecha y hora:\n" 
-    contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
-    contenido += contenido_prompt
+    contenido =  contenido_prompt
 
     # Añadiendo la estructura de directorios y archivos en formato Markdown.
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
@@ -58,6 +56,10 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
         contenido += construir_contenido_archivos_seleccionados(archivos_seleccionados)
     else:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
+
+    contenido += "\nFecha y hora:\n" 
+    contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
+    
 
     return contenido
 
