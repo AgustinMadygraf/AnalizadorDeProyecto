@@ -7,7 +7,7 @@ import json
 from importlib import metadata
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
-from file_operations import listar_archivos
+from file_operations_extended import listar_archivos
 from src.output_generation import generar_archivo_salida
 from utilities import obtener_version_python, limpieza_pantalla
 from user_interface import  menu_0,menu_1

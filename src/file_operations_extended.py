@@ -46,52 +46,41 @@ def contenido_archivo(archivos_seleccionados):
     
 def listar_archivos(ruta, extensiones):
     """
-    Genera una lista de archivos y su estructura de directorio basada en una ruta y extensiones específicas.
-
-    Esta función recorre recursivamente todos los directorios y subdirectorios a partir de una ruta dada,
-    filtrando los archivos según las extensiones proporcionadas. Ignora explícitamente los directorios '.git'.
-    Genera dos listas: una con las rutas completas de los archivos filtrados y otra con la estructura
-    de directorios y archivos representada en forma de texto para su presentación.
-
+    Recorre de manera recursiva la ruta proporcionada, listando todos los archivos y,
+    opcionalmente, filtrando por extensiones de archivo. Además, incluye el peso de cada
+    archivo en kilobytes.
+    
     Args:
-        ruta (str): La ruta del directorio raíz desde donde iniciar el escaneo de archivos.
-        extensiones (list of str): Una lista de extensiones de archivo para filtrar los archivos.
-
+        ruta (str): Ruta de la carpeta a escanear.
+        extensiones (list, optional): Lista de extensiones de archivo para filtrar. 
+                                       Por defecto es None, lo que incluye todos los archivos.
+    
     Returns:
         tuple: 
-            - Una lista de rutas completas de archivos que cumplen con las extensiones dadas.
-            - Una lista de cadenas que representa la estructura de directorios y archivos.
-            
-    Raises:
-        Exception: Proporciona información sobre cualquier error que ocurra durante la ejecución de la función.
+        - (list): Lista de archivos filtrados encontrados.
+        - (list): Lista de cadenas representando la estructura de directorios y archivos encontrados, incluyendo el peso de cada archivo en kB.
     """
-    try:
-        archivos_encontrados = []
-        estructura = []
+    archivos_encontrados = []
+    estructura = []
 
-        for raiz, _, archivos in os.walk(ruta):
-            # Ignora los directorios .git
-            if '.git' in raiz:
-                continue
+    for raiz, _, archivos in os.walk(ruta):
+        if '.git' in raiz:  # Ignora directorios .git
+            continue
 
-            # Calcula el nivel de indentación basado en la profundidad del directorio.
-            nivel = raiz.replace(ruta, '').count(os.sep)
-            indentacion = ' ' * 4 * nivel
-            estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
+        nivel = raiz.replace(ruta, '').count(os.sep)
+        indentacion = ' ' * 4 * nivel
+        estructura.append(f"{indentacion}{os.path.basename(raiz)}/")
+        subindentacion = ' ' * 4 * (nivel + 1)
 
-            # Aplica una subindentación para los archivos dentro de cada directorio.
-            subindentacion = ' ' * 4 * (nivel + 1)
+        for archivo in archivos:
+            archivo_completo = os.path.join(raiz, archivo)
+            if not extensiones or os.path.splitext(archivo)[1] in extensiones or archivo in {'Pipfile', 'Pipfile.lock'}:
+                archivos_encontrados.append(archivo_completo)
+                # Obtiene el tamaño del archivo en kilobytes
+                tamano_kb = os.path.getsize(archivo_completo) / 1024
+                estructura.append(f"{subindentacion}{os.path.basename(archivo)} - {tamano_kb:.2f}kB")
 
-            # Filtra y procesa los archivos en el directorio actual.
-            archivos_en_raiz = [os.path.join(raiz, archivo) for archivo in archivos]
-            archivos_filtrados = filtrar_archivos_por_extension(archivos_en_raiz, extensiones)
-            estructura.extend(f"{subindentacion}{os.path.basename(archivo)}" for archivo in archivos_filtrados)
-            archivos_encontrados.extend(archivos_filtrados)
-
-        return archivos_encontrados, estructura
-    except Exception as e:
-        logger.error(f"Error al listar archivos en {ruta}: {e}")
-        return [], []
+    return archivos_encontrados, estructura
 
 def filtrar_archivos_por_extension(archivos, extensiones):
     """
