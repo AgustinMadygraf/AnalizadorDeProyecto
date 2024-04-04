@@ -109,6 +109,6 @@ def asegurar_directorio_DOCS(ruta):
     directorio_DOCS = os.path.join(ruta, 'DOCS')
     if not os.path.exists(directorio_DOCS):
         os.makedirs(directorio_DOCS)
-        logger.info(f"Directorio DOCS creado en {directorio_DOCS}")
+        logger.debug(f"Directorio DOCS creado en {directorio_DOCS}")
     else:
         logger.debug(f"Directorio DOCS ya existe en {directorio_DOCS}")

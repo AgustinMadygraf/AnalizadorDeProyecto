@@ -67,12 +67,12 @@ def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css'
         return None
 
     if not archivo_permitido(nombre_archivo, extensiones_permitidas):
-        logger.warning(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
+        logger.debug(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
         return None
 
     if permiso:
         if '..' in os.path.abspath(nombre_archivo) or "DOCS" in nombre_archivo:
-            logger.error("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
+            logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
             return None
         
         if os.path.getsize(nombre_archivo) > 10240:
@@ -112,24 +112,17 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
     # Verificar si el archivo existe
     if not os.path.exists(nombre_archivo_salida):
         logger.error(f"El archivo '{nombre_archivo_salida}' no existe.")
-        print(f"Error: El archivo '{nombre_archivo_salida}' no existe.")
         return
-
-    print("Copiando contenido al portapapeles...\n\n")
     permiso = False
     contenido = leer_archivo(nombre_archivo_salida,permiso)
     if contenido:
         try:
             pyperclip.copy(contenido)
-            logger.info(f"El contenido del archivo '{nombre_archivo_salida}' ha sido copiado al portapapeles.")
-            print("Contenido copiado al portapapeles exitosamente.")
+            logger.info(f"El contenido del archivo ha sido copiado al portapapeles.")
         except pyperclip.PyperclipException as e:
             logger.error(f"No se pudo copiar al portapapeles: {e}")
-            print(f"Error: No se pudo copiar al portapapeles debido a un error del sistema: {e}")
     else:
         logger.warning(f"El archivo '{nombre_archivo_salida}' está vacío o no se pudo leer.")
-        print(f"Advertencia: El archivo '{nombre_archivo_salida}' está vacío o no se pudo leer.")
-
 
 def verificar_existencia_archivo(nombre_archivo):
     """

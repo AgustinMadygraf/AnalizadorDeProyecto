@@ -19,12 +19,12 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
     """
     asegurar_directorio_DOCS(ruta)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
-    print (f"\n\estructura_actualizada: {estructura_actualizada} \n")
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
     contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta, ruta_archivos)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
+    print("")
     return nombre_archivo_salida
 
 def formatear_archivo_salida(nombre_archivo_salida):
@@ -73,7 +73,6 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
             contenido += "\n## TODO List from todo.txt\n" + contenido_todo_txt + "\n"
 
     # Añadiendo directamente la estructura de carpetas y archivos, incluyendo el tamaño de cada archivo.
-    #print(f"\n\nestructura: {estructura}\n\n")
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
 
     # Procesar y añadir el contenido de archivos seleccionados, si los hay.
@@ -97,7 +96,7 @@ def construir_contenido_archivos_seleccionados(archivos_seleccionados):
             # Agregar el contenido del archivo al bloque de Markdown
             contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
         else:
-            logger.warning(f"No se pudo obtener el contenido del archivo: {archivo}")
+            logger.debug(f"No se pudo obtener el contenido del archivo: {archivo}")
     return contenido_archivos
 
 def escapar_caracteres_md(texto):
@@ -139,7 +138,6 @@ def escribir_archivo_salida(nombre_archivo, contenido):
         nombre_archivo (str): Ruta del archivo donde se escribirá el contenido.
         contenido (str): Contenido a escribir en el archivo.
     """
-    print("")
     if contenido is None:
         logger.error(f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
         return False
@@ -147,7 +145,8 @@ def escribir_archivo_salida(nombre_archivo, contenido):
     try:
         with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(contenido)
-        logger.info(f"Archivo de salida generado exitosamente: {nombre_archivo}")
+        logger.info("Archivo de salida generado exitosamente:")
+        logger.info(nombre_archivo)
         return True
     except IOError as e:
         logger.error(f"Error de E/S al escribir en el archivo {nombre_archivo}: {e}")

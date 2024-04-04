@@ -39,24 +39,24 @@ def menu_1():
         '5': 'config\\prompt_5.md' 
     }
 
-    print("Por favor, seleccione una opción de configuración:")
-    print("0: Vacío")
-    print("1: Scrum Master")
-    print("2: Backend")
-    print("3: Frontend")
-    print("4: Data Engineer")
-    print("5: Vision Artificial & ML Specialist")
-    
-    eleccion = input("Ingrese el número de la opción deseada (presione Enter para seleccionar 0): ") or '0'
-
+    logger.info("Por favor, seleccione una opción de configuración:")
+    logger.info("0: Vacío")
+    logger.info("1: Scrum Master")
+    logger.info("2: Backend")
+    logger.info("3: Frontend")
+    logger.info("4: Data Engineer")
+    logger.info("5: Vision Artificial & ML Specialist")
+    print("")
+    eleccion = input("Ingrese el número de la opción deseada: ") or '0'
     # Validar la entrada del usuario y asegurarse de que sea una opción válida
     while eleccion not in opciones:
-        print("Opción no válida. Por defecto se seleccionará la opción 0.")
+        logger.info("Opción no válida. Por defecto se seleccionará la opción 0.")
         eleccion = 0
 
     # Devolver el archivo de configuración basado en la selección del usuario
     archivo_seleccionado = opciones[eleccion]
-    print(f"Ha seleccionado la opción {eleccion}: {archivo_seleccionado}")
+    logger.info(f"Ha seleccionado la opción {eleccion}")
+    print("")
     return archivo_seleccionado
 
 

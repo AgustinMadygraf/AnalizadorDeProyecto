@@ -23,8 +23,9 @@ def obtener_ruta_analisis(ruta_proyecto):
     else:
         ruta_default = ruta_seleccionada  # En caso de que todavía soporte el formato antiguo
 
-    logger.info(f"Directorio por defecto: {ruta_default}")
+    logger.info(f"Directorio seleccionado: {ruta_default}\n")
     respuesta = input("¿Desea analizar el directorio? (S/N): ").upper()
+    print("")
 
     if respuesta == 'N':
         nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
@@ -39,11 +40,9 @@ def main():
     ruta_proyecto = inicializar()
     while True:
         ruta = obtener_ruta_analisis(ruta_proyecto)
-        print("\n\nruta: ",ruta,"\n\n")
         if ruta and validar_ruta(ruta):
             modo_prompt = seleccionar_modo_operacion()
             procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-            print("El archivo de salida ha sido generado con éxito.\n\n")
         else:
             logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
 
@@ -83,8 +82,8 @@ def bienvenida():
                 print(mensaje[mensaje.index(caracter):], end='', flush=True)
                 break
             print(caracter, end='', flush=True)
-            time.sleep(0.05)  # Ajusta este valor según sea necesario
-        print()  # Asegura una nueva línea después del mensaje
+            time.sleep(0.03)  
+        print()  
 
     # Thread para mostrar el mensaje
     hilo_mensaje = threading.Thread(target=mostrar_mensaje)
@@ -123,9 +122,9 @@ def guardar_nueva_ruta_default(nueva_ruta):
         with open(archivo_default, 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4)
         
-        print(f"Nueva ruta por defecto guardada: {nueva_ruta}")
+        logger.info(f"Nueva ruta por defecto guardada: {nueva_ruta}")
     except Exception as e:
-        print(f"Error al guardar la nueva ruta por defecto: {e}")
+        logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
 def obtener_ruta_default():
     archivo_default = 'config/path.json'
@@ -139,11 +138,10 @@ def obtener_ruta_default():
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
         
-        print("Seleccione una ruta:")
         for i, ruta in enumerate(rutas, start=1):
-            print(f"{i}. {ruta}")
-        print(f"{len(rutas)+1}. Introducir una nueva ruta")
-        
+            logger.info(f"{i}. {ruta}")
+        logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
+        print("")
         eleccion = input("Seleccione una opción: ").strip()
         # Si la elección está vacía, se asume la opción 1
         if not eleccion:
@@ -155,10 +153,10 @@ def obtener_ruta_default():
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
         else:
-            print("Opción no válida.")
+            logger.warning("Opción no válida.")
             return obtener_ruta_default()
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        logger.error(f"Ocurrió un error: {e}")
             
     except FileNotFoundError:
         # Si no existe el archivo, pedir una ruta nueva
