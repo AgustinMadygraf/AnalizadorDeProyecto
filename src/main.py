@@ -43,6 +43,8 @@ def main():
         if ruta and validar_ruta(ruta):
             modo_prompt = seleccionar_modo_operacion()
             procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+            input("\nPresiona Enter para reiniciar...")
+            limpieza_pantalla()
         else:
             logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
 

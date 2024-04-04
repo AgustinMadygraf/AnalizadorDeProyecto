@@ -1,8 +1,8 @@
 import os
 import datetime
-from src.file_manager import leer_archivo, copiar_contenido_al_portapapeles
-from src.logs.config_logger import configurar_logging
-from src.file_operations_extended import listar_archivos, asegurar_directorio_DOCS
+from file_manager import leer_archivo, copiar_contenido_al_portapapeles
+from logs.config_logger import configurar_logging
+from file_operations_extended import listar_archivos, asegurar_directorio_DOCS
 
 logger = configurar_logging()
 
