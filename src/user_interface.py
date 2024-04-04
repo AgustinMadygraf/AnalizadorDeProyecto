@@ -10,7 +10,7 @@ logger = configurar_logging()
 
 
 def menu_0():
-    logger.info("\n\nPor favor, introduzca la ruta de la carpeta: ")
+    logger.info("Por favor, introduzca la ruta de la carpeta: ")
     return input().strip()
 
 def solicitar_opcion(mensaje, opciones):

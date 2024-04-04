@@ -134,22 +134,29 @@ def obtener_ruta_default():
         with open(archivo_default, 'r', encoding='utf-8') as file:
             data = json.load(file)
             rutas = data.get('rutas', [])
-            
+        
         if not rutas:
             nueva_ruta = input("No se encontraron rutas guardadas. Por favor, introduzca una nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
-        
-        for i, ruta in enumerate(rutas, start=1):
-            logger.info(f"{i}. {ruta}")
+
+        # Presentar las rutas de manera más amigable
+        for i, ruta_info in enumerate(rutas, start=1):
+            ruta = ruta_info['ruta']
+            ultimo_acceso = ruta_info['ultimo_acceso']
+            # Formatea y muestra cada ruta y su último acceso de manera clara
+            logger.info(f"{i}. Ruta: {ruta} - Último acceso: {ultimo_acceso}")
+
+        # Opción para introducir una nueva ruta
         logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
         print("")
+        
         eleccion = input("Seleccione una opción: ").strip()
-        # Si la elección está vacía, se asume la opción 1
+        # Procesamiento de la elección del usuario
         if not eleccion:
-            return rutas[0]
+            return rutas[0]['ruta']
         elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
-            return rutas[int(eleccion)-1]
+            return rutas[int(eleccion)-1]['ruta']
         elif eleccion == str(len(rutas) + 1):
             nueva_ruta = input("Introduzca la nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
@@ -159,12 +166,11 @@ def obtener_ruta_default():
             return obtener_ruta_default()
     except Exception as e:
         logger.error(f"Ocurrió un error: {e}")
-            
     except FileNotFoundError:
-        # Si no existe el archivo, pedir una ruta nueva
         nueva_ruta = input("Por favor, introduzca una nueva ruta: ").strip()
         guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
+
 
 def obtener_ruta_script():
     """
