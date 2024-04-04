@@ -134,30 +134,31 @@ def obtener_ruta_default():
             data = json.load(file)
             rutas = data.get('rutas', [])
             
-        # Si no hay rutas guardadas, pedir al usuario que introduzca una
         if not rutas:
             nueva_ruta = input("No se encontraron rutas guardadas. Por favor, introduzca una nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
         
-        # Mostrar rutas existentes y permitir elegir una
         print("Seleccione una ruta:")
         for i, ruta in enumerate(rutas, start=1):
             print(f"{i}. {ruta}")
         print(f"{len(rutas)+1}. Introducir una nueva ruta")
         
         eleccion = input("Seleccione una opción: ").strip()
-        if eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
-            # Elegir una ruta existente
+        # Si la elección está vacía, se asume la opción 1
+        if not eleccion:
+            return rutas[0]
+        elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
             return rutas[int(eleccion)-1]
         elif eleccion == str(len(rutas) + 1):
-            # Añadir una nueva ruta
             nueva_ruta = input("Introduzca la nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
         else:
             print("Opción no válida.")
             return obtener_ruta_default()
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
             
     except FileNotFoundError:
         # Si no existe el archivo, pedir una ruta nueva
