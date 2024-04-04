@@ -42,8 +42,13 @@ def validar_nombre_archivo(nombre_archivo):
     return True
 
 def archivo_permitido(nombre_archivo, extensiones_permitidas):
-    """Verifica si el archivo tiene una extensión permitida."""
-    return any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas)
+    nombre_archivo_puro = os.path.basename(nombre_archivo)
+    archivos_especificamente_permitidos = {'Pipfile', 'Pipfile.lock'}
+    # Verifica si el archivo es específicamente permitido o si su extensión está en la lista de permitidas
+    return nombre_archivo_puro in archivos_especificamente_permitidos or \
+           any(nombre_archivo_puro.endswith(ext) for ext in extensiones_permitidas)
+
+
 
 def leer_contenido_archivo(nombre_archivo):
     """Lee el contenido de un archivo de texto.
