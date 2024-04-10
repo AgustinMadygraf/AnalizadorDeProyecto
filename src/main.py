@@ -1,6 +1,7 @@
 #src/main.py
 import os
 import time
+from datetime import datetime
 import threading
 import sys
 import json
@@ -130,6 +131,9 @@ def guardar_nueva_ruta_default(nueva_ruta):
 
 def obtener_ruta_default():
     archivo_default = 'config/path.json'
+    if not os.path.exists(archivo_default):
+        logger.info(f"El archivo {archivo_default} no existe. Creando uno nuevo.")
+        crear_archivo_path_json()  # Llamada a la nueva función para crear el archivo
     try:
         with open(archivo_default, 'r', encoding='utf-8') as file:
             data = json.load(file)
@@ -226,6 +230,40 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos)
+
+
+def crear_archivo_path_json():
+    ruta_directorio = 'config'
+    archivo_default = os.path.join(ruta_directorio, 'path.json')
+
+    # Obtener la ruta absoluta del directorio del proyecto
+    ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Obtener la fecha y hora actuales en formato ISO
+    ultimo_acceso = datetime.now().isoformat()
+
+    # Estructura inicial con la ruta del proyecto y la fecha/hora actuales
+    contenido_inicial = {
+        "rutas": [
+            {
+                "ruta": ruta_proyecto,
+                "ultimo_acceso": ultimo_acceso
+            }
+        ]
+    }
+
+    # Crear el directorio `config` si no existe
+    if not os.path.exists(ruta_directorio):
+        os.makedirs(ruta_directorio)
+        logger.info(f"Directorio {ruta_directorio} creado.")
+
+    # Crear y escribir en el archivo `path.json`
+    try:
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            json.dump(contenido_inicial, file, indent=4)
+        logger.info(f"Archivo {archivo_default} creado con éxito. Ruta del proyecto y fecha/hora actuales añadidas.")
+    except Exception as e:
+        logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
+
 
 if __name__ == "__main__":
     main()
