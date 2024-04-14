@@ -1,26 +1,35 @@
 TODO List for AnalizadorDeProyecto Enhancements
 
 
-1. **Cambiar los `print` por `logger.info`.**
-   - **Descripción:** Reemplazar todas las instancias de `print()` en el código por llamadas al logger con nivel INFO. Esto contribuirá a un manejo de logs más consistente y flexible.
-   - **Implementación:** Buscar en el código fuente todas las llamadas a `print()` y reemplazarlas por `logger.info()`, asegurándose de que la configuración del logger soporte adecuadamente la salida tanto en consola como en archivos de log según se desee.
+1. **Mejorar el CLI desde UX/UI.**
+   - **Descripción:** Realizar mejoras en la interfaz de línea de comandos (CLI) para ofrecer una experiencia de usuario más amigable y eficiente. 
+   Esto puede incluir mensajes más claros, validaciones de entrada más robustas, y una organización más intuitiva de las opciones y comandos disponibles.
+   - **Implementación:** Evaluar la estructura actual del CLI y realizar cambios específicos como la adición de colores, 
+   la implementación de un sistema de ayuda mejorado, la simplificación de comandos, y la inclusión de ejemplos de uso. 
+   Considerar el uso de bibliotecas externas para mejorar la interfaz del CLI si es necesario.
 
-2. **Mejorar el CLI desde UX/UI.**
-   - **Descripción:** Realizar mejoras en la interfaz de línea de comandos (CLI) para ofrecer una experiencia de usuario más amigable y eficiente. Esto puede incluir mensajes más claros, validaciones de entrada más robustas, y una organización más intuitiva de las opciones y comandos disponibles.
-   - **Implementación:** Evaluar la estructura actual del CLI y realizar cambios específicos como la adición de colores, la implementación de un sistema de ayuda mejorado, la simplificación de comandos, y la inclusión de ejemplos de uso. Considerar el uso de bibliotecas externas para mejorar la interfaz del CLI si es necesario.
+2. **Conteo de Tipos de Archivos en el Proyecto.**
+   - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. 
+   Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
+   - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, 
+   y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, 
+   posiblemente como parte del informe de análisis del proyecto.
 
-3. **Conteo de Tipos de Archivos en el Proyecto.**
-   - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
-   - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, posiblemente como parte del informe de análisis del proyecto.
+3. **Cálculo de Líneas de Código por Archivo.**
+   - **Descripción:** Calcular el número de líneas de código en cada archivo del proyecto. 
+   Esta métrica es importante para entender el tamaño y la complejidad de las diferentes partes del proyecto.
+   - **Implementación:** Crear una herramienta o script que analice cada archivo de código fuente dentro del proyecto, 
+   cuente el número de líneas de código (excluyendo líneas en blanco y comentarios), y genere un reporte con estos datos.
 
-4. **Cálculo de Líneas de Código por Archivo.**
-   - **Descripción:** Calcular el número de líneas de código en cada archivo del proyecto. Esta métrica es importante para entender el tamaño y la complejidad de las diferentes partes del proyecto.
-   - **Implementación:** Crear una herramienta o script que analice cada archivo de código fuente dentro del proyecto, cuente el número de líneas de código (excluyendo líneas en blanco y comentarios), y genere un reporte con estos datos.
+4. **Refactorización y Modularización del Código.**
+   - **Descripción:** Refactorizar el código para mejorar la modularidad y la claridad, 
+   siguiendo los principios SOLID y las mejores prácticas de diseño de software. 
+   Esto incluye separar claramente la lógica de negocio del manejo de la interfaz de usuario y la persistencia de datos.
+   - **Implementación:** Revisar el código para identificar áreas donde la lógica está mezclada o donde el código puede ser dividido en funciones 
+   o clases más pequeñas y especializadas. Utilizar patrones de diseño apropiados para reorganizar el código de manera más coherente y mantenible.
 
-5. **Refactorización y Modularización del Código.**
-   - **Descripción:** Refactorizar el código para mejorar la modularidad y la claridad, siguiendo los principios SOLID y las mejores prácticas de diseño de software. Esto incluye separar claramente la lógica de negocio del manejo de la interfaz de usuario y la persistencia de datos.
-   - **Implementación:** Revisar el código para identificar áreas donde la lógica está mezclada o donde el código puede ser dividido en funciones o clases más pequeñas y especializadas. Utilizar patrones de diseño apropiados para reorganizar el código de manera más coherente y mantenible.
-
-6. **Implementación de Pruebas Unitarias y de Integración.**
-   - **Descripción:** Desarrollar un conjunto de pruebas unitarias y de integración para asegurar la calidad y la robustez del código. Las pruebas deben cubrir casos de uso comunes así como casos extremos y errores.
-   - **Implementación:** Utilizar un framework de pruebas como `pytest` para escribir pruebas que validen la lógica de negocio, el manejo de archivos, y la interfaz de usuario. Establecer un proceso para ejecutar estas pruebas automáticamente, por ejemplo, mediante integración continua (CI).
+5. **Implementación de Pruebas Unitarias y de Integración.**
+   - **Descripción:** Desarrollar un conjunto de pruebas unitarias y de integración para asegurar la calidad y la robustez del código. 
+   Las pruebas deben cubrir casos de uso comunes así como casos extremos y errores.
+   - **Implementación:** Utilizar un framework de pruebas como `pytest` para escribir pruebas que validen la lógica de negocio, el manejo de archivos, 
+   y la interfaz de usuario. Establecer un proceso para ejecutar estas pruebas automáticamente, por ejemplo, mediante integración continua (CI).
