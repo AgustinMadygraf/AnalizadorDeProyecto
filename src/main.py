@@ -5,6 +5,7 @@ from datetime import datetime
 import threading
 import sys
 import json
+from colorama import Fore, Style
 from importlib import metadata
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
@@ -25,7 +26,7 @@ def obtener_ruta_analisis(ruta_proyecto):
         ruta_default = ruta_seleccionada  # En caso de que todavía soporte el formato antiguo
 
     logger.info(f"Directorio seleccionado: {ruta_default}\n")
-    respuesta = input("¿Desea analizar el directorio? (S/N): ").upper()
+    respuesta = input(f"{Fore.GREEN}¿Desea analizar el directorio? (S/N): {Style.RESET_ALL}").upper()
     print("")
 
     if respuesta == 'N':
@@ -37,14 +38,14 @@ def obtener_ruta_analisis(ruta_proyecto):
 
     return ruta_default
 
-def main():
+def main(): 
     ruta_proyecto = inicializar()
     while True:
         ruta = obtener_ruta_analisis(ruta_proyecto)
         if ruta and validar_ruta(ruta):
             modo_prompt = seleccionar_modo_operacion()
             procesar_archivos(ruta, modo_prompt, ruta_proyecto)
-            input("\nPresiona Enter para reiniciar...")
+            input(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
             limpieza_pantalla()
         else:
             logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
@@ -148,9 +149,8 @@ def obtener_ruta_default():
         # Opción para introducir una nueva ruta
         logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
         print("")
-        
-        eleccion = input("Seleccione una opción: ").strip()
-        # Procesamiento de la elección del usuario
+
+        eleccion = input(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()        # Procesamiento de la elección del usuario
         if not eleccion:
             return rutas[0]['ruta']
         elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):

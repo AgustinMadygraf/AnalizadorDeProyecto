@@ -1,6 +1,7 @@
 #AnalizadorDeProyectos\src\user_interface.py
 import os
 import time
+from colorama import Fore, Style
 from logs.config_logger import configurar_logging
 from file_manager import copiar_contenido_al_portapapeles
 
@@ -47,7 +48,7 @@ def menu_1():
     logger.info("4: Data Engineer")
     logger.info("5: Vision Artificial & ML Specialist")
     print("")
-    eleccion = input("Ingrese el número de la opción deseada: ") or '0'
+    eleccion = input(f"{Fore.GREEN}Ingrese el número de la opción deseada: {Style.RESET_ALL}") or '0'
     # Validar la entrada del usuario y asegurarse de que sea una opción válida
     while eleccion not in opciones:
         logger.info("Opción no válida. Por defecto se seleccionará la opción 0.")
