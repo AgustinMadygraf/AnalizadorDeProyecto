@@ -97,12 +97,6 @@ def bienvenida():
     mostrar_todo = True
     hilo_mensaje.join()  # Espera a que el hilo termine
 
-    # Avanza a la siguiente etapa después de la segunda pulsación de Enter
-
-import json
-import os
-from datetime import datetime
-
 def guardar_nueva_ruta_default(nueva_ruta):
     archivo_default = 'config/path.json'
     try:
@@ -175,7 +169,6 @@ def obtener_ruta_default():
         guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
 
-
 def obtener_ruta_script():
     """
     Obtiene la ruta del directorio del script actual.
@@ -231,7 +224,6 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     listar_archivos(ruta, extensiones)
     return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos)
 
-
 def crear_archivo_path_json():
     ruta_directorio = 'config'
     archivo_default = os.path.join(ruta_directorio, 'path.json')
@@ -263,7 +255,6 @@ def crear_archivo_path_json():
         logger.info(f"Archivo {archivo_default} creado con éxito. Ruta del proyecto y fecha/hora actuales añadidas.")
     except Exception as e:
         logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
-
 
 if __name__ == "__main__":
     main()
