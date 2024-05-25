@@ -76,8 +76,8 @@ def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css'
         return None
 
     if permiso:
-        if '..' in os.path.abspath(nombre_archivo) or "DOCS" in nombre_archivo:
-            logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'DOCS'.")
+        if '..' in os.path.abspath(nombre_archivo) or "docs" in nombre_archivo:
+            logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
             return None
         
         if os.path.getsize(nombre_archivo) > 10240:

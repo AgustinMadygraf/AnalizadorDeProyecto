@@ -98,17 +98,17 @@ def filtrar_archivos_por_extension(archivos, extensiones):
     archivos_filtrados = [archivo for archivo in archivos if any(archivo.lower().endswith(ext) for ext in extensiones_set)]
     return archivos_filtrados
 
-def asegurar_directorio_DOCS(ruta):
+def asegurar_directorio_docs(ruta):
     """
-    Asegura que exista el directorio DOCS en la ruta dada.
+    Asegura que exista el directorio docs en la ruta dada.
     Si el directorio no existe, lo crea.
 
     Args:
-        ruta (str): Ruta base donde se debe encontrar o crear el directorio DOCS.
+        ruta (str): Ruta base donde se debe encontrar o crear el directorio docs.
     """
-    directorio_DOCS = os.path.join(ruta, 'DOCS')
-    if not os.path.exists(directorio_DOCS):
-        os.makedirs(directorio_DOCS)
-        logger.debug(f"Directorio DOCS creado en {directorio_DOCS}")
+    directorio_docs = os.path.join(ruta, 'docs')
+    if not os.path.exists(directorio_docs):
+        os.makedirs(directorio_docs)
+        logger.debug(f"Directorio docs creado en {directorio_docs}")
     else:
-        logger.debug(f"Directorio DOCS ya existe en {directorio_DOCS}")
+        logger.debug(f"Directorio docs ya existe en {directorio_docs}")

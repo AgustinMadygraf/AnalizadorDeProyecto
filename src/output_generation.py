@@ -2,7 +2,7 @@ import os
 import datetime
 from file_manager import leer_archivo, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
-from file_operations_extended import listar_archivos, asegurar_directorio_DOCS
+from file_operations_extended import listar_archivos, asegurar_directorio_docs
 
 logger = configurar_logging()
 
@@ -17,7 +17,7 @@ def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
         extensiones (list of str): Extensiones para filtrar archivos.
         ruta_proyecto (str): Ruta base del proyecto.
     """
-    asegurar_directorio_DOCS(ruta)
+    asegurar_directorio_docs(ruta)
     archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
     nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
     formatear_archivo_salida(nombre_archivo_salida)
@@ -127,7 +127,7 @@ def generar_nombre_archivo_salida(ruta):
         str: Ruta completa del archivo de salida.
     """
     # Formatear la ruta para el nombre del archivo
-    nombre_archivo_salida = f"DOCS\\00-Prompt-for-ProjectAnalysis.md" #DOCS = Analysis and Modification Improvement System
+    nombre_archivo_salida = f"docs\\00-Prompt-for-ProjectAnalysis.md" #docs = Analysis and Modification Improvement System
     return os.path.join(ruta, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
