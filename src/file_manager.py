@@ -66,7 +66,7 @@ def leer_contenido_archivo(nombre_archivo):
         logger.error(f"No se pudo leer el archivo {nombre_archivo}: {e}")
         return None
 
-def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']):
+def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino']):
     """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
     if not validar_nombre_archivo(nombre_archivo) or not os.path.isfile(nombre_archivo):
         return None
