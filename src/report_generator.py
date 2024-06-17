@@ -1,6 +1,6 @@
 import os
 import datetime
-from file_manager import read_file, copiar_contenido_al_portapapeles
+from file_manager import read_and_validate_file, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
 from src.file_operations import listar_archivos, asegurar_directorio_docs
 
@@ -15,7 +15,7 @@ def generar_archivo_salida(path, modo_prompt, extensiones, ruta_archivos):
         estructura (list): Estructura de directorios y archivos a incluir en el archivo de salida.
         modo_prompt (str): Modo seleccionado para la salida.
         extensiones (list of str): Extensiones para filtrar archivos.
-        ruta_proyecto (str): Ruta base del proyecto.
+        project_path (str): Ruta base del proyecto.
     """
     asegurar_directorio_docs(path)
     archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones)
@@ -62,7 +62,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     logger.debug("Preparando contenido de salida")
 
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
-    contenido_prompt = read_file(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
+    contenido_prompt = read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
     contenido = contenido_prompt
 
     # Verificar si existe todo.txt y añadir su contenido
@@ -91,7 +91,7 @@ def construir_contenido_archivos_seleccionados(archivos_seleccionados):
     """Genera la sección de contenido para archivos seleccionados en Markdown."""
     contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
     for archivo in archivos_seleccionados:
-        contenido_archivo = read_file(archivo, permiso=True)
+        contenido_archivo = read_and_validate_file(archivo, permitir_lectura=True)
         if contenido_archivo:
             # Agregar el contenido del archivo al bloque de Markdown
             contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"

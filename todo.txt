@@ -1,12 +1,12 @@
 TODO List for AnalizadorDeProyecto Enhancements
 
-1. **Conteo de Tipos de Archivos en el Proyecto.**
-   - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
-   - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, posiblemente como parte del informe de análisis del proyecto.
-
-2. **Cálculo de Líneas de Código por Archivo.**
+1. **Cálculo de Líneas de Código por Archivo.**
    - **Descripción:** Calcular el número de líneas de código en cada archivo del proyecto. Esta métrica es importante para entender el tamaño y la complejidad de las diferentes partes del proyecto.
    - **Implementación:** Crear una herramienta o script que analice cada archivo de código fuente dentro del proyecto, cuente el número de líneas de código (excluyendo líneas en blanco y comentarios), y genere un reporte con estos datos.
+
+2. **Conteo de Tipos de Archivos en el Proyecto.**
+   - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
+   - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, posiblemente como parte del informe de análisis del proyecto.
 
 3. **Incorporar carpetas de ".gitignore" a la omisión del análisis de estructura de archivos y directorios.**
    - **Descripción:** Modificar la funcionalidad de análisis de estructura de archivos y directorios para que omita las carpetas y archivos listados en el archivo `.gitignore`. Esto ayudará a evitar el análisis de archivos que no son relevantes para la métrica del proyecto.

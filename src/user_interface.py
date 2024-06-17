@@ -38,7 +38,7 @@ def menu_1():
     }
 
     logger.info("Por favor, seleccione una opción de configuración:")
-    logger.info("0: Vacío")
+    logger.info("0: Analizador de proyectos genérico")
     logger.info("1: Scrum Master")
     logger.info("2: Backend")
     logger.info("3: Frontend")

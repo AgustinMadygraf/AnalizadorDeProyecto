@@ -1,4 +1,4 @@
-#src/main.py
+#src/app.py
 import os
 import time
 from datetime import datetime
@@ -18,7 +18,7 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def obtener_ruta_analisis(ruta_proyecto):
+def obtener_ruta_analisis(project_path):
     ruta_seleccionada = obtener_ruta_default()  # Esta ahora devuelve un diccionario
     if isinstance(ruta_seleccionada, dict):
         ruta_default = ruta_seleccionada['ruta']
@@ -38,13 +38,13 @@ def obtener_ruta_analisis(ruta_proyecto):
 
     return ruta_default
 
-def main(): 
-    ruta_proyecto = inicializar()
+def run_app(): 
+    project_path = inicializar()
     while True:
-        ruta = obtener_ruta_analisis(ruta_proyecto)
+        ruta = obtener_ruta_analisis(project_path)
         if ruta and validar_ruta(ruta):
             modo_prompt = seleccionar_modo_operacion()
-            procesar_archivos(ruta, modo_prompt, ruta_proyecto)
+            procesar_archivos(ruta, modo_prompt, project_path)
             input(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
             limpieza_pantalla()
         else:
@@ -70,8 +70,8 @@ def inicializar():
     bienvenida()
     logger.debug(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
-    ruta_proyecto = os.path.normpath(os.path.join(ruta_script, ".."))
-    return ruta_proyecto
+    project_path = os.path.normpath(os.path.join(ruta_script, ".."))
+    return project_path
 
 def bienvenida():
     mensaje = """Bienvenido al AnalizadorDeProyecto 🌟\nEste software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!"""
@@ -218,7 +218,7 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     Args:
         ruta (str): Ruta a los archivos a procesar.
         modo_prompt (str): Modo seleccionado para el procesamiento de archivos.
-        ruta_proyecto (str): Ruta al directorio del proyecto.
+        project_path (str): Ruta al directorio del proyecto.
 
     Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
     """
@@ -231,7 +231,7 @@ def crear_archivo_path_json():
     archivo_default = os.path.join(ruta_directorio, 'path.json')
 
     # Obtener la ruta absoluta del directorio del proyecto
-    ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Obtener la fecha y hora actuales en formato ISO
     ultimo_acceso = datetime.now().isoformat()
 
@@ -239,7 +239,7 @@ def crear_archivo_path_json():
     contenido_inicial = {
         "rutas": [
             {
-                "ruta": ruta_proyecto,
+                "ruta": project_path,
                 "ultimo_acceso": ultimo_acceso
             }
         ]
@@ -258,5 +258,3 @@ def crear_archivo_path_json():
     except Exception as e:
         logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
 
-if __name__ == "__main__":
-    main()

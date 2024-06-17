@@ -1,6 +1,4 @@
-
-import subprocess
-import os
+#AnalizadorDeProyectos\src\installer_utils.py
 from pathlib import Path
 from .logs.config_logger import configurar_logging
 import winshell
@@ -28,7 +26,7 @@ def get_project_name():
         logger.error(f"Error al obtener el nombre del proyecto: {e}")
         return "Unknown_Project"
 
-def crear_acceso_directo(ruta_archivo_bat, directorio_script,name_proj):
+def create_shortcut(ruta_archivo_bat, directorio_script,name_proj):
     escritorio = Path(winshell.desktop())
     ruta_acceso_directo = escritorio / f"{name_proj}.lnk"
     ruta_icono = directorio_script / "config" / f"{name_proj}.ico"
@@ -54,7 +52,7 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script,name_proj):
         return False
 
 def crear_archivo_bat_con_pipenv(directorio_script, name_proj):
-    ruta_app_py = directorio_script / 'src' / 'app.py'
+    ruta_app_py = directorio_script / 'run.py'
     ruta_archivo_bat = directorio_script / f"{name_proj}.bat"
 
     contenido_bat = f"""
@@ -94,16 +92,6 @@ pause
     logger.debug(f"Archivo '{name_proj}.bat' creado exitosamente.")
 
 
-def limpieza_pantalla():
-    try:
-        if os.name == 'nt':  # Windows
-            subprocess.call('cls', shell=True)
-        else:  # macOS y Linux
-            subprocess.call('clear', shell=True)
-        logger.debug("Pantalla limpiada.")
-    except Exception as e:
-        logger.error(f"Error al limpiar la pantalla: {e}")
-
 def main():
     print("iniciando instalador")
     directorio_script = Path(__file__).parent.parent.resolve()
@@ -117,5 +105,5 @@ def main():
         print(f"Creando archivo '{name_proj}.bat'")
         crear_archivo_bat_con_pipenv(directorio_script, name_proj)
     
-    crear_acceso_directo(ruta_archivo_bat, directorio_script,name_proj)
+    create_shortcut(ruta_archivo_bat, directorio_script,name_proj)
 

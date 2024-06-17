@@ -3,10 +3,10 @@ import sys
 import os
 
 # Agregar el directorio raíz del proyecto a sys.path
-ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(ruta_proyecto)
+project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_path)
 
-import installer
+import setup
 import pytest
 
 
@@ -24,14 +24,14 @@ def test_generate_bat_file_with_pipenv(directorio_temporal):
     # Creamos un archivo BAT en el directorio temporal
     ruta_archivo_bat = directorio_temporal.join("test.bat")
     python_executable = "/usr/bin/python3"  # Ruta al ejecutable de Python
-    installer.generate_bat_file_with_pipenv(str(directorio_temporal), python_executable)
+    setup.generate_bat_file_with_pipenv(str(directorio_temporal), python_executable)
 
     # Verificamos que el archivo BAT se haya creado correctamente
     assert ruta_archivo_bat.exists()
 
 def test_limpieza_pantalla(capfd):
     # Simulamos la limpieza de la pantalla
-    installer.limpieza_pantalla()
+    setup.limpieza_pantalla()
 
     # Capturamos la salida de la función y verificamos que se haya limpiado la pantalla
     out, _ = capfd.readouterr()

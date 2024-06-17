@@ -76,8 +76,8 @@ def listar_archivos(ruta, extensiones):
                 # Obtiene el tamaño del archivo en kilobytes
                 tamano_kb = os.path.getsize(archivo_completo) / 1024
                 espacio_vacio = ' ' * (50 - len(archivo) - len(subindentacion))
-                estructura.append(f"{subindentacion}{os.path.basename(archivo)}{espacio_vacio}{tamano_kb:.2f}kB")
-
+                lineas_codigo = contar_lineas_codigo(archivo_completo, {'.py', '.ipynb'})
+                estructura.append(f"{subindentacion}{os.path.basename(archivo)}{espacio_vacio}{tamano_kb:.2f}kB - {lineas_codigo}")
     return archivos_encontrados, estructura
 
 def filtrar_archivos_por_extension(archivos, extensiones):

@@ -2,9 +2,9 @@
 import os
 import sys
 import pytest
-ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(ruta_proyecto)
-from src.file_manager import read_file
+project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_path)
+from src.file_manager import read_and_validate_file
 
 # Preparación de un entorno de prueba: Creación de archivos de prueba
 @pytest.fixture(scope="module")
@@ -24,27 +24,27 @@ def crear_archivos_prueba(tmp_path_factory):
     return base_temp_dir
 
 # Prueba: Lectura de archivo permitido
-def test_read_file_permitido(crear_archivos_prueba):
+def test_read_and_validate_file_permitido(crear_archivos_prueba):
     ruta_archivo = crear_archivos_prueba / "texto_permitido.txt"
-    contenido = read_file(str(ruta_archivo))
+    contenido = read_and_validate_file(str(ruta_archivo))
     assert contenido == "Contenido del archivo de texto."
 
 # Prueba: Rechazo de extensión no permitida
 def test_extension_no_permitida(crear_archivos_prueba):
     ruta_archivo = crear_archivos_prueba / "imagen_no_permitida.jpg"
-    contenido = read_file(str(ruta_archivo))
+    contenido = read_and_validate_file(str(ruta_archivo))
     assert contenido is None
 
 # Prueba: Lectura de script de Python permitido
 def test_leer_script_python(crear_archivos_prueba):
     ruta_archivo = crear_archivos_prueba / "script_python.py"
-    contenido = read_file(str(ruta_archivo))
+    contenido = read_and_validate_file(str(ruta_archivo))
     assert contenido == "print('Hola Mundo')"
 
 # Prueba: Rechazo de archivo por tamaño
 def test_documento_grande_rechazado(crear_archivos_prueba):
     ruta_archivo = crear_archivos_prueba / "documento_grande.md"
-    contenido = read_file(str(ruta_archivo))
+    contenido = read_and_validate_file(str(ruta_archivo))
     assert contenido is None
 
 # Asegúrate de ejecutar estas pruebas en un entorno donde `src.file_manager` sea accesible.
