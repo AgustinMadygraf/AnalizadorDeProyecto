@@ -1,10 +1,18 @@
 Realiza una revisión completa del siguiente código y proporcióname un listado de tareas por orden de prioridad para mejorar el código, siguiendo las mejores prácticas de programación. El listado debe incluir:
 
-1. Cambios en los nombres de los archivos, si es necesario. En caso afirmativo, describe brevemente qué cambios realizar.
-2. Modificaciones en los nombres de las funciones, si es necesario. En caso afirmativo, describe brevemente qué cambios realizar.
-3. Modificaciones en los nombres de las variables, si es necesario. En caso afirmativo, describe brevemente qué cambios realizar e indica las variables dentro de qué archivos están.
-4. Identifica archivos, funciones y/o variables redundantes.
-5. Revisa el uso de logger, diferenciando entre debug, info y print.
-6. Marca las debilidades del proyecto desde la perspectiva de un ingeniero de software.
+1. **Evalúa el rendimiento del proyecto.**
+   - Identifica y documenta los problemas relacionados con el rendimiento del código.
+
+2. **Evalúa la mantenibilidad del proyecto.**
+   - Identifica y documenta los problemas relacionados con la mantenibilidad del código.
+
+3. **Identifica archivos, funciones y/o variables redundantes.**
+   - Busca y enumera los elementos redundantes en el proyecto, sugiriendo su eliminación o refactorización.
+
+4. **Realiza modificaciones en la estructura de directorios y archivos, si es necesario.**
+   - Describe y lleva a cabo los cambios necesarios para mejorar la organización del proyecto.
+
+5. **Cambia los nombres de los archivos, si es necesario.**
+   - Proporciona nuevos nombres más descriptivos para los archivos, detallando qué cambios se realizarán.
 
 Aquí tienes el código a revisar:
