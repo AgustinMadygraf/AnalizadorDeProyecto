@@ -116,3 +116,29 @@ def asegurar_directorio_docs(ruta):
         logger.debug(f"Directorio docs creado en {directorio_docs}")
     else:
         logger.debug(f"Directorio docs ya existe en {directorio_docs}")
+
+def contar_lineas_codigo(file_path, extensiones_codigo):
+    """
+    Cuenta las líneas de código en un archivo, excluyendo líneas en blanco y comentarios.
+
+    Args:
+        file_path (str): Ruta del archivo.
+        extensiones_codigo (set): Conjunto de extensiones de archivo que representan código fuente.
+
+    Returns:
+        int: Número de líneas de código.
+    """
+    _, extension = os.path.splitext(file_path)
+    if extension not in extensiones_codigo:
+        return 0
+
+    lineas_codigo = 0
+    try:
+        with open(file_path, 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea and not linea.startswith("#"):
+                    lineas_codigo += 1
+    except Exception as e:
+        logger.error(f"Error leyendo el archivo {file_path}: {e}")
+    return lineas_codigo
