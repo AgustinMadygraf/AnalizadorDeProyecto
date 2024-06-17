@@ -1,18 +1,30 @@
-Realiza una revisión completa del siguiente código y proporcióname un listado de tareas por orden de prioridad para mejorar el código, siguiendo las mejores prácticas de programación. El listado debe incluir:
+Realiza una revisión exhaustiva del siguiente código y proporciona una lista priorizada de tres tareas para mejorar el código, siguiendo las mejores prácticas de programación. El análisis debe incluir:
 
-1. **Marca las debilidades del proyecto desde la perspectiva de un ingeniero de software.**
-   - Identifica y documenta las áreas problemáticas en términos de arquitectura y código.
+1. **Identificación de debilidades del proyecto**:
+   - Describe las áreas problemáticas desde la perspectiva de un ingeniero de software, enfocándote en arquitectura y código.
 
-2. **Evalúa el rendimiento del proyecto.**
-   - Identifica y documenta los problemas relacionados con el rendimiento del código.
+2. **Evaluación del rendimiento**:
+   - Detecta y documenta los problemas relacionados con el rendimiento del código.
 
-3. **Evalúa la mantenibilidad del proyecto.**
-   - Identifica y documenta los problemas relacionados con la mantenibilidad del código.
+3. **Evaluación de la mantenibilidad**:
+   - Identifica y documenta problemas que afectan la mantenibilidad del código.
 
-4. **Identifica archivos, funciones y/o variables redundantes.**
-   - Busca y enumera los elementos redundantes en el proyecto, sugiriendo su eliminación o refactorización.
+4. **Detección de redundancias**:
+   - Enumera archivos, funciones y/o variables redundantes y sugiere su eliminación o refactorización.
 
-5. **Realiza modificaciones en la estructura de directorios y archivos, si es necesario.**
-   - Describe y lleva a cabo los cambios necesarios para mejorar la organización del proyecto.
+5. **Reestructuración de directorios y archivos**:
+   - Describe y realiza los cambios necesarios para mejorar la organización del proyecto.
+
+6. **Renombramiento de archivos**:
+   - Proporciona nuevos nombres más descriptivos para los archivos, detallando los cambios propuestos.
+
+7. **Renombramiento de variables**:
+   - Enumera las variables cuyo nombre será modificado, especificando los archivos donde se encuentran y describiendo los cambios.
+
+8. **Renombramiento de funciones**:
+   - Enumera las funciones cuyo nombre será modificado y describe brevemente los cambios.
+
+9. **Mejora del uso de loggers**:
+   - Asegúrate de que el código utiliza correctamente los niveles de logging (debug, info) y elimina el uso de print para fines de logging.
 
 Aquí tienes el código a revisar:
