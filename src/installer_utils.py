@@ -54,7 +54,7 @@ def crear_acceso_directo(ruta_archivo_bat, directorio_script,name_proj):
         return False
 
 def crear_archivo_bat_con_pipenv(directorio_script, name_proj):
-    ruta_main_py = directorio_script / 'src' / 'app.py'
+    ruta_app_py = directorio_script / 'src' / 'app.py'
     ruta_archivo_bat = directorio_script / f"{name_proj}.bat"
 
     contenido_bat = f"""
@@ -83,7 +83,7 @@ if errorlevel 1 (
    )
 )
 echo Ejecutando aplicación...
-pipenv run python "{ruta_main_py}"
+pipenv run python "{ruta_app_py}"
 echo.
 pause
 
