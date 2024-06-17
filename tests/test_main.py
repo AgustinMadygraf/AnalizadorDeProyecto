@@ -20,11 +20,11 @@ def directorio_temporal(tmpdir):
     # Limpiamos el directorio temporal después de cada prueba
     temp_dir.remove(rec=True)
 
-def test_crear_archivo_bat_con_pipenv(directorio_temporal):
+def test_generate_bat_file_with_pipenv(directorio_temporal):
     # Creamos un archivo BAT en el directorio temporal
     ruta_archivo_bat = directorio_temporal.join("test.bat")
     python_executable = "/usr/bin/python3"  # Ruta al ejecutable de Python
-    installer.crear_archivo_bat_con_pipenv(str(directorio_temporal), python_executable)
+    installer.generate_bat_file_with_pipenv(str(directorio_temporal), python_executable)
 
     # Verificamos que el archivo BAT se haya creado correctamente
     assert ruta_archivo_bat.exists()

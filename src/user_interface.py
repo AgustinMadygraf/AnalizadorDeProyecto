@@ -1,9 +1,6 @@
 #AnalizadorDeProyectos\src\user_interface.py
-import os
-import time
 from colorama import Fore, Style
 from logs.config_logger import configurar_logging
-from file_manager import copiar_contenido_al_portapapeles
 
 # Configuración del logger
 logger = configurar_logging()

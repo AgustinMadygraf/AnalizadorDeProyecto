@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 pyperclip = "*"
 colorama = "*"
+reportlab = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

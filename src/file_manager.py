@@ -1,7 +1,6 @@
 #src/file_manager.py
 import pyperclip
 import os
-import time
 import fnmatch
 import re
 from logs.config_logger import configurar_logging
@@ -34,61 +33,61 @@ def esta_en_gitignore(ruta_archivo, ruta_proyecto):
         logger.warning(f"No se encontró el archivo .gitignore en {ruta_proyecto}")
     return False
 
-def validar_nombre_archivo(nombre_archivo):
+def validar_file_name(file_name):
     """Valida el tipo de dato del nombre del archivo."""
-    if not isinstance(nombre_archivo, str):
-        logger.warning(f"Tipo de dato incorrecto para nombre_archivo: {type(nombre_archivo)}. Se esperaba una cadena (str).")
+    if not isinstance(file_name, str):
+        logger.warning(f"Tipo de dato incorrecto para file_name: {type(file_name)}. Se esperaba una cadena (str).")
         return False
     return True
 
-def archivo_permitido(nombre_archivo, extensiones_permitidas):
-    nombre_archivo_puro = os.path.basename(nombre_archivo)
+def archivo_permitido(file_name, extensiones_permitidas):
+    file_name_puro = os.path.basename(file_name)
     archivos_especificamente_permitidos = {'Pipfile', 'Pipfile.lock'}
     # Verifica si el archivo es específicamente permitido o si su extensión está en la lista de permitidas
-    return nombre_archivo_puro in archivos_especificamente_permitidos or \
-           any(nombre_archivo_puro.endswith(ext) for ext in extensiones_permitidas)
+    return file_name_puro in archivos_especificamente_permitidos or \
+           any(file_name_puro.endswith(ext) for ext in extensiones_permitidas)
 
 
 
-def leer_contenido_archivo(nombre_archivo):
+def leer_contenido_archivo(file_name):
     """Lee el contenido de un archivo de texto.
 
     Args:
-        nombre_archivo (str): Ruta completa al archivo que se va a leer.
+        file_name (str): Ruta completa al archivo que se va a leer.
 
     Returns:
         str: Contenido del archivo, o None si ocurre un error o si el archivo no cumple con los requisitos de seguridad.
     """
     try:
-        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+        with open(file_name, 'r', encoding='utf-8') as archivo:
             return archivo.read()
     except Exception as e:
-        logger.error(f"No se pudo leer el archivo {nombre_archivo}: {e}")
+        logger.error(f"No se pudo leer el archivo {file_name}: {e}")
         return None
 
-def leer_archivo(nombre_archivo,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino']):
+def read_file(file_name,permiso, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino']):
     """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
-    if not validar_nombre_archivo(nombre_archivo) or not os.path.isfile(nombre_archivo):
+    if not validar_file_name(file_name) or not os.path.isfile(file_name):
         return None
 
-    if not archivo_permitido(nombre_archivo, extensiones_permitidas):
-        logger.debug(f"Extensión de archivo no permitida para lectura: {nombre_archivo}")
+    if not archivo_permitido(file_name, extensiones_permitidas):
+        logger.debug(f"Extensión de archivo no permitida para lectura: {file_name}")
         return None
 
     if permiso:
-        if '..' in os.path.abspath(nombre_archivo) or "docs" in nombre_archivo:
+        if '..' in os.path.abspath(file_name) or "docs" in file_name:
             logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
             return None
         
-        if os.path.getsize(nombre_archivo) > 10240:
-            logger.warning(f"El archivo '{nombre_archivo}' excede el tamaño máximo permitido de 10KB.")
+        if os.path.getsize(file_name) > 10240:
+            logger.warning(f"El archivo '{file_name}' excede el tamaño máximo permitido de 10KB.")
             return None
 
-    if esta_en_gitignore(nombre_archivo, ruta_proyecto):
-        logger.warning(f"El archivo '{nombre_archivo}' está listado en .gitignore y no será leído.")
+    if esta_en_gitignore(file_name, ruta_proyecto):
+        logger.warning(f"El archivo '{file_name}' está listado en .gitignore y no será leído.")
         return None
 
-    return leer_contenido_archivo(nombre_archivo)
+    return leer_contenido_archivo(file_name)
 
 
 def procesar_sql(contenido_sql):
@@ -107,19 +106,19 @@ def procesar_sql(contenido_sql):
             pass
     return '\n'.join(lineas_procesadas)
 
-def copiar_contenido_al_portapapeles(nombre_archivo_salida):
+def copiar_contenido_al_portapapeles(file_name_salida):
     """
     Copia el contenido de un archivo al portapapeles.
 
     Args:
-        nombre_archivo_salida (str): Ruta del archivo cuyo contenido se copiará.
+        file_name_salida (str): Ruta del archivo cuyo contenido se copiará.
     """
     # Verificar si el archivo existe
-    if not os.path.exists(nombre_archivo_salida):
-        logger.error(f"El archivo '{nombre_archivo_salida}' no existe.")
+    if not os.path.exists(file_name_salida):
+        logger.error(f"El archivo '{file_name_salida}' no existe.")
         return
     permiso = False
-    contenido = leer_archivo(nombre_archivo_salida,permiso)
+    contenido = read_file(file_name_salida,permiso)
     if contenido:
         try:
             pyperclip.copy(contenido)
@@ -127,16 +126,16 @@ def copiar_contenido_al_portapapeles(nombre_archivo_salida):
         except pyperclip.PyperclipException as e:
             logger.error(f"No se pudo copiar al portapapeles: {e}")
     else:
-        logger.warning(f"El archivo '{nombre_archivo_salida}' está vacío o no se pudo leer.")
+        logger.warning(f"El archivo '{file_name_salida}' está vacío o no se pudo leer.")
 
-def verificar_existencia_archivo(nombre_archivo):
+def verificar_existencia_archivo(file_name):
     """
     Verifica si un archivo existe.
 
     Args:
-        nombre_archivo (str): Ruta del archivo a verificar.
+        file_name (str): Ruta del archivo a verificar.
 
     Returns:
         bool: True si el archivo existe, False en caso contrario.
     """
-    return os.path.exists(nombre_archivo)
+    return os.path.exists(file_name)

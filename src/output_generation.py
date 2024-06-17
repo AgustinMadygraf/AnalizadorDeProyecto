@@ -1,27 +1,27 @@
 import os
 import datetime
-from file_manager import leer_archivo, copiar_contenido_al_portapapeles
+from file_manager import read_file, copiar_contenido_al_portapapeles
 from logs.config_logger import configurar_logging
-from file_operations_extended import listar_archivos, asegurar_directorio_docs
+from src.file_operations import listar_archivos, asegurar_directorio_docs
 
 logger = configurar_logging()
 
-def generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos):
+def generar_archivo_salida(path, modo_prompt, extensiones, ruta_archivos):
     """
     Genera el archivo de salida con la estructura dada.
 
     Args:
-        ruta (str): Ruta del directorio donde se generará el archivo de salida.
+        path(str): Ruta del directorio donde se generará el archivo de salida.
         estructura (list): Estructura de directorios y archivos a incluir en el archivo de salida.
         modo_prompt (str): Modo seleccionado para la salida.
         extensiones (list of str): Extensiones para filtrar archivos.
         ruta_proyecto (str): Ruta base del proyecto.
     """
-    asegurar_directorio_docs(ruta)
-    archivos_encontrados, estructura_actualizada = listar_archivos(ruta, extensiones)
-    nombre_archivo_salida = generar_nombre_archivo_salida(ruta)
+    asegurar_directorio_docs(path)
+    archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones)
+    nombre_archivo_salida = generar_nombre_archivo_salida(path)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, ruta, ruta_archivos)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida)
     print("")
@@ -44,7 +44,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
 
 import datetime
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, ruta, ruta_archivo):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo):
     """
     Prepara el contenido de salida agregando la estructura de directorios y archivos con sus tamaños,
     el contenido de archivos seleccionados, y la fecha y hora actual.
@@ -53,7 +53,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
         estructura (list): Lista de directorios y archivos con sus tamaños en kB.
         modo_prompt (str): Ruta al archivo de configuración de prompt seleccionado.
         archivos_seleccionados (list): Lista de rutas de archivos seleccionados para mostrar su contenido.
-        ruta (str): Ruta base donde se encuentra el proyecto.
+        path(str): Ruta base donde se encuentra el proyecto.
         ruta_archivo (str): Ruta donde se encuentran los archivos de configuración.
 
     Returns:
@@ -62,11 +62,11 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, r
     logger.debug("Preparando contenido de salida")
 
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
-    contenido_prompt = leer_archivo(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
+    contenido_prompt = read_file(os.path.join(ruta_archivo, modo_prompt), permiso=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
     contenido = contenido_prompt
 
     # Verificar si existe todo.txt y añadir su contenido
-    ruta_todo_txt = os.path.join(ruta, 'todo.txt')
+    ruta_todo_txt = os.path.join(path, 'todo.txt')
     if os.path.exists(ruta_todo_txt):
         with open(ruta_todo_txt, 'r', encoding='utf-8') as todo_file:
             contenido_todo_txt = todo_file.read()
@@ -91,7 +91,7 @@ def construir_contenido_archivos_seleccionados(archivos_seleccionados):
     """Genera la sección de contenido para archivos seleccionados en Markdown."""
     contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
     for archivo in archivos_seleccionados:
-        contenido_archivo = leer_archivo(archivo, permiso=True)
+        contenido_archivo = read_file(archivo, permiso=True)
         if contenido_archivo:
             # Agregar el contenido del archivo al bloque de Markdown
             contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
@@ -115,12 +115,12 @@ def escapar_caracteres_md(texto):
         texto = texto.replace(char, f'\\{char}')
     return texto
 
-def generar_nombre_archivo_salida(ruta):
+def generar_nombre_archivo_salida(path):
     """
     Genera el nombre del archivo de salida basado en la ruta y un nombre base.
 
     Args:
-        ruta (str): Ruta del directorio para el archivo de salida.
+        path(str): Ruta del directorio para el archivo de salida.
         nombre_base (str): Nombre base para el archivo de salida.
 
     Returns:
@@ -128,7 +128,7 @@ def generar_nombre_archivo_salida(ruta):
     """
     # Formatear la ruta para el nombre del archivo
     nombre_archivo_salida = f"docs\\00-Prompt-for-ProjectAnalysis.md" #docs = Analysis and Modification Improvement System
-    return os.path.join(ruta, nombre_archivo_salida)
+    return os.path.join(path, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):
     """
