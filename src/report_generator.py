@@ -6,7 +6,7 @@ from src.file_operations import listar_archivos, asegurar_directorio_docs
 
 logger = configurar_logging()
 
-def generar_archivo_salida(path, modo_prompt, extensiones, ruta_archivos):
+def generar_archivo_salida(path, modo_prompt, extensiones_permitidas, ruta_archivos):
     """
     Genera el archivo de salida con la estructura dada.
 
@@ -18,12 +18,12 @@ def generar_archivo_salida(path, modo_prompt, extensiones, ruta_archivos):
         project_path (str): Ruta base del proyecto.
     """
     asegurar_directorio_docs(path)
-    archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones)
+    archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones_permitidas)
     nombre_archivo_salida = generar_nombre_archivo_salida(path)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos, extensiones_permitidas)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
-    copiar_contenido_al_portapapeles(nombre_archivo_salida)
+    copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
     print("")
     return nombre_archivo_salida
 
@@ -44,7 +44,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
 
 import datetime
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo,extensiones_permitidas):
     """
     Prepara el contenido de salida agregando la estructura de directorios y archivos con sus tamaños,
     el contenido de archivos seleccionados, y la fecha y hora actual.
@@ -62,9 +62,8 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     logger.debug("Preparando contenido de salida")
 
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
-    contenido_prompt = read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
+    contenido_prompt = read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"    
     contenido = contenido_prompt
-
     # Verificar si existe todo.txt y añadir su contenido
     ruta_todo_txt = os.path.join(path, 'todo.txt')
     if os.path.exists(ruta_todo_txt):
@@ -77,7 +76,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
 
     # Procesar y añadir el contenido de archivos seleccionados, si los hay.
     if archivos_seleccionados:
-        contenido += construir_contenido_archivos_seleccionados(archivos_seleccionados)
+        contenido += construir_contenido_archivos_seleccionados(archivos_seleccionados, extensiones_permitidas)
     else:
         logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
 
@@ -87,11 +86,11 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     
     return contenido
 
-def construir_contenido_archivos_seleccionados(archivos_seleccionados):
+def construir_contenido_archivos_seleccionados(archivos_seleccionados,extensiones_permitidas):
     """Genera la sección de contenido para archivos seleccionados en Markdown."""
     contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
     for archivo in archivos_seleccionados:
-        contenido_archivo = read_and_validate_file(archivo, permitir_lectura=True)
+        contenido_archivo = read_and_validate_file(archivo, True,extensiones_permitidas)
         if contenido_archivo:
             # Agregar el contenido del archivo al bloque de Markdown
             contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"

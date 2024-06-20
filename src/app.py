@@ -222,9 +222,9 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
 
     Realiza operaciones de archivo basadas en el modo seleccionado y guarda la salida.
     """
-    extensiones = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt']
-    listar_archivos(ruta, extensiones)
-    return generar_archivo_salida(ruta, modo_prompt, extensiones, ruta_archivos)
+    extensiones_permitidas= ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino','.h' ]
+    listar_archivos(ruta, extensiones_permitidas)
+    return generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, ruta_archivos)
 
 def crear_archivo_path_json():
     ruta_directorio = 'config'

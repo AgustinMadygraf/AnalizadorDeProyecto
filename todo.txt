@@ -1,21 +1,13 @@
 TODO List for AnalizadorDeProyecto Enhancements
 
-1. **Cálculo de Líneas de Código por Archivo.**
-   - **Descripción:** Calcular el número de líneas de código en cada archivo del proyecto. Esta métrica es importante para entender el tamaño y la complejidad de las diferentes partes del proyecto.
-   - **Implementación:** Crear una herramienta o script que analice cada archivo de código fuente dentro del proyecto, cuente el número de líneas de código (excluyendo líneas en blanco y comentarios), y genere un reporte con estos datos.
-
-2. **Conteo de Tipos de Archivos en el Proyecto.**
+1. **Conteo de Tipos de Archivos en el Proyecto.**
    - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
    - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, posiblemente como parte del informe de análisis del proyecto.
 
-3. **Incorporar carpetas de ".gitignore" a la omisión del análisis de estructura de archivos y directorios.**
+2. **Incorporar carpetas de ".gitignore" a la omisión del análisis de estructura de archivos y directorios.**
    - **Descripción:** Modificar la funcionalidad de análisis de estructura de archivos y directorios para que omita las carpetas y archivos listados en el archivo `.gitignore`. Esto ayudará a evitar el análisis de archivos que no son relevantes para la métrica del proyecto.
    - **Implementación:** Actualizar la función que recorre los directorios del proyecto para que lea el archivo `.gitignore` y excluya las carpetas y archivos especificados. Asegurarse de que estas omisiones se reflejen en el informe de análisis del proyecto.
 
-4. **Incorporar archivos tipo `.ino`.**
-   - **Descripción:** Ampliar el soporte del análisis para incluir archivos con la extensión `.ino`, que son utilizados para proyectos de Arduino. Esto permitirá un análisis más completo para proyectos que incluyen componentes de hardware.
-   - **Implementación:** Actualizar la lista de extensiones de archivos reconocidos por las funciones de análisis para incluir `.ino`. Asegurarse de que estos archivos se incluyan tanto en el conteo de tipos de archivos como en el cálculo de líneas de código.
-
-5. **Mejorar `prompt_0.txt` para que la salida sea un `todo.txt`.**
+3. **Mejorar `prompt_0.txt` para que la salida sea un `todo.txt`.**
    - **Descripción:** Modificar el archivo `prompt_0.txt` para generar un archivo `todo.txt` con una lista de tareas basada en el análisis del proyecto. Esto ayudará a estructurar mejor las mejoras y correcciones necesarias en el proyecto.
    - **Implementación:** Actualizar el contenido y formato de `prompt_0.txt` para que al ejecutarse genere un archivo `todo.txt`. Asegurarse de que la lista de tareas sea clara y priorizada, proporcionando descripciones detalladas y pasos a seguir para cada tarea identificada.

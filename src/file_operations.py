@@ -111,7 +111,7 @@ def contar_lineas_codigo(file_path, extensiones_codigo):
     else:
         return lineas_codigo
 
-def listar_archivos(ruta, extensiones):
+def listar_archivos(ruta, extensiones_permitidas):
     """
     Recorre de manera recursiva la ruta proporcionada, listando todos los archivos y,
     opcionalmente, filtrando por extensiones de archivo. Además, incluye el peso de cada
@@ -141,12 +141,12 @@ def listar_archivos(ruta, extensiones):
 
         for archivo in archivos:
             archivo_completo = os.path.join(raiz, archivo)
-            if not extensiones or os.path.splitext(archivo)[1] in extensiones or archivo in {'Pipfile', 'Pipfile.lock'}:
+            if not extensiones_permitidas or os.path.splitext(archivo)[1] in extensiones_permitidas or archivo in {'Pipfile', 'Pipfile.lock'}:
                 archivos_encontrados.append(archivo_completo)
                 # Obtiene el tamaño del archivo en kilobytes
                 tamano_kb = os.path.getsize(archivo_completo) / 1024
                 espacio_vacio = ' ' * (50 - len(archivo) - len(subindentacion))
-                lineas_codigo = contar_lineas_codigo(archivo_completo, {'.py', '.ipynb'})
+                lineas_codigo = contar_lineas_codigo(archivo_completo, {'.py', '.ino', '.h'})
                 if lineas_codigo is None:
                     estructura.append(f"{subindentacion}{os.path.basename(archivo)}{espacio_vacio}{tamano_kb:.2f}kB - N/A")
                 else:
