@@ -13,3 +13,8 @@ TODO List for AnalizadorDeProyecto Enhancements
    - **Implementación:** Actualizar el contenido y formato de `prompt_0.txt` para que al ejecutarse genere un archivo `todo.txt`. Asegurarse de que la lista de tareas sea clara y priorizada, proporcionando descripciones detalladas y pasos a seguir para cada tarea identificada.
 
 4. *Incoporar chequear y actualizar repositorio desde GitHub*   
+
+5. *Pregutar si es para GTP gratuito o de pago para limitar el máximo de archivos a analizar*
+   - por defecto GPT4
+
+6. *Ordenar de por orden de ultima vez usado*
