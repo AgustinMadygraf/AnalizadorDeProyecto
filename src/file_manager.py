@@ -7,7 +7,7 @@ from logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()
-project_path = "C:\AppServ\www\AnalizadorDeProyecto"
+project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"
 
 def esta_en_gitignore(ruta_archivo, project_path):
     """
@@ -47,8 +47,6 @@ def archivo_permitido(file_path, extensiones_permitidas):
     return file_path_puro in archivos_especificamente_permitidos or \
            any(file_path_puro.endswith(ext) for ext in extensiones_permitidas)
 
-
-
 def leer_contenido_archivo(file_path):
     """Lee el contenido de un archivo de texto.
 
@@ -65,7 +63,7 @@ def leer_contenido_archivo(file_path):
         logger.error(f"No se pudo leer el archivo {file_path}: {e}")
         return None
 
-def read_and_validate_file(file_path,permitir_lectura, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino']):
+def read_and_validate_file(file_path, permitir_lectura, extensiones_permitidas=['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino']):
     """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
     if not validar_file_path(file_path) or not os.path.isfile(file_path):
         return None
@@ -88,7 +86,6 @@ def read_and_validate_file(file_path,permitir_lectura, extensiones_permitidas=['
         return None
 
     return leer_contenido_archivo(file_path)
-
 
 def procesar_sql(contenido_sql):
     lineas = contenido_sql.split('\n')
@@ -118,7 +115,7 @@ def copiar_contenido_al_portapapeles(file_path_salida):
         logger.error(f"El archivo '{file_path_salida}' no existe.")
         return
     permitir_lectura = False
-    contenido = read_and_validate_file(file_path_salida,permitir_lectura)
+    contenido = read_and_validate_file(file_path_salida, permitir_lectura)
     if contenido:
         try:
             pyperclip.copy(contenido)
