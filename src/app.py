@@ -1,4 +1,4 @@
-#src/app.py
+#AnalizadorDeProyecto/src/app.py
 import os
 import time
 from datetime import datetime
