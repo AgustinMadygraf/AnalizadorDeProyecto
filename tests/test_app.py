@@ -1,6 +1,7 @@
 #AnalizadorDeProyectos/tests/test_app.py
 import os
 import pytest
+import shutil
 from unittest.mock import patch, mock_open, MagicMock
 
 from src.app import (
@@ -64,10 +65,11 @@ def test_procesar_archivos():
 def test_crear_archivo_path_json():
     # Asegúrate de que el directorio `config` no exista antes de ejecutar la prueba.
     if os.path.exists('config'):
-        os.rmdir('config')
+        shutil.rmtree('config')  # Elimina el directorio y su contenido de manera recursiva
     
     with patch('builtins.open', mock_open()) as mock_file, \
          patch('os.makedirs') as mock_makedirs:
         crear_archivo_path_json()
         mock_makedirs.assert_called_with('config')
-        mock_file.assert_called_with('config/path.json', 'w', encoding='utf-8')
+        mock_file.assert_called_with(os.path.join('config', 'path.json'), 'w', encoding='utf-8')
+
