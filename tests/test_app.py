@@ -1,7 +1,9 @@
-#AnalizadorDeProyectos/tests/test_app.py
 import os
 import pytest
 import shutil
+import tempfile
+import json
+from datetime import datetime
 from unittest.mock import patch, mock_open, MagicMock
 
 from src.app import (
@@ -62,14 +64,4 @@ def test_procesar_archivos():
         resultado = procesar_archivos('test_path', 'config\\prompt_1.md', 'test_project_path')
         assert resultado == 'test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'
 
-def test_crear_archivo_path_json():
-    # Asegúrate de que el directorio `config` no exista antes de ejecutar la prueba.
-    if os.path.exists('config'):
-        shutil.rmtree('config')  # Elimina el directorio y su contenido de manera recursiva
-    
-    with patch('builtins.open', mock_open()) as mock_file, \
-         patch('os.makedirs') as mock_makedirs:
-        crear_archivo_path_json()
-        mock_makedirs.assert_called_with('config')
-        mock_file.assert_called_with(os.path.join('config', 'path.json'), 'w', encoding='utf-8')
-
+# Mover la definición de la función fu
