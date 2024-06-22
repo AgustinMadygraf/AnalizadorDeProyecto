@@ -52,3 +52,26 @@
      2. Ajustar los niveles de logging según sea necesario para asegurar una correcta categorización de los mensajes de log.
 
 10. *Mejorar archivo .BAT* 
+
+
+
+
+
+### Beneficios de Implementar POO
+
+1. **Encapsulamiento**: Permite agrupar datos y métodos que operan sobre esos datos en una sola unidad llamada clase. Esto ayuda a proteger los datos y a mantener el código limpio y organizado.
+2. **Herencia**: Facilita la creación de nuevas clases a partir de clases existentes, promoviendo la reutilización del código.
+3. **Polimorfismo**: Permite utilizar una interfaz común para diferentes tipos de objetos, lo que hace que el código sea más flexible y extensible.
+4. **Modularidad**: Facilita la división del proyecto en módulos o componentes independientes que pueden desarrollarse, probarse y mantener por separado.
+
+### Plan para Implementar POO
+
+A continuación, propongo una estructura inicial para reorganizar el proyecto utilizando POO.
+
+#### 1. Definir Clases Principales
+
+1. **Clase `Proyecto`**: Representa el proyecto completo y contiene métodos para su análisis y gestión.
+2. **Clase `Archivo`**: Representa un archivo dentro del proyecto y contiene métodos para operaciones de archivos.
+3. **Clase `LoggerConfig`**: Encapsula la configuración del logger.
+4. **Clase `InterfazUsuario`**: Maneja la interacción con el usuario.
+5. **Clase `GestorArchivos`**: Gestiona las operaciones relacionadas con archivos y directorios.
