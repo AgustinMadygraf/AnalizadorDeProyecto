@@ -15,7 +15,7 @@ from logs.config_logger import configurar_logging
 logger = configurar_logging()
 
 def obtener_ruta_analisis(project_path, input_func=input):
-    ruta_seleccionada = obtener_ruta_default()  # Esta ahora devuelve un diccionario
+    ruta_seleccionada = obtener_ruta_default(input_func)  # Usa input_func aquí también
     if isinstance(ruta_seleccionada, dict):
         ruta_default = ruta_seleccionada['ruta']
     else:
@@ -27,12 +27,39 @@ def obtener_ruta_analisis(project_path, input_func=input):
 
     if respuesta == 'N':
         nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
-        # Asegúrate de que guardar_nueva_ruta_default y cualquier otra función manejen correctamente el nuevo formato
         if nueva_ruta != ruta_default:
             guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
 
     return ruta_default
+
+def crear_archivo_path_json():
+    ruta_directorio = 'config'
+    archivo_default = os.path.join(ruta_directorio, 'path.json')
+
+    project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    ultimo_acceso = datetime.now().isoformat()
+
+    contenido_inicial = {
+        "rutas": [
+            {
+                "ruta": project_path,
+                "ultimo_acceso": ultimo_acceso
+            }
+        ]
+    }
+
+    if not os.path.exists(ruta_directorio):
+        os.makedirs(ruta_directorio)
+        logger.info(f"Directorio {ruta_directorio} creado.")
+
+    try:
+        with open(archivo_default, 'w', encoding='utf-8') as file:
+            json.dump(contenido_inicial, file, indent=4)
+        logger.info(f"Archivo {archivo_default} creado con éxito. Ruta del proyecto y fecha/hora actuales añadidas.")
+    except Exception as e:
+        logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
+
 
 def run_app(input_func=input): 
     project_path = inicializar()
@@ -221,36 +248,3 @@ def procesar_archivos(ruta, modo_prompt, ruta_archivos):
     extensiones_permitidas= ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino','.h' ]
     listar_archivos(ruta, extensiones_permitidas)
     return generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, ruta_archivos)
-
-def crear_archivo_path_json():
-    ruta_directorio = 'config'
-    archivo_default = os.path.join(ruta_directorio, 'path.json')
-
-    # Obtener la ruta absoluta del directorio del proyecto
-    project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    # Obtener la fecha y hora actuales en formato ISO
-    ultimo_acceso = datetime.now().isoformat()
-
-    # Estructura inicial con la ruta del proyecto y la fecha/hora actuales
-    contenido_inicial = {
-        "rutas": [
-            {
-                "ruta": project_path,
-                "ultimo_acceso": ultimo_acceso
-            }
-        ]
-    }
-
-    # Crear el directorio `config` si no existe
-    if not os.path.exists(ruta_directorio):
-        os.makedirs(ruta_directorio)
-        logger.info(f"Directorio {ruta_directorio} creado.")
-
-    # Crear y escribir en el archivo `path.json`
-    try:
-        with open(archivo_default, 'w', encoding='utf-8') as file:
-            json.dump(contenido_inicial, file, indent=4)
-        logger.info(f"Archivo {archivo_default} creado con éxito. Ruta del proyecto y fecha/hora actuales añadidas.")
-    except Exception as e:
-        logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
-

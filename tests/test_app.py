@@ -1,11 +1,9 @@
 #AnalizadorDeProyectos/tests/test_app.py
-import sys
 import os
 import pytest
 from unittest.mock import patch, mock_open, MagicMock
 
-
-from ..src.app import (
+from src.app import (
     obtener_ruta_analisis,
     seleccionar_modo_operacion,
     inicializar,
@@ -19,7 +17,7 @@ from ..src.app import (
 )
 
 @patch('builtins.input', return_value='S')
-@patch('app.obtener_ruta_default', return_value='test_path')
+@patch('src.app.obtener_ruta_default', return_value='test_path')
 def test_obtener_ruta_analisis(mock_obtener_ruta_default, mock_input):
     ruta = obtener_ruta_analisis('test_project_path', input_func=mock_input)
     assert ruta == 'test_path'
@@ -31,9 +29,9 @@ def test_seleccionar_modo_operacion():
 
 @patch('builtins.input', return_value='')
 def test_inicializar(mock_input):
-    with patch('app.limpieza_pantalla'), \
-         patch('app.bienvenida'), \
-         patch('app.obtener_version_python', return_value='3.9.1'):
+    with patch('src.app.limpieza_pantalla'), \
+         patch('src.app.bienvenida'), \
+         patch('src.app.obtener_version_python', return_value='3.9.1'):
         project_path = inicializar()
         assert os.path.isdir(project_path)
 
@@ -58,16 +56,18 @@ def test_validar_ruta():
     assert validar_ruta('non_existent_path') == False
 
 def test_procesar_archivos():
-    with patch('app.listar_archivos', return_value=[]), \
-         patch('app.generar_archivo_salida', return_value='test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'):
+    with patch('src.app.listar_archivos', return_value=[]), \
+         patch('src.app.generar_archivo_salida', return_value='test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'):
         resultado = procesar_archivos('test_path', 'config\\prompt_1.md', 'test_project_path')
         assert resultado == 'test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'
 
 def test_crear_archivo_path_json():
+    # Asegúrate de que el directorio `config` no exista antes de ejecutar la prueba.
+    if os.path.exists('config'):
+        os.rmdir('config')
+    
     with patch('builtins.open', mock_open()) as mock_file, \
          patch('os.makedirs') as mock_makedirs:
-        if not os.path.exists('config'):
-            mock_makedirs.return_value = None
         crear_archivo_path_json()
         mock_makedirs.assert_called_with('config')
         mock_file.assert_called_with('config/path.json', 'w', encoding='utf-8')
