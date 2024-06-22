@@ -1,1 +1,1 @@
-¿El siguiente código se puede mejorar?
+# Proporciona texto para "todo.txt"

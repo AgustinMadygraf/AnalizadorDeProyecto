@@ -1,20 +1,54 @@
-TODO List for AnalizadorDeProyecto Enhancements
 
-1. **Conteo de Tipos de Archivos en el Proyecto.**
-   - **Descripción:** Implementar una funcionalidad que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayudará a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
-   - **Implementación:** Desarrollar una función que recorra los directorios del proyecto, identifique las extensiones de los archivos, y cuente la cantidad de archivos por tipo. Esta información debe presentarse al usuario de manera clara y concisa, posiblemente como parte del informe de análisis del proyecto.
+1. **Mejorar `prompt_0.txt` para Generar `todo.txt`**
+   - **Descripción:** Modificar `prompt_0.txt` para generar un archivo `todo.txt` con una lista de tareas basada en el análisis del proyecto. Esto ayuda a estructurar mejor las mejoras y correcciones necesarias.
+   - **Pasos:**
+     1. Actualizar el formato de `prompt_0.txt`.
+     2. Asegurar que genere un archivo `todo.txt` con tareas detalladas y pasos claros.
 
-2. **Incorporar carpetas de ".gitignore" a la omisión del análisis de estructura de archivos y directorios.**
-   - **Descripción:** Modificar la funcionalidad de análisis de estructura de archivos y directorios para que omita las carpetas y archivos listados en el archivo `.gitignore`. Esto ayudará a evitar el análisis de archivos que no son relevantes para la métrica del proyecto.
-   - **Implementación:** Actualizar la función que recorre los directorios del proyecto para que lea el archivo `.gitignore` y excluya las carpetas y archivos especificados. Asegurarse de que estas omisiones se reflejen en el informe de análisis del proyecto.
+2. *Incoporar carpeta "tests", sus archivos y probar*     
 
-3. **Mejorar `prompt_0.txt` para que la salida sea un `todo.txt`.**
-   - **Descripción:** Modificar el archivo `prompt_0.txt` para generar un archivo `todo.txt` con una lista de tareas basada en el análisis del proyecto. Esto ayudará a estructurar mejor las mejoras y correcciones necesarias en el proyecto.
-   - **Implementación:** Actualizar el contenido y formato de `prompt_0.txt` para que al ejecutarse genere un archivo `todo.txt`. Asegurarse de que la lista de tareas sea clara y priorizada, proporcionando descripciones detalladas y pasos a seguir para cada tarea identificada.
+3. **Incorporar .gitignore para Omitir Carpetas del Análisis de Estructura**
+   - **Descripción:** Modificar la funcionalidad de análisis para omitir carpetas y archivos listados en `.gitignore`. Esto ayuda a evitar el análisis de archivos irrelevantes para las métricas del proyecto.
+   - **Pasos:**
+     1. Actualizar la función de recorrido de directorios para leer `.gitignore`.
+     2. Excluir los archivos y carpetas especificados del análisis.
+     3. Reflejar estas omisiones en el informe de análisis.
 
-4. *Incoporar chequear y actualizar repositorio desde GitHub*   
+4. **Conteo y Clasificación de Tipos de Archivos en el Proyecto**
+   - **Descripción:** Implementar una función que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayuda a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
+   - **Pasos:**
+     1. Recorrer los directorios del proyecto para identificar extensiones de archivos.
+     2. Contar la cantidad de archivos por tipo.
+     3. Presentar esta información en el informe de análisis del proyecto.
 
-5. *Pregutar si es para GTP gratuito o de pago para limitar el máximo de archivos a analizar*
-   - por defecto GPT4
+5. **Chequear y Actualizar el Repositorio desde GitHub**
+   - **Descripción:** Añadir funcionalidad para verificar actualizaciones y obtener los últimos cambios desde el repositorio de GitHub.
+   - **Pasos:**
+     1. Obtener los últimos commits del repositorio remoto.
+     2. Actualizar el repositorio local con los cambios nuevos.
 
-6. *Ordenar de por orden de ultima vez usado*
+6. **Incorporar Validación y Ejecución Condicional Basada en Versión GPT (gratuito o de pago)**
+   - **Descripción:** Añadir una función para preguntar al usuario si están usando GPT gratuito o de pago para limitar el número máximo de archivos a analizar.
+   - **Pasos:**
+     1. Implementar un prompt para que el usuario especifique la versión de GPT.
+     2. Ajustar el alcance del análisis de archivos basado en la entrada del usuario.
+
+7. **Ordenar Archivos por Orden de Último Uso**
+   - **Descripción:** Implementar una función para ordenar archivos o directorios por el tiempo de último acceso, facilitando la identificación de los elementos más recientes.
+   - **Pasos:**
+     1. Actualizar la función de listado de archivos para ordenar por tiempo de último acceso.
+     2. Mostrar la lista ordenada al usuario.
+
+8. **Documentar Proceso de Configuración y Ejecución**
+   - **Descripción:** Añadir documentación detallada sobre cómo configurar y ejecutar el proyecto, incluyendo pasos para instalación de dependencias y configuración del entorno.
+   - **Pasos:**
+     1. Crear o actualizar la documentación en `README.md` o un archivo separado.
+     2. Incluir ejemplos y comandos necesarios para la configuración y ejecución.
+
+9. **Mejorar el Uso de Loggers**
+   - **Descripción:** Asegurarse de que el código utiliza correctamente los niveles de logging (debug, info) y eliminar el uso de `print` para fines de logging.
+   - **Pasos:**
+     1. Revisar el código para encontrar y reemplazar los `print` con llamadas apropiadas a logger.
+     2. Ajustar los niveles de logging según sea necesario para asegurar una correcta categorización de los mensajes de log.
+
+10. *Mejorar archivo .BAT* 
