@@ -1,4 +1,9 @@
-import pytest
+import sys
+import os
+
+# Asegúrate de que el directorio `src` esté en el `PYTHONPATH`
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 from src.file_operations import contenido_archivo, filtrar_archivos_por_extension, contar_lineas_codigo
 
 def test_contenido_archivo(tmpdir):

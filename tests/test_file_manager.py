@@ -1,5 +1,10 @@
 #AnalizadorDeProyectos/test/test_file_manager.py
-import pytest
+import sys
+import os
+
+# Asegúrate de que el directorio `src` esté en el `PYTHONPATH`
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 from src.file_manager import validar_file_path, archivo_permitido, leer_contenido_archivo, read_and_validate_file
 
 def test_validar_file_path():
