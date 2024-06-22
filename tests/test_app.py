@@ -21,15 +21,16 @@ from ..src.app import (
 @patch('builtins.input', return_value='S')
 @patch('app.obtener_ruta_default', return_value='test_path')
 def test_obtener_ruta_analisis(mock_obtener_ruta_default, mock_input):
-    ruta = obtener_ruta_analisis('test_project_path')
+    ruta = obtener_ruta_analisis('test_project_path', input_func=mock_input)
     assert ruta == 'test_path'
 
 def test_seleccionar_modo_operacion():
     with patch('builtins.input', return_value='1'):
-        modo_prompt = seleccionar_modo_operacion()
+        modo_prompt = seleccionar_modo_operacion(input_func=input)
         assert modo_prompt == 'config\\prompt_1.md'
 
-def test_inicializar():
+@patch('builtins.input', return_value='')
+def test_inicializar(mock_input):
     with patch('app.limpieza_pantalla'), \
          patch('app.bienvenida'), \
          patch('app.obtener_version_python', return_value='3.9.1'):
@@ -45,7 +46,7 @@ def test_guardar_nueva_ruta_default(mock_input):
 @patch('builtins.input', return_value='1')
 def test_obtener_ruta_default(mock_input):
     with patch('builtins.open', mock_open(read_data='{"rutas": [{"ruta": "test_path", "ultimo_acceso": "2024-06-22T00:00:00"}]}')):
-        ruta = obtener_ruta_default()
+        ruta = obtener_ruta_default(input_func=mock_input)
         assert ruta == 'test_path'
 
 def test_obtener_ruta_script():
@@ -58,13 +59,15 @@ def test_validar_ruta():
 
 def test_procesar_archivos():
     with patch('app.listar_archivos', return_value=[]), \
-         patch('app.generar_archivo_salida', return_value='output_file'):
+         patch('app.generar_archivo_salida', return_value='test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'):
         resultado = procesar_archivos('test_path', 'config\\prompt_1.md', 'test_project_path')
-        assert resultado == 'output_file'
+        assert resultado == 'test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'
 
 def test_crear_archivo_path_json():
     with patch('builtins.open', mock_open()) as mock_file, \
          patch('os.makedirs') as mock_makedirs:
+        if not os.path.exists('config'):
+            mock_makedirs.return_value = None
         crear_archivo_path_json()
         mock_makedirs.assert_called_with('config')
         mock_file.assert_called_with('config/path.json', 'w', encoding='utf-8')

@@ -3,12 +3,8 @@ import os
 import time
 from datetime import datetime
 import threading
-import sys
 import json
 from colorama import Fore, Style
-from importlib import metadata
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))  
 from src.file_operations import listar_archivos
 from src.report_generator import generar_archivo_salida
 from utilities import obtener_version_python, limpieza_pantalla
@@ -18,7 +14,7 @@ from logs.config_logger import configurar_logging
 # Configuración del logger
 logger = configurar_logging()
 
-def obtener_ruta_analisis(project_path):
+def obtener_ruta_analisis(project_path, input_func=input):
     ruta_seleccionada = obtener_ruta_default()  # Esta ahora devuelve un diccionario
     if isinstance(ruta_seleccionada, dict):
         ruta_default = ruta_seleccionada['ruta']
@@ -26,7 +22,7 @@ def obtener_ruta_analisis(project_path):
         ruta_default = ruta_seleccionada  # En caso de que todavía soporte el formato antiguo
 
     logger.info(f"Directorio seleccionado: {ruta_default}\n")
-    respuesta = input(f"{Fore.GREEN}¿Desea analizar el directorio? (S/N): {Style.RESET_ALL}").upper()
+    respuesta = input_func(f"{Fore.GREEN}¿Desea analizar el directorio? (S/N): {Style.RESET_ALL}").upper()
     print("")
 
     if respuesta == 'N':
@@ -38,19 +34,19 @@ def obtener_ruta_analisis(project_path):
 
     return ruta_default
 
-def run_app(): 
+def run_app(input_func=input): 
     project_path = inicializar()
     while True:
-        ruta = obtener_ruta_analisis(project_path)
+        ruta = obtener_ruta_analisis(project_path, input_func)
         if ruta and validar_ruta(ruta):
             modo_prompt = seleccionar_modo_operacion()
             procesar_archivos(ruta, modo_prompt, project_path)
-            input(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
+            input_func(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
             limpieza_pantalla()
         else:
             logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
 
-def seleccionar_modo_operacion():
+def seleccionar_modo_operacion(input_func=input):
     """
     Permite al usuario seleccionar el modo de operación y devuelve el prompt correspondiente.
     """
@@ -73,7 +69,7 @@ def inicializar():
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
-def bienvenida():
+def bienvenida(input_func=input):
     mensaje = """Bienvenido al AnalizadorDeProyecto 🌟\nEste software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!"""
 
     mensaje = f"{mensaje}{Fore.GREEN} \n\n\nPresiona Enter para continuar...\n {Style.RESET_ALL}"
@@ -96,7 +92,7 @@ def bienvenida():
     hilo_mensaje.start()
 
     # Espera a que el usuario presione Enter
-    input()
+    input_func()
     mostrar_todo = True
     hilo_mensaje.join()  # Espera a que el hilo termine
 
@@ -126,7 +122,7 @@ def guardar_nueva_ruta_default(nueva_ruta):
     except Exception as e:
         logger.error(f"Error al guardar la nueva ruta por defecto: {e}")
 
-def obtener_ruta_default():
+def obtener_ruta_default(input_func=input):
     archivo_default = 'config/path.json'
     if not os.path.exists(archivo_default):
         logger.info(f"El archivo {archivo_default} no existe. Creando uno nuevo.")
@@ -137,7 +133,7 @@ def obtener_ruta_default():
             rutas = data.get('rutas', [])
         
         if not rutas:
-            nueva_ruta = input("No se encontraron rutas guardadas. Por favor, introduzca una nueva ruta: ").strip()
+            nueva_ruta = input_func("No se encontraron rutas guardadas. Por favor, introduzca una nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
 
@@ -152,13 +148,13 @@ def obtener_ruta_default():
         logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
         print("")
 
-        eleccion = input(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()        # Procesamiento de la elección del usuario
+        eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()        # Procesamiento de la elección del usuario
         if not eleccion:
             return rutas[0]['ruta']
         elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
             return rutas[int(eleccion)-1]['ruta']
         elif eleccion == str(len(rutas) + 1):
-            nueva_ruta = input("Introduzca la nueva ruta: ").strip()
+            nueva_ruta = input_func("Introduzca la nueva ruta: ").strip()
             guardar_nueva_ruta_default(nueva_ruta)
             return nueva_ruta
         else:
@@ -167,7 +163,7 @@ def obtener_ruta_default():
     except Exception as e:
         logger.error(f"Ocurrió un error: {e}")
     except FileNotFoundError:
-        nueva_ruta = input("Por favor, introduzca una nueva ruta: ").strip()
+        nueva_ruta = input_func("Por favor, introduzca una nueva ruta: ").strip()
         guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
 
