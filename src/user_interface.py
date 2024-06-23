@@ -38,12 +38,12 @@ def menu_1():
     }
 
     logger.info("Por favor, seleccione una opción de configuración:")
-    logger.info("0: Implemetar sugerencias de la lista para hacer  ")
-    logger.info("1: Mejora de codigo nivel 1")
-    logger.info("2: Mejora de codigo nivel 2")
-    logger.info("3: Mejora de codigo nivel 3")
-    logger.info("4: Mejora de codigo nivel 4")
-    logger.info("5: Mejora de codigo nivel 5")
+    logger.info("0 - vacío")
+    logger.info("1 - Análisis y Mejora Estructurada del Código para Incrementar Rendimiento y Mantenibilidad")
+    logger.info("2 - SOLID: Evaluación y Optimización de Código Python según Principios SOLID con Pruebas Automatizadas")
+    logger.info("3 - POO: Comprensión y Mejora de Proyectos de Software para Dominar la Programación Orientada a Objetos")
+    logger.info("4 - TODO.txt: Mejora de la Organización y Productividad en Proyectos de Software con todo.txt")
+    logger.info("5 - TODO.txt: Implentación de las las tareas descriptas en el archivo TODO.txt")
     print("")
     eleccion = input(f"{Fore.GREEN}Ingrese el número de la opción deseada: {Style.RESET_ALL}") or '0'
     # Validar la entrada del usuario y asegurarse de que sea una opción válida

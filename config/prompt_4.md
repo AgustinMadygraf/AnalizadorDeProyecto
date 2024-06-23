@@ -1,18 +1,22 @@
-Realiza una revisión completa del siguiente código y proporcióname un listado de tareas por orden de prioridad para mejorar el código, siguiendo las mejores prácticas de programación. El listado debe incluir:
+## **Mejora de la Organización y Productividad en Proyectos de Software con todo.txt**
 
-1. **Identifica archivos, funciones y/o variables redundantes.**
-   - Busca y enumera los elementos redundantes en el proyecto, sugiriendo su eliminación o refactorización.
+Genera o mejora un archivo `TODO.txt` para el siguiente proyecto de software desde la perspectiva de un ingeniero de software. Este archivo debe ayudar a mejorar la organización y productividad del equipo de desarrollo, siguiendo las mejores prácticas de programación. Presta atención a cualquier archivo `TODO.txt` existente para modificarlo adecuadamente; en caso de que no exista, proporciona el texto necesario para crear uno nuevo.
 
-2. **Realiza modificaciones en la estructura de directorios y archivos, si es necesario.**
-   - Describe y lleva a cabo los cambios necesarios para mejorar la organización del proyecto.
+El archivo `TODO.txt` debe incluir breves descripciones de las tareas y estar diseñado para ser utilizado principalmente por desarrolladores de software. El contenido del archivo `TODO.txt` debe abarcar los siguientes aspectos:
 
-3. **Cambia los nombres de los archivos, si es necesario.**
-   - Proporciona nuevos nombres más descriptivos para los archivos, detallando qué cambios se realizarán.
+1. **Identificación de Tareas Pendientes**:
+   - Enumera las tareas pendientes, describiendo brevemente cada una de ellas. Incluye tareas de desarrollo, corrección de errores, refactorización, etc.
 
-4. **Modifica los nombres de las variables, si es necesario.**
-   - Enumera las variables cuyo nombre será modificado, especificando en qué archivos se encuentran y describiendo los cambios.
+2. **Priorización de Tareas**:
+   - Organiza las tareas por prioridad (alta, media, baja), basándote en su impacto en el proyecto y la urgencia.
 
-5. **Modifica los nombres de las funciones, si es necesario.**
-   - Enumera las funciones cuyo nombre será modificado y describe brevemente los cambios a realizar.
+3. **Asignación de Responsabilidades**:
+   - Asigna responsabilidades específicas a miembros del equipo si es necesario, indicando quién debe realizar cada tarea.
 
-Aquí tienes el código a revisar:
+4. **Plazos y Fechas Límite**:
+   - Establece plazos o fechas límite para la finalización de las tareas cuando sea relevante.
+
+5. **Notas Adicionales**:
+   - Incluye cualquier nota adicional que pueda ser útil para la comprensión y ejecución de las tareas, como enlaces a documentación o referencias a otros archivos del proyecto.
+
+Aquí está el proyecto de software a revisar:

@@ -1,18 +1,14 @@
-Realiza una revisión completa del siguiente código y proporcióname un listado de tareas por orden de prioridad para mejorar el código, siguiendo las mejores prácticas de programación. El listado debe incluir:
+## **Realización de Tareas desde TODO.txt para Mejorar Proyectos de Software**
 
-1. **Realiza modificaciones en la estructura de directorios y archivos, si es necesario.**
-   - Describe y lleva a cabo los cambios necesarios para mejorar la organización del proyecto.
+Realiza las tareas descritas en el archivo `TODO.txt` para mejorar el siguiente proyecto de software. Para cada tarea, proporciona una explicación teórica del problema y la solución, el fragmento de código necesario para la mejora, y el archivo de pruebas correspondiente usando `pytest` (u otro framework adecuado si es necesario).
 
-2. **Cambia los nombres de los archivos, si es necesario.**
-   - Proporciona nuevos nombres más descriptivos para los archivos, detallando qué cambios se realizarán.
+El proceso debe incluir:
 
-3. **Modifica los nombres de las variables, si es necesario.**
-   - Enumera las variables cuyo nombre será modificado, especificando en qué archivos se encuentran y describiendo los cambios.
+1. **Explicación Teórica**:
+   - Describe detalladamente el problema identificado en el archivo `TODO.txt` y la solución propuesta para abordarlo. Asegúrate de explicar por qué se eligió esta solución y cómo se alinea con las mejores prácticas de programación.
 
-4. **Modifica los nombres de las funciones, si es necesario.**
-   - Enumera las funciones cuyo nombre será modificado y describe brevemente los cambios a realizar.
+2. **Fragmento de Código**:
+   - Proporciona el código necesario para implementar la mejora o corrección. Asegúrate de que el código sea claro y esté bien comentado para facilitar la comprensión.
 
-5. **Revisa y mejora el uso de logger, diferenciando entre debug, info y print.**
-   - Asegúrate de que el código utiliza correctamente los diferentes niveles de logging y elimina el uso de print para fines de logging.
-
-Aquí tienes el código a revisar:
+3. **Archivo de Pruebas**:
+   - Crea o modifica el archivo de pruebas correspondiente, con el nombre `tests/test_[nombre_archivo].py`. Las pruebas deben verificar que la implementación de la tarea se realizó correctamente y que no introdujo nuevos problemas en el proyecto.
