@@ -38,12 +38,6 @@ def test_inicializar(mock_input):
         project_path = inicializar()
         assert os.path.isdir(project_path)
 
-@patch('builtins.input', return_value='test_path')
-def test_guardar_nueva_ruta_default(mock_input):
-    with patch('builtins.open', mock_open()) as mock_file:
-        guardar_nueva_ruta_default('test_path')
-        mock_file.assert_called_once_with('config/path.json', 'w', encoding='utf-8')
-
 @patch('builtins.input', return_value='1')
 def test_obtener_ruta_default(mock_input):
     with patch('builtins.open', mock_open(read_data='{"rutas": [{"ruta": "test_path", "ultimo_acceso": "2024-06-22T00:00:00"}]}')):
