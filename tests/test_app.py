@@ -40,9 +40,9 @@ def test_inicializar(mock_input):
 
 @patch('builtins.input', return_value='test_path')
 def test_guardar_nueva_ruta_default(mock_input):
-    with patch('builtins.open', mock_open(read_data='{"rutas": []}')) as mock_file:
+    with patch('builtins.open', mock_open()) as mock_file:
         guardar_nueva_ruta_default('test_path')
-        mock_file.assert_called_with('config/path.json', 'w', encoding='utf-8')
+        mock_file.assert_called_once_with('config/path.json', 'w', encoding='utf-8')
 
 @patch('builtins.input', return_value='1')
 def test_obtener_ruta_default(mock_input):
