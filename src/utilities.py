@@ -1,6 +1,5 @@
-#SCR/UtilSist.py
+#src/utilities.py
 import sys
-from importlib import metadata
 import os
 from logs.config_logger import configurar_logging
 
