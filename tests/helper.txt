@@ -1,0 +1,1 @@
+$env:PYTHONPATH="C:\AppServ\www\AnalizadorDeProyecto;C:\AppServ\www\AnalizadorDeProyecto\src"    

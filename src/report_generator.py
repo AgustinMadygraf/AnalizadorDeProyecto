@@ -1,7 +1,7 @@
 import os
 import datetime
-from file_manager import read_and_validate_file, copiar_contenido_al_portapapeles
-from logs.config_logger import configurar_logging
+from src.file_manager import read_and_validate_file, copiar_contenido_al_portapapeles
+from src.logs.config_logger import configurar_logging
 from src.file_operations import listar_archivos, asegurar_directorio_docs
 
 logger = configurar_logging()

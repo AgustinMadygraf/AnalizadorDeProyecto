@@ -1,6 +1,6 @@
 #src/data_output.py
 import os
-from logs.config_logger import configurar_logging
+from src.logs.config_logger import configurar_logging
 
 # Configuración del logger
 logger = configurar_logging()

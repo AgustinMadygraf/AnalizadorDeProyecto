@@ -63,5 +63,3 @@ def test_procesar_archivos():
          patch('src.app.generar_archivo_salida', return_value='test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'):
         resultado = procesar_archivos('test_path', 'config\\prompt_1.md', 'test_project_path')
         assert resultado == 'test_path\\docs\\00-Prompt-for-ProjectAnalysis.md'
-
-# Mover la definición de la función fu

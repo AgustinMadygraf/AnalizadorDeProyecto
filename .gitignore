@@ -10,3 +10,4 @@ src/logs/sistema.log
 .pytest_cache
 config/path.json
 test_path/
+src/logs/sistema.log.*
