@@ -1,6 +1,6 @@
 #AnalizadorDeProyectos\src\installer_utils.py
 from pathlib import Path
-from .logs.config_logger import configurar_logging
+from src.logs.config_logger import configurar_logging
 import winshell
 from win32com.client import Dispatch
 from pywintypes import com_error

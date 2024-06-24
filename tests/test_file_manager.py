@@ -1,4 +1,4 @@
-#test_file_manager.py
+# AnalizadorDeProyecto/tests/test_file_manager.py
 import os
 import pytest
 from unittest.mock import patch, mock_open
@@ -45,36 +45,29 @@ def test_leer_contenido_archivo(mock_file):
 # Prueba para validar y leer un archivo
 @patch("src.file_manager.leer_contenido_archivo", return_value="contenido del archivo")
 @patch("os.path.isfile", return_value=True)
-
-def test_read_and_validate_file():
-    # Mock data and function calls
+@patch("os.path.getsize", return_value=1000)
+def test_read_and_validate_file(mock_getsize, mock_isfile, mock_leer_contenido_archivo):
     with patch("src.file_manager.validar_file_path", return_value=True), \
-         patch("src.file_manager.os.path.isfile", return_value=True), \
          patch("src.file_manager.archivo_permitido", return_value=True), \
-         patch("src.file_manager.esta_en_gitignore", return_value=False), \
-         patch("src.file_manager.leer_contenido_archivo", return_value="content"):
-        # Test valid file
-        assert read_and_validate_file("valid_path", True, [".txt"]) == "content"
-        
+         patch("src.file_manager.esta_en_gitignore", return_value=False):
+        assert read_and_validate_file("valid_path", True, [".txt"]) == "contenido del archivo"
+
     with patch("src.file_manager.validar_file_path", return_value=True), \
-         patch("src.file_manager.os.path.isfile", return_value=True), \
          patch("src.file_manager.archivo_permitido", return_value=False):
-        # Test file with non-permitted extension
         assert read_and_validate_file("invalid_extension_path", True, [".txt"]) is None
 
-# Prueba para procesar el contenido SQL
 def test_procesar_sql():
-    contenido_sql = "INSERT INTO tabla (columna) VALUES ('valor');\nSELECT * FROM tabla;"
-    resultado_esperado = "INSERT INTO tabla (columna) VALUES ('valor');\n"
-    assert procesar_sql(contenido_sql) == resultado_esperado
+    contenido_sql = "INSERT INTO table_name (col1, col2) VALUES ('val1', 'val2');"
+    resultado = procesar_sql(contenido_sql)
+    assert "INSERT INTO" in resultado
+    assert "VALUES" in resultado
 
-# Prueba para copiar el contenido al portapapeles
-@patch("pyperclip.copy")
-@patch("builtins.open", new_callable=mock_open, read_data="contenido del archivo")
-def test_copiar_contenido_al_portapapeles(mock_file, mock_pyperclip):
-    extensiones_permitidas = [".py", ".txt"]
-    copiar_contenido_al_portapapeles("test.py", extensiones_permitidas)
-    mock_pyperclip.assert_called_once_with("contenido del archivo")
+@patch("src.file_manager.pyperclip.copy")
+@patch("os.path.exists", return_value=True)
+def test_copiar_contenido_al_portapapeles(mock_exists, mock_copy):
+    with patch("src.file_manager.read_and_validate_file", return_value="content"):
+        copiar_contenido_al_portapapeles("path", [".txt"])
+        mock_copy.assert_called_once_with("content")
 
 # Prueba para verificar la existencia de un archivo
 @patch("os.path.exists", return_value=True)

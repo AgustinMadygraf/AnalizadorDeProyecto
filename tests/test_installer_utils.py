@@ -1,4 +1,4 @@
-# AnalizadorDeProeyctos/src/test_installer_utils.py
+# AnalizadorDeProyectos/tests/test_installer_utils.py
 import os
 import pytest
 from unittest.mock import patch, MagicMock
@@ -46,4 +46,4 @@ def test_crear_archivo_bat_con_pipenv(mock_open):
 
     mock_open.assert_called_once_with(ruta_archivo_bat, 'w')
     handle = mock_open()
-    handle.write.assert_called_once()
+    handle.write.assert_called_once_with(f"pipenv run python {directorio_script / 'src' / 'main.py'}")

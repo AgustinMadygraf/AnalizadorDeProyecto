@@ -1,4 +1,4 @@
-# AnalizadorDeProeyctos/src/test_file_operations.py
+# AnalizadorDeProeyctos/tests/test_file_operations.py
 import os
 import pytest
 from unittest.mock import patch, mock_open
@@ -47,12 +47,10 @@ def test_contar_lineas_codigo(mock_file):
 @patch("src.file_operations.contar_lineas_codigo", return_value=10)
 def test_listar_archivos(mock_contar_lineas, mock_getsize, mock_walk):
     mock_walk.return_value = [
-        ("root", ["dir"], ["archivo1.py", "archivo2.txt"])
+        ("root", ("dir1",), ("file1.py", "file2.txt")),
+        ("root/dir1", (), ("file3.md", "file4.py")),
     ]
-    extensiones_permitidas = [".py", ".txt"]
-    archivos_encontrados, estructura = listar_archivos("root", extensiones_permitidas)
-    assert len(archivos_encontrados) == 2
-    assert "archivo1.py" in archivos_encontrados
-    assert "archivo2.txt" in archivos_encontrados
-    assert any("archivo1.py" in s for s in estructura)
-    assert any("archivo2.txt" in s for s in estructura)
+    archivos, estructura = listar_archivos("root", [".py", ".txt", ".md"])
+    assert len(archivos) == 4
+    assert "root/" in estructura[0]
+    assert "file1.py" in estructura[1]
