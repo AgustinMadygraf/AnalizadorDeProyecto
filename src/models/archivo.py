@@ -1,4 +1,6 @@
 # src/models/archivo.py
+import os
+
 class Archivo:
     def __init__(self, ruta):
         self.ruta = ruta

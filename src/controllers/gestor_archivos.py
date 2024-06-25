@@ -1,4 +1,5 @@
 # src/controllers/gestor_archivos.py
+import os
 from src.models.archivo import Archivo
 
 class GestorArchivos:
