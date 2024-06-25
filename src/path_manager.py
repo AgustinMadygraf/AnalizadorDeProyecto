@@ -56,7 +56,7 @@ def crear_archivo_path_json():
         logger.error(f"No se pudo crear el archivo {archivo_default}: {e}")
 
 def guardar_nueva_ruta_default(nueva_ruta):
-    archivo_default = 'config/path.json'
+    archivo_default = os.path.normpath('config/path.json')
     try:
         # Cargar el archivo JSON existente o crear uno nuevo si no existe
         if os.path.exists(archivo_default):

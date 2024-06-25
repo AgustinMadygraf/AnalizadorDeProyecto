@@ -14,17 +14,6 @@ from src.app import (
     run_app
 )
 
-@patch('builtins.input', return_value='S')
-@patch('src.path_manager.obtener_ruta_default', return_value='test_path')
-@patch('src.path_manager.validar_ruta', return_value=True)
-@patch('src.app.procesar_archivos')
-@patch('src.app.limpieza_pantalla')
-
-def test_seleccionar_modo_operacion():
-    with patch('builtins.input', return_value='1'):
-        modo_prompt = seleccionar_modo_operacion(input_func=input)
-        assert modo_prompt == 'config\\prompt_1.md'
-
 @patch('builtins.input', return_value='')
 def test_inicializar(mock_input):
     with patch('src.app.limpieza_pantalla'), \

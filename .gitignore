@@ -11,3 +11,4 @@ src/logs/sistema.log
 config/path.json
 test_path/
 src/logs/sistema.log.*
+.vscode/settings.json

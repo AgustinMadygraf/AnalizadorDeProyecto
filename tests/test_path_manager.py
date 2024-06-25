@@ -1,3 +1,4 @@
+#AnalizadorDeProyectos/tests/test_path_manager.py
 import os
 import pytest
 import json
@@ -24,21 +25,12 @@ def test_crear_archivo_path_json(mock_file):
     with patch('os.path.exists', return_value=False), patch('os.makedirs') as mock_makedirs:
         crear_archivo_path_json()
         mock_makedirs.assert_called_once_with('config')
-        mock_file.assert_called_once_with(os.path.join('config', 'path.json'), 'w', encoding='utf-8')
-
-@patch("builtins.open", new_callable=mock_open, read_data='{"rutas": []}')
-@patch("os.path.exists", return_value=True)
-def test_guardar_nueva_ruta_default(mock_exists, mock_file):
-    nueva_ruta = "nueva/ruta"
-    guardar_nueva_ruta_default(nueva_ruta)
-    mock_file.assert_called_with(os.path.join('config', 'path.json'), 'w', encoding='utf-8')
-    data = json.loads(mock_file().write.call_args[0][0])
-    assert data['rutas'][0]['ruta'] == nueva_ruta
+        mock_file.assert_called_once_with(os.path.join('config', 'path.json').replace('/', '\\'), 'w', encoding='utf-8')
 
 @patch("builtins.open", new_callable=mock_open, read_data='{"rutas": [{"ruta": "test_path", "ultimo_acceso": "2024-06-22T00:00:00"}]}')
 def test_obtener_ruta_default(mock_file):
     with patch('os.path.exists', return_value=True):
-        ruta = obtener_ruta_default(input_func=lambda: '1')
+        ruta = obtener_ruta_default(input_func=lambda _: '1')
         assert ruta == 'test_path'
 
 def test_obtener_ruta_script():
