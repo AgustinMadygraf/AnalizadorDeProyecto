@@ -4,6 +4,7 @@ import os
 class Archivo:
     def __init__(self, ruta):
         self.ruta = ruta
+        self.nombre = os.path.basename(ruta)  # Añadir atributo nombre
 
     def leer_contenido(self):
         with open(self.ruta, 'r', encoding='utf-8') as archivo:

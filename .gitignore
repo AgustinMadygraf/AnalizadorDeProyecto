@@ -1,0 +1,6 @@
+docs/00-Prompt-for-ProjectAnalysis.md
+src/controllers/__pycache__/
+tests/__pycache__/
+src/models/__pycache__/
+src/config/__pycache__/
+src/views/__pycache__/
