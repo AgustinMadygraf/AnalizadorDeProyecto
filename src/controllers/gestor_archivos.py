@@ -1,4 +1,5 @@
 # src/controllers/gestor_archivos.py
+
 import os
 from src.models.archivo import Archivo
 
@@ -14,10 +15,14 @@ class GestorArchivos:
         return archivos
 
     def buscar_archivo(self, nombre):
-        """
-        Busca un archivo por nombre en el directorio del proyecto.
-        """
         for archivo in self.obtener_archivos():
             if archivo.nombre == nombre:
                 return archivo
         return None
+
+    def buscar_archivos_por_extension(self, extension):
+        return [archivo for archivo in self.obtener_archivos() if archivo.ruta.endswith(extension)]
+
+    def mover_archivo(self, archivo, nueva_ruta):
+        os.rename(archivo.ruta, nueva_ruta)
+        archivo.ruta = nueva_ruta
