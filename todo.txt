@@ -1,0 +1,38 @@
+### Plan de Reescritura del Proyecto Utilizando POO y Principios SOLID
+
+#### Paso 1: Definir la Arquitectura del Proyecto
+
+1. **Estructura de Directorios**:
+   - `src/`
+     - `controllers/`: Maneja la lógica de negocio.
+     - `models/`: Define las clases del modelo.
+     - `views/`: Maneja la presentación (si aplica).
+     - `utils/`: Funciones y utilidades generales.
+     - `config/`: Configuraciones del proyecto.
+     - `logs/`: Manejo de logs.
+   - `tests/`: Pruebas unitarias e integradas.
+   - `docs/`: Documentación del proyecto.
+
+2. **Clases Principales**:
+   - `Proyecto`: Representa el proyecto completo.
+   - `Archivo`: Representa un archivo dentro del proyecto.
+   - `LoggerConfig`: Configura el sistema de logging.
+   - `InterfazUsuario`: Maneja la interacción con el usuario.
+   - `GestorArchivos`: Gestiona las operaciones de archivos y directorios.
+
+#### Paso 2: Implementar Clases según Principios SOLID
+
+1. **Principio de Responsabilidad Única (SRP)**:
+   - Cada clase debe tener una única responsabilidad. Por ejemplo, `Archivo` se encarga solo de las operaciones relacionadas con un archivo específico.
+
+2. **Principio Abierto/Cerrado (OCP)**:
+   - Diseñar clases que puedan ser extendidas sin modificar su implementación. Por ejemplo, agregar nuevos tipos de archivos sin modificar la clase `Archivo`.
+
+3. **Principio de Sustitución de Liskov (LSP)**:
+   - Las clases derivadas deben ser sustituibles por sus clases base sin alterar la funcionalidad del programa. Asegurar que las clases derivadas de `Archivo` puedan ser usadas donde se espera un `Archivo`.
+
+4. **Principio de Segregación de Interfaces (ISP)**:
+   - Crear interfaces específicas y pequeñas en lugar de una interfaz general. Por ejemplo, una interfaz `IReadable` para archivos que pueden ser leídos.
+
+5. **Principio de Inversión de Dependencias (DIP)**:
+   - Depender de abstracciones en lugar de implementaciones concretas. Utilizar inyecciones de dependencias para manejar la creación de objetos.
