@@ -3,7 +3,7 @@ import datetime
 import json
 import os
 from colorama import Fore, Style
-from src.user_interface import  menu_0,menu_1
+from src.user_interface import menu_0, menu_1
 
 from src.logs.config_logger import configurar_logging
 
@@ -34,7 +34,7 @@ def crear_archivo_path_json():
     archivo_default = os.path.join(ruta_directorio, 'path.json')
 
     project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    ultimo_acceso = datetime.now().isoformat()
+    ultimo_acceso = datetime.datetime.now().isoformat()
 
     contenido_inicial = {
         "rutas": [
@@ -69,10 +69,10 @@ def guardar_nueva_ruta_default(nueva_ruta):
         # Buscar la ruta en el archivo. Si existe, actualizar el timestamp
         ruta_existente = next((item for item in data["rutas"] if item["ruta"] == nueva_ruta), None)
         if ruta_existente:
-            ruta_existente["ultimo_acceso"] = datetime.now().isoformat()
+            ruta_existente["ultimo_acceso"] = datetime.datetime.now().isoformat()
         else:
             # Añadir la nueva ruta al principio de la lista con el timestamp actual
-            data["rutas"].insert(0, {"ruta": nueva_ruta, "ultimo_acceso": datetime.now().isoformat()})
+            data["rutas"].insert(0, {"ruta": nueva_ruta, "ultimo_acceso": datetime.datetime.now().isoformat()})
         
         # Guardar el archivo JSON actualizado
         with open(archivo_default, 'w', encoding='utf-8') as file:
@@ -178,4 +178,3 @@ def seleccionar_modo_operacion(input_func=input):
     Permite al usuario seleccionar el modo de operación y devuelve el prompt correspondiente.
     """
     return menu_1()
-
