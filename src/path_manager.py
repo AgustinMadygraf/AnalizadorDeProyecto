@@ -108,18 +108,20 @@ def obtener_ruta_default(input_func=input):
         logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
         print("")
 
-        eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()        # Procesamiento de la elección del usuario
-        if not eleccion:
-            return rutas[0]['ruta']
-        elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
-            return rutas[int(eleccion)-1]['ruta']
-        elif eleccion == str(len(rutas) + 1):
-            nueva_ruta = input_func("Introduzca la nueva ruta: ").strip()
-            guardar_nueva_ruta_default(nueva_ruta)
-            return nueva_ruta
-        else:
-            logger.warning("Opción no válida.")
-            return obtener_ruta_default()
+        while True:
+            eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()
+            if not eleccion:
+                return rutas[0]['ruta']
+            elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
+                return rutas[int(eleccion)-1]['ruta']
+            elif eleccion == str(len(rutas) + 1):
+                nueva_ruta = input_func("Introduzca la nueva ruta: ").strip()
+                guardar_nueva_ruta_default(nueva_ruta)
+                return nueva_ruta
+            else:
+                logger.warning("Opción no válida. Por favor, intente de nuevo.")
+                print(f"{Fore.RED}Opción no válida. Por favor, intente de nuevo.{Style.RESET_ALL}")
+
     except Exception as e:
         logger.error(f"Ocurrió un error: {e}")
     except FileNotFoundError:
