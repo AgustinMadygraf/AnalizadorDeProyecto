@@ -26,14 +26,22 @@ def get_project_name():
         logger.error(f"Error al obtener el nombre del proyecto: {e}")
         return "Unknown_Project"
 
-def create_shortcut(ruta_archivo_bat, directorio_script,name_proj):
+def verificar_icono(ruta_icono):
+    """
+    Verifica la existencia del archivo de icono.
+    """
+    if not ruta_icono.is_file():
+        logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
+        return False
+    return True
+
+def create_shortcut(ruta_archivo_bat, directorio_script, name_proj):
     escritorio = Path(winshell.desktop())
     ruta_acceso_directo = escritorio / f"{name_proj}.lnk"
     ruta_icono = directorio_script / "config" / f"{name_proj}.ico"
 
-    # Verificación de existencia del archivo de icono
-    if not ruta_icono.is_file():
-        logger.error(f"El archivo de icono '{ruta_icono}' no existe.")
+    # Llamada a la nueva función para verificar el archivo de icono
+    if not verificar_icono(ruta_icono):
         return False
 
     try:
@@ -47,6 +55,7 @@ def create_shortcut(ruta_archivo_bat, directorio_script,name_proj):
         return True
     except com_error as e:
         logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error de COM: {e}", exc_info=True)
+        return False
     except OSError as e:
         logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error del sistema operativo: {e}", exc_info=True)
         return False
