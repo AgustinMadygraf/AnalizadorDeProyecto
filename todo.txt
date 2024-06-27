@@ -1,68 +1,70 @@
 ### **Lista de Tareas**
 
-### 0. **Agregar formato tabla para mejorar la experiencia del usuario**
-
-#### 1. **Incorporar .gitignore para Omitir Carpetas del Análisis de Estructura**
+#### 1. **Incorporar `.gitignore` para Omitir Carpetas del Análisis de Estructura**
    - **Descripción:** Modificar la funcionalidad de análisis para omitir carpetas y archivos listados en `.gitignore`. Esto ayudará a evitar el análisis de archivos irrelevantes para las métricas del proyecto.
    - **Pasos:**
      1. Actualizar la función de recorrido de directorios para leer `.gitignore`.
      2. Excluir los archivos y carpetas especificados en `.gitignore` del análisis.
      3. Reflejar estas omisiones en el informe de análisis.
 
-#### 2. **Ordenar Archivos por Orden de Último Uso**
-   - **Descripción:** Implementar una función para ordenar archivos o directorios por el tiempo de último acceso, facilitando la identificación de los elementos más recientes.
-   - **Pasos:**
-     1. Actualizar la función de listado de archivos para ordenar por tiempo de último acceso.
-     2. Mostrar la lista ordenada al usuario.
-
-#### 3. **Incorporar Tabla para Mejorar la Interfaz con el Usuario**
-   - **Descripción:** Mejorar la interfaz de usuario añadiendo una tabla que facilite la visualización y organización de la información.
-   - **Pasos:**
-     1. Diseñar la estructura de la tabla que se incorporará.
-     2. Implementar la tabla en la interfaz de usuario.
-     3. Realizar pruebas para asegurar la correcta visualización y funcionalidad de la tabla.
-
-#### 4. **Obtener las 5 Funciones Más Largas**
-   - **Descripción:** Implementar una función que identifique las cinco funciones más largas en términos de líneas de código dentro del proyecto.
-   - **Pasos:**
-     1. Recorrer el código fuente del proyecto para identificar las funciones.
-     2. Contar las líneas de código de cada función.
-     3. Listar las cinco funciones más largas y presentarlas en el informe de análisis.
-
-#### 5. **Conteo y Clasificación de Tipos de Archivos en el Proyecto**
-   - **Descripción:** Implementar una función que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayuda a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
-   - **Pasos:**
-     1. Recorrer los directorios del proyecto para identificar extensiones de archivos.
-     2. Contar la cantidad de archivos por tipo.
-     3. Presentar esta información en el informe de análisis del proyecto.
-
-#### 6. **Chequear y Actualizar el Repositorio desde GitHub**
-   - **Descripción:** Añadir funcionalidad para verificar actualizaciones y obtener los últimos cambios desde el repositorio de GitHub.
-   - **Pasos:**
-     1. Obtener los últimos commits del repositorio remoto.
-     2. Actualizar el repositorio local con los cambios nuevos.
-
-#### 7. **Incorporar Validación y Ejecución Condicional Basada en Versión GPT (gratuito o de pago)**
-   - **Descripción:** Añadir una función para preguntar al usuario si están usando GPT gratuito o de pago para limitar el número máximo de archivos a analizar.
-   - **Pasos:**
-     1. Implementar un prompt para que el usuario especifique la versión de GPT.
-     2. Ajustar el alcance del análisis de archivos basado en la entrada del usuario.
-
-#### 8. **Permitir Cancelar la Opción de Nueva Ruta y Elegir una Ruta Preseleccionada**
-   - **Descripción:** Al presionar "Nueva ruta", dar la posibilidad de cancelar la opción y permitir al usuario elegir una ruta preseleccionada.
+#### 2. **Permitir Cancelar la Opción de Nueva Ruta y Elegir una Ruta Preseleccionada**
+   - **Descripción:** Al seleccionar "Nueva ruta", permitir al usuario cancelar esta opción y elegir una ruta preseleccionada.
    - **Pasos:**
      1. Implementar la opción de cancelar la selección de nueva ruta.
      2. Añadir un menú para que el usuario pueda elegir entre las rutas preseleccionadas.
 
-#### 9. **Incorporar la Opción de Uso desde Consola y desde una Página Web**
+#### 3. **Incorporar la Opción de Uso desde Consola y desde una Página Web**
    - **Descripción:** Añadir la funcionalidad para que el proyecto pueda ser usado tanto desde la consola como desde una interfaz web.
    - **Pasos:**
      1. Desarrollar una interfaz web que permita interactuar con las funcionalidades del proyecto.
      2. Integrar la interfaz web con el backend existente.
      3. Realizar pruebas para asegurar la correcta funcionalidad tanto desde la consola como desde la página web.
 
-#### 10. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
+#### 4. **Opción para Incluir o Excluir el Análisis del Archivo `todo.txt`**
+   - **Descripción:** Permitir al usuario decidir si desea incluir el análisis del archivo `todo.txt`.
+   - **Pasos:**
+     1. Añadir un prompt para preguntar al usuario si desea incluir `todo.txt` en el análisis.
+     2. Ajustar la funcionalidad del análisis en base a la respuesta del usuario.
 
-#### 11. **Proporcionamr nombre de archivo en "src.logs.config_logger - WARNING - file_manager.py:52 - No hay manejador para la extensión .txt"
+#### 5. **Proporcionar Nombre de Archivo en el Mensaje de Error**
+   - **Descripción:** Mostrar el nombre del archivo en el mensaje de error cuando no haya un manejador para una extensión.
+   - **Pasos:**
+     1. Modificar el mensaje de error en `file_manager.py` para incluir el nombre del archivo.
 
-#### 12. **Archivos SQL**
+#### 6. **Manejador para Archivos TXT**
+   - **Descripción:** Implementar un manejador para archivos `.txt`.
+   - **Pasos:**
+     1. Crear una clase manejadora para archivos `.txt`.
+     2. Integrar esta clase en el sistema de manejo de archivos existente.
+
+#### 7. **Manejador para Archivos SQL**
+   - **Descripción:** Implementar un manejador para archivos `.sql`.
+   - **Pasos:**
+     1. Crear una clase manejadora para archivos `.sql`.
+     2. Integrar esta clase en el sistema de manejo de archivos existente.
+
+#### 8. **Obtener las 5 Funciones Más Largas**
+   - **Descripción:** Implementar una función que identifique las cinco funciones más largas en términos de líneas de código dentro del proyecto.
+   - **Pasos:**
+     1. Recorrer el código fuente del proyecto para identificar las funciones.
+     2. Contar las líneas de código de cada función.
+     3. Listar las cinco funciones más largas y presentarlas en el informe de análisis.
+
+#### 9. **Conteo y Clasificación de Tipos de Archivos en el Proyecto**
+   - **Descripción:** Implementar una función que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayuda a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
+   - **Pasos:**
+     1. Recorrer los directorios del proyecto para identificar extensiones de archivos.
+     2. Contar la cantidad de archivos por tipo.
+     3. Presentar esta información en el informe de análisis del proyecto.
+
+#### 10. **Chequear y Actualizar el Repositorio desde GitHub**
+   - **Descripción:** Añadir funcionalidad para verificar actualizaciones y obtener los últimos cambios desde el repositorio de GitHub.
+   - **Pasos:**
+     1. Obtener los últimos commits del repositorio remoto.
+     2. Actualizar el repositorio local con los cambios nuevos.
+
+#### 11. **Validación y Ejecución Condicional Basada en Versión GPT (Gratuito o de Pago)**
+   - **Descripción:** Añadir una función para preguntar al usuario si están usando GPT gratuito o de pago para limitar el número máximo de archivos a analizar.
+   - **Pasos:**
+     1. Implementar un prompt para que el usuario especifique la versión de GPT.
+     2. Ajustar el alcance del análisis de archivos basado en la entrada del usuario.

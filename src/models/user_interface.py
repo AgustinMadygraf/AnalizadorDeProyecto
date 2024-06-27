@@ -82,7 +82,7 @@ class UserInterface:
             tabla = [[0, "Introducir nueva ruta", ""]]
             for i, ruta_info in enumerate(rutas, start=1):
                 ruta = ruta_info['ruta']
-                ultimo_acceso = ruta_info['ultimo_acceso']
+                ultimo_acceso = datetime.datetime.strptime(ruta_info['ultimo_acceso'], "%Y-%m-%dT%H:%M:%S.%f").strftime("%d/%m/%Y %H:%M")
                 tabla.append([i, ruta, ultimo_acceso])
 
             print(tabulate(tabla, headers, tablefmt="grid"))
