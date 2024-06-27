@@ -15,7 +15,7 @@ class ReportGenerator:
         self.project_path = project_path
         self.file_manager = FileManager(project_path)
 
-    def generar_archivo_salida(self, path, modo_prompt, extensiones_permitidas, ruta_archivos):
+    def generar_archivo_salida(self, path, modo_prompt, extensiones_permitidas, ruta_archivos, incluir_todo):
         asegurar_directorio_docs(path)
         archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones_permitidas)
         nombre_archivo_salida = self.generar_nombre_archivo_salida(path)

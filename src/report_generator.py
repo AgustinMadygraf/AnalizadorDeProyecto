@@ -23,12 +23,13 @@ def generar_archivo_salida(path, modo_prompt, extensiones_permitidas, ruta_archi
         modo_prompt (str): Modo seleccionado para la salida.
         extensiones (list of str): Extensiones para filtrar archivos.
         project_path (str): Ruta base del proyecto.
+        incluir_todo (bool): Indicador de si se debe incluir el análisis de todo.txt.
     """
     asegurar_directorio_docs(path)
     archivos_encontrados, estructura_actualizada = listar_archivos(path, extensiones_permitidas)
     nombre_archivo_salida = generar_nombre_archivo_salida(path)
     formatear_archivo_salida(nombre_archivo_salida)
-    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos, extensiones_permitidas)
+    contenido = preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos, extensiones_permitidas, incluir_todo)
     escribir_archivo_salida(nombre_archivo_salida, contenido)
     copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
     print("")
@@ -48,7 +49,7 @@ def formatear_archivo_salida(nombre_archivo_salida):
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo, extensiones_permitidas):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo, extensiones_permitidas, incluir_todo):
     """
     Prepara el contenido de salida agregando la estructura de directorios y archivos con sus tamaños,
     el contenido de archivos seleccionados, y la fecha y hora actual.
@@ -59,6 +60,8 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
         archivos_seleccionados (list): Lista de rutas de archivos seleccionados para mostrar su contenido.
         path(str): Ruta base donde se encuentra el proyecto.
         ruta_archivo (str): Ruta donde se encuentran los archivos de configuración.
+        extensiones_permitidas (list of str): Extensiones para filtrar archivos.
+        incluir_todo (bool): Indicador de si se debe incluir el análisis de todo.txt.
 
     Returns:
         str: El contenido completo a ser presentado o guardado.
@@ -66,14 +69,16 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     logger.debug("Preparando contenido de salida")
 
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
-    contenido_prompt = file_manager.read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"    
+    contenido_prompt = file_manager.read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
     contenido = contenido_prompt
-    # Verificar si existe todo.txt y añadir su contenido
-    ruta_todo_txt = os.path.join(path, 'todo.txt')
-    if os.path.exists(ruta_todo_txt):
-        with open(ruta_todo_txt, 'r', encoding='utf-8') as todo_file:
-            contenido_todo_txt = todo_file.read()
-            contenido += "\n## TODO List from todo.txt\n" + contenido_todo_txt + "\n"
+
+    # Verificar si se debe incluir todo.txt y añadir su contenido
+    if incluir_todo:
+        ruta_todo_txt = os.path.join(path, 'todo.txt')
+        if os.path.exists(ruta_todo_txt):
+            with open(ruta_todo_txt, 'r', encoding='utf-8') as todo_file:
+                contenido_todo_txt = todo_file.read()
+                contenido += "\n## TODO List from todo.txt\n" + contenido_todo_txt + "\n"
 
     # Añadiendo directamente la estructura de carpetas y archivos, incluyendo el tamaño de cada archivo.
     contenido += "\n\n## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura) + "\n```\n"
