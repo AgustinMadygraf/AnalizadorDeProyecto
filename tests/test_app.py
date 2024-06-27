@@ -10,5 +10,5 @@ def test_obtener_extensiones_permitidas():
 def test_generar_reporte(mocker):
     mock_report_generator = MagicMock()
     mock_generar_archivo_salida = mocker.patch.object(mock_report_generator, 'generar_archivo_salida')
-    generar_reporte('/ruta', 'modo_prompt', '/project_path', mock_report_generator, ['archivo1.py'], ['.py'])
-    mock_generar_archivo_salida.assert_called_once_with('/ruta', 'modo_prompt', ['.py'], '/project_path')
+    generar_reporte('/ruta', 'modo_prompt', '/project_path', mock_report_generator, ['archivo1.py'], ['.py'], True)
+    mock_generar_archivo_salida.assert_called_once_with('/ruta', 'modo_prompt', ['.py'], '/project_path', True)

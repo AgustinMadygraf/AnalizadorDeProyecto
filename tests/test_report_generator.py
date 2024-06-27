@@ -15,7 +15,7 @@ def test_generar_archivo_salida(report_generator, mocker):
     mocker.patch.object(report_generator, 'escribir_archivo_salida', return_value=True)
     mocker.patch("src.file_utilities.copiar_contenido_al_portapapeles")
 
-    result = report_generator.generar_archivo_salida("path", "modo_prompt", [], "ruta_archivos")
+    result = report_generator.generar_archivo_salida("path", "modo_prompt", [], "ruta_archivos", True)
     assert result == "output.md"
 
 def test_preparar_contenido_salida(report_generator, mocker):
