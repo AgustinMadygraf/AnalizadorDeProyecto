@@ -1,12 +1,17 @@
 # src/report_generator.py
 import os
 import datetime
-from src.file_manager import read_and_validate_file, copiar_contenido_al_portapapeles
+from src.file_utilities import copiar_contenido_al_portapapeles
 from src.logs.config_logger import configurar_logging
 from src.file_operations import listar_archivos
 from src.content_manager import asegurar_directorio_docs
+from models.file_manager import FileManager  # Importar la clase FileManager
 
 logger = configurar_logging()
+
+# Crear una instancia de FileManager
+project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"
+file_manager = FileManager(project_path)
 
 def generar_archivo_salida(path, modo_prompt, extensiones_permitidas, ruta_archivos):
     """
@@ -37,16 +42,13 @@ def formatear_archivo_salida(nombre_archivo_salida):
         nombre_archivo_salida (str): Ruta del archivo cuyo contenido se eliminará.
     """
     try:
-        # Abrir el archivo en modo de escritura, lo que borrará su contenido
         with open(nombre_archivo_salida, 'w', encoding='utf-8') as archivo:
             archivo.write('')  # Escribir un contenido vacío
         logger.debug(f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
     except Exception as e:
         logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
-import datetime
-
-def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo,extensiones_permitidas):
+def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo, extensiones_permitidas):
     """
     Prepara el contenido de salida agregando la estructura de directorios y archivos con sus tamaños,
     el contenido de archivos seleccionados, y la fecha y hora actual.
@@ -64,7 +66,7 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     logger.debug("Preparando contenido de salida")
 
     # Intentar leer el contenido del archivo de prompt, si no es posible, usar un mensaje de error predeterminado.
-    contenido_prompt = read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"    
+    contenido_prompt = file_manager.read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"    
     contenido = contenido_prompt
     # Verificar si existe todo.txt y añadir su contenido
     ruta_todo_txt = os.path.join(path, 'todo.txt')
@@ -88,11 +90,11 @@ def preparar_contenido_salida(estructura, modo_prompt, archivos_seleccionados, p
     
     return contenido
 
-def construir_contenido_archivos_seleccionados(archivos_seleccionados,extensiones_permitidas):
+def construir_contenido_archivos_seleccionados(archivos_seleccionados, extensiones_permitidas):
     """Genera la sección de contenido para archivos seleccionados en Markdown."""
     contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
     for archivo in archivos_seleccionados:
-        contenido_archivo = read_and_validate_file(archivo, True,extensiones_permitidas)
+        contenido_archivo = file_manager.read_and_validate_file(archivo, True, extensiones_permitidas)
         if contenido_archivo:
             # Agregar el contenido del archivo al bloque de Markdown
             contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
@@ -127,8 +129,7 @@ def generar_nombre_archivo_salida(path):
     Returns:
         str: Ruta completa del archivo de salida.
     """
-    # Formatear la ruta para el nombre del archivo
-    nombre_archivo_salida = f"docs\\00-Prompt-for-ProjectAnalysis.md" #docs = Analysis and Modification Improvement System
+    nombre_archivo_salida = f"docs\\00-Prompt-for-ProjectAnalysis.md"
     return os.path.join(path, nombre_archivo_salida)
 
 def escribir_archivo_salida(nombre_archivo, contenido):

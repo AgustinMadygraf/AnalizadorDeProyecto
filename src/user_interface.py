@@ -43,7 +43,7 @@ def menu_1():
     logger.info("2 - SOLID: Evaluación y Optimización de Código Python según Principios SOLID con Pruebas Automatizadas")
     logger.info("3 - POO: Comprensión y Mejora de Proyectos de Software para Dominar la Programación Orientada a Objetos")
     logger.info("4 - TODO.txt: Mejora de la Organización y Productividad en Proyectos de Software con todo.txt")
-    logger.info("5 - TODO.txt: Implentación de las las tareas descriptas en el archivo TODO.txt")
+    logger.info("5 - Testing de aplicaciones: Análisis y Mejora de la Calidad de Software con Pruebas Automatizadas")
     print("")
     eleccion = input(f"{Fore.GREEN}Ingrese el número de la opción deseada: {Style.RESET_ALL}") or '0'
     # Validar la entrada del usuario y asegurarse de que sea una opción válida
