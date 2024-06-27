@@ -5,7 +5,7 @@ from src.file_utilities import copiar_contenido_al_portapapeles
 from src.logs.config_logger import LoggerConfigurator
 from src.file_operations import listar_archivos
 from src.content_manager import asegurar_directorio_docs
-from models.file_manager import FileManager  # Importar la clase FileManager
+from src.models.file_manager import FileManager
 
 logger = LoggerConfigurator().get_logger()
 

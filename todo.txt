@@ -68,3 +68,5 @@
      3. Realizar pruebas para asegurar la correcta funcionalidad tanto desde la consola como desde la página web.
 
 #### 11. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
+
+#### 12. **Proporcionamr nombre de archivo en "src.logs.config_logger - WARNING - file_manager.py:52 - No hay manejador para la extensión .txt"

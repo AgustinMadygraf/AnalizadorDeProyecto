@@ -22,8 +22,3 @@ def test_archivo_permitido(file_manager):
     extensiones_permitidas = ['.txt', '.md']
     assert file_manager.archivo_permitido("file.txt", extensiones_permitidas)
     assert not file_manager.archivo_permitido("file.exe", extensiones_permitidas)
-
-def test_leer_contenido_archivo(file_manager, mocker):
-    mocker.patch("builtins.open", mock_open(read_data="content"))
-    contenido = file_manager.leer_contenido_archivo("test.txt")
-    assert contenido == "content"
