@@ -1,72 +1,64 @@
 ### **Lista de Tareas**
 
-#### 1. **Mejorar archivo .BAT**
-   - **Descripción:** Mejorar el archivo .BAT para optimizar su funcionamiento y agregar nuevas funcionalidades que faciliten su uso.
-   - **Pasos:**
-     1. Analizar el código actual del archivo .BAT.
-     2. Identificar posibles mejoras y nuevas funcionalidades a implementar.
-     3. Desarrollar y probar las mejoras identificadas.
-     4. Documentar los cambios realizados.
-
-#### 2. **Incorporar .gitignore para Omitir Carpetas del Análisis de Estructura**
+#### 1. **Incorporar .gitignore para Omitir Carpetas del Análisis de Estructura**
    - **Descripción:** Modificar la funcionalidad de análisis para omitir carpetas y archivos listados en `.gitignore`. Esto ayudará a evitar el análisis de archivos irrelevantes para las métricas del proyecto.
    - **Pasos:**
      1. Actualizar la función de recorrido de directorios para leer `.gitignore`.
      2. Excluir los archivos y carpetas especificados en `.gitignore` del análisis.
      3. Reflejar estas omisiones en el informe de análisis.
 
-#### 3. **Ordenar Archivos por Orden de Último Uso**
+#### 2. **Ordenar Archivos por Orden de Último Uso**
    - **Descripción:** Implementar una función para ordenar archivos o directorios por el tiempo de último acceso, facilitando la identificación de los elementos más recientes.
    - **Pasos:**
      1. Actualizar la función de listado de archivos para ordenar por tiempo de último acceso.
      2. Mostrar la lista ordenada al usuario.
 
-#### 4. **Incorporar Tabla para Mejorar la Interfaz con el Usuario**
+#### 3. **Incorporar Tabla para Mejorar la Interfaz con el Usuario**
    - **Descripción:** Mejorar la interfaz de usuario añadiendo una tabla que facilite la visualización y organización de la información.
    - **Pasos:**
      1. Diseñar la estructura de la tabla que se incorporará.
      2. Implementar la tabla en la interfaz de usuario.
      3. Realizar pruebas para asegurar la correcta visualización y funcionalidad de la tabla.
 
-#### 5. **Obtener las 5 Funciones Más Largas**
+#### 4. **Obtener las 5 Funciones Más Largas**
    - **Descripción:** Implementar una función que identifique las cinco funciones más largas en términos de líneas de código dentro del proyecto.
    - **Pasos:**
      1. Recorrer el código fuente del proyecto para identificar las funciones.
      2. Contar las líneas de código de cada función.
      3. Listar las cinco funciones más largas y presentarlas en el informe de análisis.
 
-#### 6. **Conteo y Clasificación de Tipos de Archivos en el Proyecto**
+#### 5. **Conteo y Clasificación de Tipos de Archivos en el Proyecto**
    - **Descripción:** Implementar una función que cuente y clasifique los diferentes tipos de archivos presentes en el proyecto. Esto ayuda a entender la composición del proyecto en términos de tipos de archivos (por ejemplo, `.py`, `.md`, `.txt`).
    - **Pasos:**
      1. Recorrer los directorios del proyecto para identificar extensiones de archivos.
      2. Contar la cantidad de archivos por tipo.
      3. Presentar esta información en el informe de análisis del proyecto.
 
-#### 7. **Chequear y Actualizar el Repositorio desde GitHub**
+#### 6. **Chequear y Actualizar el Repositorio desde GitHub**
    - **Descripción:** Añadir funcionalidad para verificar actualizaciones y obtener los últimos cambios desde el repositorio de GitHub.
    - **Pasos:**
      1. Obtener los últimos commits del repositorio remoto.
      2. Actualizar el repositorio local con los cambios nuevos.
 
-#### 8. **Incorporar Validación y Ejecución Condicional Basada en Versión GPT (gratuito o de pago)**
+#### 7. **Incorporar Validación y Ejecución Condicional Basada en Versión GPT (gratuito o de pago)**
    - **Descripción:** Añadir una función para preguntar al usuario si están usando GPT gratuito o de pago para limitar el número máximo de archivos a analizar.
    - **Pasos:**
      1. Implementar un prompt para que el usuario especifique la versión de GPT.
      2. Ajustar el alcance del análisis de archivos basado en la entrada del usuario.
 
-#### 9. **Permitir Cancelar la Opción de Nueva Ruta y Elegir una Ruta Preseleccionada**
+#### 8. **Permitir Cancelar la Opción de Nueva Ruta y Elegir una Ruta Preseleccionada**
    - **Descripción:** Al presionar "Nueva ruta", dar la posibilidad de cancelar la opción y permitir al usuario elegir una ruta preseleccionada.
    - **Pasos:**
      1. Implementar la opción de cancelar la selección de nueva ruta.
      2. Añadir un menú para que el usuario pueda elegir entre las rutas preseleccionadas.
 
-#### 10. **Incorporar la Opción de Uso desde Consola y desde una Página Web**
+#### 9. **Incorporar la Opción de Uso desde Consola y desde una Página Web**
    - **Descripción:** Añadir la funcionalidad para que el proyecto pueda ser usado tanto desde la consola como desde una interfaz web.
    - **Pasos:**
      1. Desarrollar una interfaz web que permita interactuar con las funcionalidades del proyecto.
      2. Integrar la interfaz web con el backend existente.
      3. Realizar pruebas para asegurar la correcta funcionalidad tanto desde la consola como desde la página web.
 
-#### 11. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
+#### 10. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
 
-#### 12. **Proporcionamr nombre de archivo en "src.logs.config_logger - WARNING - file_manager.py:52 - No hay manejador para la extensión .txt"
+#### 11. **Proporcionamr nombre de archivo en "src.logs.config_logger - WARNING - file_manager.py:52 - No hay manejador para la extensión .txt"

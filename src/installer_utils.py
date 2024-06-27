@@ -7,7 +7,6 @@ from pywintypes import com_error
 
 class ProjectInstaller:
     def __init__(self):
-        # Configuración del logger
         self.logger = LoggerConfigurator().get_logger()
         self.project_dir = Path(__file__).parent.parent.resolve()
         self.name_proj = self.get_project_name()
@@ -23,6 +22,26 @@ class ProjectInstaller:
         except Exception as e:
             self.logger.error(f"Error al obtener el nombre del proyecto: {e}")
             return "Unknown_Project"
+
+    def main(self):
+        print("Iniciando instalador")
+        print(f"Directorio del script: {self.project_dir}")
+        print(f"Nombre del proyecto: {self.name_proj}")
+
+        ruta_archivo_bat = self.project_dir / f"{self.name_proj}.bat"
+        print(f"Ruta del archivo BAT: {ruta_archivo_bat}")
+        if not ruta_archivo_bat.is_file():
+            print(f"Creando archivo '{self.name_proj}.bat'")
+            BatFileCreator(self.project_dir, self.name_proj, self.logger).crear_archivo_bat_con_pipenv()
+
+        ShortcutManager(self.project_dir, self.name_proj, self.logger).create_shortcut(ruta_archivo_bat)
+
+
+class ShortcutManager:
+    def __init__(self, project_dir, name_proj, logger):
+        self.project_dir = project_dir
+        self.name_proj = name_proj
+        self.logger = logger
 
     def verificar_icono(self, ruta_icono):
         """
@@ -57,57 +76,26 @@ class ProjectInstaller:
             self.logger.error(f"No se pudo crear/actualizar el acceso directo debido a un error del sistema operativo: {e}", exc_info=True)
             return False
 
+
+class BatFileCreator:
+    def __init__(self, project_dir, name_proj, logger):
+        self.project_dir = project_dir
+        self.name_proj = name_proj
+        self.logger = logger
+
     def crear_archivo_bat_con_pipenv(self):
         ruta_app_py = self.project_dir / 'run.py'
         ruta_archivo_bat = self.project_dir / f"{self.name_proj}.bat"
 
         contenido_bat = f"""
-        @echo off
-        echo Verificando entorno virtual de Pipenv...
-        pipenv --venv
-        if errorlevel 1 (
-           echo Creando entorno virtual...
-           pipenv install
-           echo Instalando dependencias necesarias...
-           pipenv install reportlab
-           pipenv install python-dotenv  
-        ) else (
-           echo Verificando si 'reportlab' está instalado...
-           pipenv run python -c "import reportlab"
-           if errorlevel 1 (
-              echo 'reportlab' no encontrado, instalando...
-              pipenv install reportlab
-           )
-           REM Chequeo para python-dotenv
-           echo Verificando si 'python-dotenv' está instalado...
-           pipenv run python -c "import dotenv"
-           if errorlevel 1 (
-              echo 'python-dotenv' no encontrado, instalando...
-              pipenv install python-dotenv
-           )
-        )
-        echo Ejecutando aplicación...
         pipenv run python "{ruta_app_py}"
-        echo.
-        pause
         """
 
         with open(ruta_archivo_bat, 'w') as archivo_bat:
             archivo_bat.write(contenido_bat.strip())
         self.logger.debug(f"Archivo '{self.name_proj}.bat' creado exitosamente.")
+        self.logger.debug(f"La dirección del archivo .bat es {ruta_archivo_bat}")
 
-    def main(self):
-        print("iniciando instalador")
-        print(f"directorio_script: {self.project_dir}")
-        print(f"name_proj: {self.name_proj}")
-
-        ruta_archivo_bat = self.project_dir / f"{self.name_proj}.bat"
-        print(f"ruta_archivo_bat: {ruta_archivo_bat}")
-        if not ruta_archivo_bat.is_file():
-            print(f"Creando archivo '{self.name_proj}.bat'")
-            self.crear_archivo_bat_con_pipenv()
-
-        self.create_shortcut(ruta_archivo_bat)
 
 if __name__ == "__main__":
     installer = ProjectInstaller()
