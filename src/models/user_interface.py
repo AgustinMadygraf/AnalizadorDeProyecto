@@ -75,21 +75,23 @@ class UserInterface:
                 self.guardar_nueva_ruta_default(nueva_ruta)
                 return nueva_ruta
 
+            headers = ["#", "Ruta", "Último Acceso"]
+            tabla = [[0, "Introducir nueva ruta", ""]]
             for i, ruta_info in enumerate(rutas, start=1):
                 ruta = ruta_info['ruta']
                 ultimo_acceso = ruta_info['ultimo_acceso']
-                self.logger.info(f"{i}. Ruta: {ruta} - Último acceso: {ultimo_acceso}")
+                tabla.append([i, ruta, ultimo_acceso])
 
-            self.logger.info(f"{len(rutas)+1}. Introducir una nueva ruta")
+            print(tabulate(tabla, headers, tablefmt="grid"))
             print("")
 
             while True:
                 eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()
                 if not eleccion:
                     return rutas[0]['ruta']
-                elif eleccion.isdigit() and 1 <= int(eleccion) <= len(rutas):
+                elif eleccion.isdigit() and 1 <= int(eleccion) < len(tabla):
                     return rutas[int(eleccion)-1]['ruta']
-                elif eleccion == str(len(rutas) + 1):
+                elif eleccion == '0':
                     nueva_ruta = input_func("Introduzca la nueva ruta: ").strip()
                     self.guardar_nueva_ruta_default(nueva_ruta)
                     return nueva_ruta
