@@ -13,7 +13,7 @@ logger = LoggerConfigurator().get_logger()
 project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"
 file_manager = FileManager(project_path)
 
-def generar_archivo_salida(path, modo_prompt, extensiones_permitidas, ruta_archivos):
+def generar_archivo_salida(path, modo_prompt, extensiones_permitidas, ruta_archivos, incluir_todo):
     """
     Genera el archivo de salida con la estructura dada.
 

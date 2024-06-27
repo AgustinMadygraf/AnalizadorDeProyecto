@@ -21,13 +21,18 @@ def run_app(input_func=input):
 
 def manejar_ruta_proyecto(project_path, report_generator, input_func):
     ruta = seleccionar_ruta(project_path, input_func)
-    if ruta and validar_ruta(ruta):
-        modo_prompt = seleccionar_modo_operacion(input_func)
-        procesar_archivos(ruta, modo_prompt, project_path, report_generator)
-        return True
-    else:
+    if not ruta or not validar_ruta(ruta):
         logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
         return False
+
+    incluir_todo = preguntar_incluir_todo_txt(input_func)
+    inc_exc = "incluir" if incluir_todo else "excluir"
+    logger.info(f'Se ha seleccionado la opción de {inc_exc} "todo.txt" para análisis.')
+
+    modo_prompt = seleccionar_modo_operacion(input_func)
+    procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo)
+    return True
+
 
 def esperar_usuario(input_func=input):
     input_func(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
@@ -65,10 +70,10 @@ def bienvenida(input_func=input):
     mostrar_todo = True
     hilo_mensaje.join()
 
-def procesar_archivos(ruta, modo_prompt, project_path, report_generator):
+def procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo):
     extensiones_permitidas = obtener_extensiones_permitidas()
     archivos = listar_archivos_en_ruta(ruta, extensiones_permitidas)
-    generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas)
+    generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas, incluir_todo)
 
 def obtener_extensiones_permitidas():
     return ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h']
@@ -77,5 +82,10 @@ def listar_archivos_en_ruta(ruta, extensiones_permitidas):
     archivos, _ = listar_archivos(ruta, extensiones_permitidas)
     return archivos
 
-def generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas):
-    report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path)
+def generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas, incluir_todo):
+    report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo)
+
+def preguntar_incluir_todo_txt(input_func):
+    respuesta = input_func(f"{Fore.GREEN}¿Desea incluir el análisis de 'todo.txt'? (S/N): {Style.RESET_ALL}").strip().lower()
+    return respuesta == 's'
+
