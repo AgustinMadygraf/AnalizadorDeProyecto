@@ -75,6 +75,9 @@ class UserInterface:
                 self.guardar_nueva_ruta_default(nueva_ruta)
                 return nueva_ruta
 
+            # Ordenar las rutas por el último acceso desde la más reciente a la más antigua
+            rutas.sort(key=lambda x: x['ultimo_acceso'], reverse=True)
+
             headers = ["#", "Ruta", "Último Acceso"]
             tabla = [[0, "Introducir nueva ruta", ""]]
             for i, ruta_info in enumerate(rutas, start=1):
