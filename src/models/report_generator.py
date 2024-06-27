@@ -5,7 +5,7 @@ from src.file_utilities import copiar_contenido_al_portapapeles
 from src.logs.config_logger import configurar_logging
 from src.file_operations import listar_archivos
 from src.content_manager import asegurar_directorio_docs
-from models.file_manager import FileManager  # Importar la clase FileManager
+from models.file_manager import FileManager
 
 logger = configurar_logging()
 
@@ -54,7 +54,7 @@ class ReportGenerator:
     def construir_contenido_archivos_seleccionados(self, archivos_seleccionados, extensiones_permitidas):
         contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
         for archivo in archivos_seleccionados:
-            contenido_archivo = self.file_manager.read_and_validate_file(archivo, True, extensiones_permitidas)
+            contenido_archivo = self.file_manager.procesar_archivo(archivo)
             if contenido_archivo:
                 contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
             else:

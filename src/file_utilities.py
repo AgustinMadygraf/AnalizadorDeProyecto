@@ -1,4 +1,4 @@
-# src/file_manager.py
+# src/file_utilities.py
 import pyperclip
 import os
 from src.logs.config_logger import configurar_logging
