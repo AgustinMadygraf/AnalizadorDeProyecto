@@ -1,4 +1,5 @@
 # src/models/report_generator.py
+
 import os
 import datetime
 from src.file_utilities import copiar_contenido_al_portapapeles
@@ -54,7 +55,7 @@ class ReportGenerator:
     def construir_contenido_archivos_seleccionados(self, archivos_seleccionados, extensiones_permitidas):
         contenido_archivos = "\n\n## Contenido de Archivos Seleccionados\n"
         for archivo in archivos_seleccionados:
-            contenido_archivo = self.file_manager.procesar_archivo(archivo)
+            contenido_archivo = self.file_manager.process_file(archivo)
             if contenido_archivo:
                 extension = os.path.splitext(archivo)[1]
                 if extension == ".json":

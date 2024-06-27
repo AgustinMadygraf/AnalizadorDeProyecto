@@ -1,9 +1,10 @@
 # src/models/file_manager.py
 import os
 import fnmatch
-from src.file_handlers.python_file_handler import PythonFileHandler
-from src.file_handlers.markdown_file_handler import MarkdownFileHandler
-from src.file_handlers.json_file_handler import JsonFileHandler
+from src.models.i_file_manager import IFileManager
+from src.models.python_file_manager import PythonFileManager
+from src.models.markdown_file_manager import MarkdownFileManager
+from src.models.json_file_manager import JsonFileManager
 from src.logs.config_logger import LoggerConfigurator
 
 logger = LoggerConfigurator().get_logger()
@@ -13,10 +14,9 @@ class FileManager:
         self.project_path = project_path
         self.gitignore_patterns = self._leer_gitignore()
         self.handlers = {
-            '.py': PythonFileHandler(),
-            '.md': MarkdownFileHandler(),
-            '.json': JsonFileHandler(),  # Añadir manejador para JSON
-            # Agregar más manejadores según sea necesario
+            '.py': PythonFileManager(),
+            '.md': MarkdownFileManager(),
+            '.json': JsonFileManager(),
         }
 
     def _leer_gitignore(self):
@@ -34,7 +34,7 @@ class FileManager:
                 return True
         return False
 
-    def leer_archivo(self, file_path):
+    def read_file(self, file_path):
         extension = os.path.splitext(file_path)[1]
         handler = self.handlers.get(extension)
         if handler:
@@ -43,7 +43,7 @@ class FileManager:
             logger.warning(f"No hay manejador para la extensión {extension}")
             return None
 
-    def procesar_archivo(self, file_path):
+    def process_file(self, file_path):
         extension = os.path.splitext(file_path)[1]
         handler = self.handlers.get(extension)
         if handler:
@@ -63,7 +63,7 @@ class FileManager:
             return None
         if not self.es_archivo_valido(file_path, extensiones_permitidas, permitir_lectura, validaciones_extras):
             return None
-        return self.leer_archivo(file_path)
+        return self.read_file(file_path)
 
     def es_archivo_valido(self, file_path, extensiones_permitidas, permitir_lectura, validaciones_extras):
         if not os.path.isfile(file_path):

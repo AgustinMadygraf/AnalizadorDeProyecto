@@ -66,3 +66,5 @@
      1. Desarrollar una interfaz web que permita interactuar con las funcionalidades del proyecto.
      2. Integrar la interfaz web con el backend existente.
      3. Realizar pruebas para asegurar la correcta funcionalidad tanto desde la consola como desde la página web.
+
+#### 11. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
