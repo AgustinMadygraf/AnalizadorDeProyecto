@@ -20,13 +20,11 @@ class FileManager:
         return patrones
 
     def esta_en_gitignore(self, ruta_archivo):
-        try:
-            for pattern in self.gitignore_patterns:
-                regex = fnmatch.translate(pattern.strip())
-                if re.match(regex, ruta_archivo):
-                    return True
-        except FileNotFoundError:
-            logger.warning(f"No se encontró el archivo .gitignore en {self.project_path}")
+        # Convertir la ruta del archivo a una ruta relativa al directorio del proyecto
+        ruta_rel = os.path.relpath(ruta_archivo, self.project_path)
+        for pattern in self.gitignore_patterns:
+            if fnmatch.fnmatch(ruta_rel, pattern):
+                return True
         return False
 
     def validar_file_path(self, file_path):

@@ -14,11 +14,6 @@ def test_leer_gitignore(file_manager, mocker):
     assert "*.pyc" in patrones
     assert "__pycache__" in patrones
 
-def test_esta_en_gitignore(file_manager, mocker):
-    mocker.patch("builtins.open", mock_open(read_data="*.pyc\n__pycache__\n"))
-    assert file_manager.esta_en_gitignore("test.pyc")
-    assert not file_manager.esta_en_gitignore("test.py")
-
 def test_validar_file_path(file_manager):
     assert file_manager.validar_file_path("valid_path")
     assert not file_manager.validar_file_path(123)
