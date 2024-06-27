@@ -1,5 +1,7 @@
 ### **Lista de Tareas**
 
+### 0. **Agregar formato tabla para mejorar la experiencia del usuario**
+
 #### 1. **Incorporar .gitignore para Omitir Carpetas del Análisis de Estructura**
    - **Descripción:** Modificar la funcionalidad de análisis para omitir carpetas y archivos listados en `.gitignore`. Esto ayudará a evitar el análisis de archivos irrelevantes para las métricas del proyecto.
    - **Pasos:**
@@ -62,3 +64,5 @@
 #### 10. **Dar al usuario la oportunidad de incluir o no el análisisi del archivo "todo.txt"**
 
 #### 11. **Proporcionamr nombre de archivo en "src.logs.config_logger - WARNING - file_manager.py:52 - No hay manejador para la extensión .txt"
+
+#### 12. **Archivos SQL**
