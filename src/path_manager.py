@@ -5,10 +5,10 @@ import os
 from colorama import Fore, Style
 from src.user_interface import menu_0, menu_1
 
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 def obtener_ruta_analisis(project_path, input_func=input):
     ruta_seleccionada = obtener_ruta_default(input_func)  # Usa input_func aquí también

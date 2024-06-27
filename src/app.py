@@ -8,9 +8,9 @@ from src.file_operations import listar_archivos
 from models.report_generator import ReportGenerator
 from src.utilities import obtener_version_python, limpieza_pantalla
 from src.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 def run_app(input_func=input):
     project_path = inicializar()

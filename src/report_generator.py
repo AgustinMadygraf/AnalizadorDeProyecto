@@ -2,12 +2,12 @@
 import os
 import datetime
 from src.file_utilities import copiar_contenido_al_portapapeles
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 from src.file_operations import listar_archivos
 from src.content_manager import asegurar_directorio_docs
 from models.file_manager import FileManager  # Importar la clase FileManager
 
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 # Crear una instancia de FileManager
 project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"

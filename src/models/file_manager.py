@@ -4,9 +4,9 @@ import fnmatch
 from src.file_handlers.python_file_handler import PythonFileHandler
 from src.file_handlers.markdown_file_handler import MarkdownFileHandler
 from src.file_handlers.json_file_handler import JsonFileHandler
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 class FileManager:
     def __init__(self, project_path):

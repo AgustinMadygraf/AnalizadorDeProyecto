@@ -1,9 +1,9 @@
 # src/content_manager.py
 import os
-from logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 def contenido_archivo(archivos_seleccionados):
     """

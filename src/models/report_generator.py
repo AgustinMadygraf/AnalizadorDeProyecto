@@ -2,12 +2,12 @@
 import os
 import datetime
 from src.file_utilities import copiar_contenido_al_portapapeles
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 from src.file_operations import listar_archivos
 from src.content_manager import asegurar_directorio_docs
 from models.file_manager import FileManager
 
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 class ReportGenerator:
     def __init__(self, project_path):
@@ -56,7 +56,11 @@ class ReportGenerator:
         for archivo in archivos_seleccionados:
             contenido_archivo = self.file_manager.procesar_archivo(archivo)
             if contenido_archivo:
-                contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
+                extension = os.path.splitext(archivo)[1]
+                if extension == ".json":
+                    contenido_archivos += f"\n### {archivo}\n```json\n{contenido_archivo}\n```\n"
+                else:
+                    contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
             else:
                 logger.debug(f"No se pudo obtener el contenido del archivo: {archivo}")
         return contenido_archivos

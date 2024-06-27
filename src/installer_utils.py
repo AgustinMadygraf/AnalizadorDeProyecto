@@ -6,7 +6,7 @@ from win32com.client import Dispatch
 from pywintypes import com_error
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 
 def get_project_name():

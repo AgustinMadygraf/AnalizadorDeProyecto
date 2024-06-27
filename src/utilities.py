@@ -1,10 +1,10 @@
 #src/utilities.py
 import sys
 import os
-from logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 def obtener_version_python():
     return sys.version

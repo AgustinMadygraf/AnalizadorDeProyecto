@@ -1,9 +1,9 @@
 #AnalizadorDeProyectos\src\user_interface.py
 from colorama import Fore, Style
-from logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 
 
 

@@ -1,11 +1,11 @@
 # src/file_utilities.py
 import pyperclip
 import os
-from src.logs.config_logger import configurar_logging
+from src.logs.config_logger import LoggerConfigurator
 from src.models.file_manager import FileManager  # Importar la nueva clase
 
 # Configuración del logger
-logger = configurar_logging()
+logger = LoggerConfigurator().get_logger()
 project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"
 
 file_manager = FileManager(project_path)  # Crear una instancia de FileManager
