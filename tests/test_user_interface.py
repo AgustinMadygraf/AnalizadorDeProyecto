@@ -20,3 +20,10 @@ def test_solicitar_opcion_invalida():
     with patch('builtins.input', side_effect=['3', '2']):
         resultado = ui.solicitar_opcion(mensaje, opciones)
         assert resultado == 'opcion2'
+
+def test_menu_0():
+    ui = UserInterface()
+    
+    with patch('builtins.input', side_effect=['/ruta/de/prueba']):
+        resultado = ui.menu_0()
+        assert resultado == '/ruta/de/prueba'

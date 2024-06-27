@@ -19,3 +19,7 @@ class UserInterface:
                     self.logger.warning("Opción no válida. Intente de nuevo.")
             except ValueError:
                 self.logger.warning("Entrada no válida. Debes ingresar un número.")
+
+    def menu_0(self):
+        self.logger.info("Por favor, introduzca la ruta de la carpeta: ")
+        return input().strip()

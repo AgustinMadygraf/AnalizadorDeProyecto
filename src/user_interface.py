@@ -5,8 +5,7 @@ from src.models.user_interface import UserInterface
 ui = UserInterface()
 
 def menu_0():
-    ui.logger.info("Por favor, introduzca la ruta de la carpeta: ")
-    return input().strip()
+    return ui.menu_0()
 
 def menu_1():
     opciones = {
