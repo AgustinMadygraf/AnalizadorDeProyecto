@@ -9,6 +9,15 @@ from logs.config_logger import configurar_logging
 logger = configurar_logging()
 project_path = "C:\\AppServ\\www\\AnalizadorDeProyecto"
 
+def leer_gitignore(path):
+    """Lee el archivo .gitignore y devuelve una lista de patrones."""
+    gitignore_path = os.path.join(path, '.gitignore')
+    patrones = []
+    if os.path.exists(gitignore_path):
+        with open(gitignore_path, 'r') as file:
+            patrones = [line.strip() for line in file if line.strip() and not line.startswith('#')]
+    return patrones
+
 def esta_en_gitignore(ruta_archivo, project_path):
     """
     Verifica si un archivo está listado en .gitignore utilizando expresiones regulares para mejorar la eficiencia.
@@ -63,29 +72,41 @@ def leer_contenido_archivo(file_path):
         logger.error(f"No se pudo leer el archivo {file_path}: {e}")
         return None
 
-def read_and_validate_file(file_path, permitir_lectura, extensiones_permitidas):
+def read_and_validate_file(file_path, permitir_lectura, extensiones_permitidas, validaciones_extras=[]):
     """Orquesta la validación del nombre de archivo y su lectura si es permitido."""
-    if not validar_file_path(file_path) or not os.path.isfile(file_path):
+    if not validar_file_path(file_path):
         return None
+    if not es_archivo_valido(file_path, extensiones_permitidas, permitir_lectura, validaciones_extras):
+        return None
+    return leer_contenido_archivo(file_path)
 
+def es_archivo_valido(file_path, extensiones_permitidas, permitir_lectura, validaciones_extras):
+    """Valida si el archivo es permitido basado en su extensión, tamaño y otras restricciones."""
+    if not os.path.isfile(file_path):
+        return False
     if not archivo_permitido(file_path, extensiones_permitidas):
         logger.debug(f"Extensión de archivo no permitida para lectura: {file_path}")
-        return None
-
+        return False
     if permitir_lectura:
-        if '..' in os.path.abspath(file_path) or "docs" in file_path:
-            logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
-            return None
-        
-        if os.path.getsize(file_path) > 10240:
-            logger.warning(f"El archivo '{file_path}' excede el tamaño máximo permitido de 10KB.")
-            return None
+        if not es_acceso_permitido(file_path, validaciones_extras):
+            return False
+    return True
 
+def es_acceso_permitido(file_path, validaciones_extras):
+    """Verifica si el acceso al archivo es permitido basado en su ruta y tamaño."""
+    if '..' in os.path.abspath(file_path) or "docs" in file_path:
+        logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
+        return False
+    if os.path.getsize(file_path) > 10240:
+        logger.warning(f"El archivo '{file_path}' excede el tamaño máximo permitido de 10KB.")
+        return False
     if esta_en_gitignore(file_path, project_path):
         logger.warning(f"El archivo '{file_path}' está listado en .gitignore y no será leído.")
-        return None
-
-    return leer_contenido_archivo(file_path)
+        return False
+    for validacion in validaciones_extras:
+        if not validacion(file_path):
+            return False
+    return True
 
 def procesar_sql(contenido_sql):
     lineas = contenido_sql.split('\n')
