@@ -3,7 +3,9 @@ import datetime
 import json
 import os
 from colorama import Fore, Style
-from src.user_interface import menu_0, menu_1
+from src.models.user_interface import UserInterface
+
+ui = UserInterface()
 
 from src.logs.config_logger import LoggerConfigurator
 
@@ -22,7 +24,7 @@ def obtener_ruta_analisis(project_path, input_func=input):
     print("")
 
     if respuesta == 'N':
-        nueva_ruta = menu_0()  # Solicita al usuario una nueva ruta
+        nueva_ruta = ui.menu_0()
         if nueva_ruta != ruta_default:
             guardar_nueva_ruta_default(nueva_ruta)
         return nueva_ruta
@@ -177,4 +179,4 @@ def seleccionar_modo_operacion(input_func=input):
     """
     Permite al usuario seleccionar el modo de operación y devuelve el prompt correspondiente.
     """
-    return menu_1()
+    return ui.menu_1()

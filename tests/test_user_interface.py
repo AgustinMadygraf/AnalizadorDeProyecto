@@ -27,3 +27,18 @@ def test_menu_0():
     with patch('builtins.input', side_effect=['/ruta/de/prueba']):
         resultado = ui.menu_0()
         assert resultado == '/ruta/de/prueba'
+
+def test_menu_1():
+    ui = UserInterface()
+    opciones = {
+        '0': 'config\\prompt_0.md',
+        '1': 'config\\prompt_1.md',
+        '2': 'config\\prompt_2.md',
+        '3': 'config\\prompt_3.md',
+        '4': 'config\\prompt_4.md',
+        '5': 'config\\prompt_5.md' 
+    }
+    
+    with patch('builtins.input', side_effect=['1']):
+        resultado = ui.menu_1()
+        assert resultado == 'config\\prompt_1.md'
