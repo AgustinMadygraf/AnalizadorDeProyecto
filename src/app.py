@@ -1,4 +1,5 @@
 # src/app.py
+
 import os
 import time
 import threading
@@ -64,7 +65,17 @@ def bienvenida(input_func=input):
     mostrar_todo = True
     hilo_mensaje.join()
 
-def procesar_archivos(ruta, modo_prompt, ruta_archivos, report_generator):
-    extensiones_permitidas = ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino','.h' ]
-    listar_archivos(ruta, extensiones_permitidas)
-    return report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, ruta_archivos)
+def procesar_archivos(ruta, modo_prompt, project_path, report_generator):
+    extensiones_permitidas = obtener_extensiones_permitidas()
+    archivos = listar_archivos_en_ruta(ruta, extensiones_permitidas)
+    generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas)
+
+def obtener_extensiones_permitidas():
+    return ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h']
+
+def listar_archivos_en_ruta(ruta, extensiones_permitidas):
+    archivos, _ = listar_archivos(ruta, extensiones_permitidas)
+    return archivos
+
+def generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas):
+    report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path)
