@@ -4,3 +4,8 @@ tests/__pycache__/
 src/models/__pycache__/
 src/config/__pycache__/
 src/views/__pycache__/
+AnalizadorDeProyecto.bat
+__pycache__/
+src/
+src/logs/sistema.log
+config/path.json
