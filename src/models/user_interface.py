@@ -44,7 +44,7 @@ class UserInterface:
             ["1", "Análisis y Mejora Estructurada del Código para Incrementar Rendimiento y Mantenibilidad"],
             ["2", "SOLID: Evaluación y Optimización de Código Python según Principios SOLID con Pruebas Automatizadas"],
             ["3", "POO: Comprensión y Mejora de Proyectos de Software para Dominar la Programación Orientada a Objetos"],
-            ["4", "TODO.txt: Mejora de la Organización y Productividad en Proyectos de Software con todo.txt"],
+            ["4", "Software Engineering: Análisis y Mejora de Proyectos de Software con Técnicas de Ingeniería de Software"],
             ["5", "Testing de aplicaciones: Análisis y Mejora de la Calidad de Software con Pruebas Automatizadas"]
         ]
 

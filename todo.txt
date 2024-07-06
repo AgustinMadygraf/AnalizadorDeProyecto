@@ -68,3 +68,5 @@
    - **Pasos:**
      1. Implementar un prompt para que el usuario especifique la versión de GPT.
      2. Ajustar el alcance del análisis de archivos basado en la entrada del usuario.
+
+#### 12. **Dar a elegir excluir del análisis la carpeta /tests/ y sus archivos**

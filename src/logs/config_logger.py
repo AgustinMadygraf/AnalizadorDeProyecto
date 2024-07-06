@@ -4,7 +4,7 @@ import os
 import json
 
 class LoggerConfigurator:
-    def __init__(self, default_path='config/logging.json', default_level=logging.INFO, env_key='LOG_CFG'):
+    def __init__(self, default_path='src/logs/logging.json', default_level=logging.INFO, env_key='LOG_CFG'):
         self.default_path = default_path
         self.default_level = default_level
         self.env_key = env_key
