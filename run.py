@@ -12,5 +12,4 @@ if __name__ == '__main__':
     repo_path = 'C:\AppServ\www\AnalizadorDeProyecto'
     updater = RepoUpdater(repo_path)
     updater.run()
-    input("Presiona Enter para continuar...")
     run_app()
