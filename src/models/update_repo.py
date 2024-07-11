@@ -54,6 +54,6 @@ class RepoUpdater:
         self.git_pull()
         
 if __name__ == "__main__":
-    repo_path = 'https://github.com/AgustinMadygraf/analizadorDeProyecto/'
+    repo_path = 'C:\AppServ\www\AnalizadorDeProyecto'
     updater = RepoUpdater(repo_path)
     updater.run()
