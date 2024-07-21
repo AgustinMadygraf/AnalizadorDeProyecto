@@ -13,19 +13,19 @@ El propósito de este proyecto es desarrollar mis habilidades como futuro Ingeni
 
 - **Objetivo Educativo:** Aprender y aplicar metodologías ágiles y otras prácticas de ingeniería de software.
 - **Objetivo Profesional:** Construir una herramienta que pueda ser utilizada en contextos profesionales para demostrar competencias en diseño y gestión de proyectos de software.
-- **Objetivo Personal:** Mejorar habilidades prácticas en lenguajes de programación como [especificar lenguajes], y comprender arquitecturas de software contemporáneas.
+- **Objetivo Personal:** Mejorar habilidades prácticas en lenguajes de programación como Python, y comprender arquitecturas de software contemporáneas.
 
 ## Requisitos del Software
 ### Requisitos Funcionales
-1. **Iniciar/Cerrar Sesión:** Usuarios deben poder iniciar y cerrar sesión de manera segura.
-2. **Gestión de Tareas:** Los usuarios podrán crear, modificar, y eliminar tareas.
+1. ** -incorporar requisito 1- ** -desarrollar 1-
+2. ** -incorporar requisito 2- ** -desarrollar 2-
 
 ### Requisitos No Funcionales
-1. **Rendimiento:** La aplicación debe responder a las interacciones del usuario en menos de 2 segundos.
-2. **Seguridad:** Implementación de autenticación y cifrado para la protección de datos.
+1. ** -incorporar requisito 2- ** -desarrollar 1-
+2. ** -incorporar requisito 2- ** -desarrollar 2-
 
 ### Requisitos de Interfaz
-- La aplicación deberá ofrecer una interfaz intuitiva compatible con dispositivos móviles y de escritorio.
+- La aplicación deberá ofrecer una interfaz intuitiva compatible con desarrollo web con flash
 
 ### Requisitos de Datos
 - Todos los datos sensibles deben ser cifrados usando [especificar método de cifrado].
