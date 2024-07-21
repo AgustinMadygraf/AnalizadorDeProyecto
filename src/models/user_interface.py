@@ -45,7 +45,8 @@ class UserInterface:
             ["2", "SOLID: Evaluación y Optimización de Código Python según Principios SOLID con Pruebas Automatizadas"],
             ["3", "POO: Comprensión y Mejora de Proyectos de Software para Dominar la Programación Orientada a Objetos"],
             ["4", "Software Engineering: Análisis y Mejora de Proyectos de Software con Técnicas de Ingeniería de Software"],
-            ["5", "Testing de aplicaciones: Análisis y Mejora de la Calidad de Software con Pruebas Automatizadas"]
+            ["5", "Asesor de Calidad de Software ISO 90003"],
+            ["6", "Testing de aplicaciones: Análisis y Mejora de la Calidad de Software con Pruebas Automatizadas"]
         ]
 
         self.logger.info("Por favor, seleccione una opción de configuración:")
