@@ -10,6 +10,6 @@ from src.models.update_repo import RepoUpdater
 
 if __name__ == '__main__':
     repo_path = 'C:\AppServ\www\AnalizadorDeProyecto'
-    updater = RepoUpdater(repo_path)
-    updater.run()
+    #updater = RepoUpdater(repo_path)
+    #updater.run()
     run_app()
