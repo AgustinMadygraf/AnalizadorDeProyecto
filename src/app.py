@@ -76,7 +76,7 @@ def procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir
     generar_reporte(ruta, modo_prompt, project_path, report_generator, archivos, extensiones_permitidas, incluir_todo)
 
 def obtener_extensiones_permitidas():
-    return ['.html', '.css', '.php', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h']
+    return ['.html', '.css', '.php', '.js', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h']
 
 def listar_archivos_en_ruta(ruta, extensiones_permitidas):
     archivos, _ = listar_archivos(ruta, extensiones_permitidas)

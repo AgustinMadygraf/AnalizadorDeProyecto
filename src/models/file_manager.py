@@ -5,6 +5,9 @@ from src.models.i_file_manager import IFileManager
 from src.models.python_file_manager import PythonFileManager
 from src.models.markdown_file_manager import MarkdownFileManager
 from src.models.json_file_manager import JsonFileManager
+from src.file_handlers.html_file_handler import HtmlFileHandler
+from src.file_handlers.css_file_handler import CssFileHandler
+from src.file_handlers.js_file_handler import JsFileHandler
 from src.logs.config_logger import LoggerConfigurator
 
 logger = LoggerConfigurator().get_logger()
@@ -17,6 +20,9 @@ class FileManager:
             '.py': PythonFileManager(),
             '.md': MarkdownFileManager(),
             '.json': JsonFileManager(),
+            '.html': HtmlFileHandler(),
+            '.css': CssFileHandler(),
+            '.js': JsFileHandler()
         }
 
     def _leer_gitignore(self):
