@@ -8,6 +8,7 @@ pyperclip = "*"
 colorama = "*"
 reportlab = "*"
 python-dotenv = "*"
+tabulate = "*"
 
 [dev-packages]
 
