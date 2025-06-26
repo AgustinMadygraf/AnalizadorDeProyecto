@@ -5,7 +5,13 @@ import time
 import threading
 from colorama import Fore, Style
 from src.file_operations import listar_archivos
-from models.report_generator import ReportGenerator
+from src.domain.report_generator import ReportGenerator
+from src.domain.file_manager import FileManager
+from src.interfaces.file_manager_port import FileManagerPort
+from src.infrastructure.file_manager_adapter import PythonFileManagerAdapter
+from src.infrastructure.file_ops_adapter import FileOpsAdapter
+from src.infrastructure.content_manager_adapter import ContentManagerAdapter
+from src.infrastructure.clipboard_adapter import ClipboardAdapter
 from src.utilities import obtener_version_python, limpieza_pantalla
 from src.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from src.logs.config_logger import LoggerConfigurator
@@ -14,7 +20,19 @@ logger = LoggerConfigurator().get_logger()
 
 def run_app(input_func=input):
     project_path = inicializar()
-    report_generator = ReportGenerator(project_path)
+    # Wiring de dependencias según Clean Architecture
+    file_manager_port = PythonFileManagerAdapter()
+    file_ops_port = FileOpsAdapter()
+    content_manager_port = ContentManagerAdapter()
+    clipboard_port = ClipboardAdapter()
+    report_generator = ReportGenerator(
+        project_path,
+        file_manager_port=file_manager_port,
+        file_ops_port=file_ops_port,
+        content_manager_port=content_manager_port,
+        clipboard_port=clipboard_port,
+        logger_port=logger
+    )
     while True:
         if manejar_ruta_proyecto(project_path, report_generator, input_func):
             esperar_usuario(input_func)
@@ -35,7 +53,10 @@ def manejar_ruta_proyecto(project_path, report_generator, input_func):
 
 
 def esperar_usuario(input_func=input):
-    input_func(f"{Fore.GREEN}\nPresiona Enter para reiniciar...{Style.RESET_ALL}")
+    respuesta = input_func(f"{Fore.GREEN}\nPresiona Enter para reiniciar o escribe 'salir' para terminar...{Style.RESET_ALL}")
+    if respuesta.strip().lower() in ("salir", "exit"):
+        print(f"{Fore.YELLOW}Saliendo del AnalizadorDeProyecto. ¡Hasta luego!{Style.RESET_ALL}")
+        exit(0)
     limpieza_pantalla()
 
 def inicializar():
