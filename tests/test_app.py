@@ -1,6 +1,6 @@
 # tests/test_app.py
 import pytest
-from src.app import obtener_extensiones_permitidas, listar_archivos_en_ruta, generar_reporte
+from src.application.main_app import obtener_extensiones_permitidas, listar_archivos_en_ruta, generar_reporte
 from unittest.mock import MagicMock
 
 def test_obtener_extensiones_permitidas():

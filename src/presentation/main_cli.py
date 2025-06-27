@@ -26,3 +26,9 @@ def esperar_usuario(input_func=input):
     if respuesta.strip().lower() in ("salir", "exit"):
         print(f"{Fore.YELLOW}Saliendo del AnalizadorDeProyecto. ¡Hasta luego!{Style.RESET_ALL}")
         exit(0)
+
+def mostrar_error_ruta():
+    print(f"{Fore.RED}La ruta proporcionada no es válida o no se puede acceder a ella.{Style.RESET_ALL}")
+
+def mostrar_info_todo(inc_exc):
+    print(f"{Fore.CYAN}Se ha seleccionado la opción de {inc_exc} 'todo.txt' para análisis.{Style.RESET_ALL}")

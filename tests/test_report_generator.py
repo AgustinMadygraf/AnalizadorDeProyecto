@@ -1,4 +1,4 @@
-# tests/test_report_generator.py
+# tests/domain/test_report_generator.py
 import pytest
 from src.domain.report_generator import ReportGenerator
 from unittest.mock import patch, mock_open
