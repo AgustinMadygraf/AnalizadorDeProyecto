@@ -32,3 +32,6 @@ def mostrar_error_ruta():
 
 def mostrar_info_todo(inc_exc):
     print(f"{Fore.CYAN}Se ha seleccionado la opción de {inc_exc} 'todo.txt' para análisis.{Style.RESET_ALL}")
+
+def limpieza_pantalla():
+    print("\033[H\033[J", end="")

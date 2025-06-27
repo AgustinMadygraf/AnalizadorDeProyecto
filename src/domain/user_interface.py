@@ -1,15 +1,14 @@
 # src/domain/user_interface.py
 
 from colorama import Fore, Style
-from src.logs.config_logger import LoggerConfigurator
 from tabulate import tabulate
 import json
 import os
 import datetime
 
 class UserInterface:
-    def __init__(self):
-        self.logger = LoggerConfigurator().get_logger()
+    def __init__(self, logger_port):
+        self.logger = logger_port
 
     def solicitar_opcion(self, mensaje, opciones):
         self.logger.debug("Inicio de la selección del modo de operación.")

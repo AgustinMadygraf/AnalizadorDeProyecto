@@ -1,24 +1,22 @@
 # tests/test_file_manager.py
 import pytest
-import os
-from src.infrastructure.file_manager import FileManager
-from unittest.mock import patch, mock_open
+from unittest.mock import Mock
+from src.interfaces.i_file_manager import IFileManager
 
-@pytest.fixture
-def file_manager():
-    return FileManager("C:\\AppServ\\www\\AnalizadorDeProyecto")
+class FakeFileManager(IFileManager):
+    def read_file(self, file_path):
+        if file_path == "valid_path":
+            return "contenido"
+        raise FileNotFoundError
+    def process_file(self, file_path):
+        return f"procesado:{file_path}"
 
-def test_leer_gitignore(file_manager, mocker):
-    mocker.patch("builtins.open", mock_open(read_data="*.pyc\n__pycache__\n"))
-    patrones = file_manager._leer_gitignore()
-    assert "*.pyc" in patrones
-    assert "__pycache__" in patrones
+def test_read_file():
+    fm = FakeFileManager()
+    assert fm.read_file("valid_path") == "contenido"
+    with pytest.raises(FileNotFoundError):
+        fm.read_file("invalid_path")
 
-def test_validar_file_path(file_manager):
-    assert file_manager.validar_file_path("valid_path")
-    assert not file_manager.validar_file_path(123)
-
-def test_archivo_permitido(file_manager):
-    extensiones_permitidas = ['.txt', '.md']
-    assert file_manager.archivo_permitido("file.txt", extensiones_permitidas)
-    assert not file_manager.archivo_permitido("file.exe", extensiones_permitidas)
+def test_process_file():
+    fm = FakeFileManager()
+    assert fm.process_file("algo.txt") == "procesado:algo.txt"

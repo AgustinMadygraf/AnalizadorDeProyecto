@@ -5,10 +5,10 @@ from src.interfaces.i_file_manager import IFileManager
 from src.infrastructure.file_handlers.python_file_manager import PythonFileManager
 from src.infrastructure.file_handlers.markdown_file_manager import MarkdownFileManager
 from src.infrastructure.file_handlers.json_file_manager import JsonFileManager
-from src.file_handlers.html_file_handler import HtmlFileHandler
-from src.file_handlers.css_file_handler import CssFileHandler
-from src.file_handlers.js_file_handler import JsFileHandler
-from src.file_handlers.php_file_handler import PhpFileHandler
+from src.infrastructure.file_handlers.html_file_handler import HtmlFileHandler
+from src.infrastructure.file_handlers.css_file_handler import CssFileHandler
+from src.infrastructure.file_handlers.js_file_handler import JsFileHandler
+from src.infrastructure.file_handlers.php_file_handler import PhpFileHandler
 from src.logs.config_logger import LoggerConfigurator
 
 logger = LoggerConfigurator().get_logger()

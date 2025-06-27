@@ -4,9 +4,8 @@ from src.interfaces.logger_port import LoggerPort
 from src.interfaces.content_manager_port import ContentManagerPort
 from src.interfaces.file_manager_port import FileManagerPort
 from src.interfaces.clipboard_port import ClipboardPort
-from src.presentation.main_cli import bienvenida, esperar_usuario
+from src.presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
 from src.common.utilities import obtener_version_python
-from src.infrastructure.utils.screen_utils import limpieza_pantalla
 from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from colorama import Fore, Style
 

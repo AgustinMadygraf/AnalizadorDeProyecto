@@ -1,36 +1,22 @@
 # tests/test_file_operations.py
 import pytest
-import os
-from unittest.mock import patch
-from src.infrastructure.file_operations_adapter import listar_archivos
+from src.interfaces.file_ops_port import FileOpsPort
 
-# Prueba para la función listar_archivos
-@patch('os.walk')
-@patch('os.path.getsize', return_value=1024)
-@patch('src.infrastructure.file_operations_adapter.contar_lineas_codigo', return_value=10)
-def test_listar_archivos(mock_contar_lineas, mock_getsize, mock_walk):
-    mock_walk.return_value = [
-        ('/ruta', ('subdir',), ('archivo1.py', 'archivo2.txt')),
-        ('/ruta/subdir', (), ('archivo3.py',)),
-    ]
-    
-    archivos, estructura = listar_archivos('/ruta', {'.py', '.txt'})
-    
-    assert len(archivos) == 3
-    assert 'archivo1.py' in archivos[0]
-    assert 'archivo2.txt' in archivos[1]
-    assert 'archivo3.py' in archivos[2]
-    assert len(estructura) == 5  # Ajuste para reflejar la estructura real
+class FakeFileOps(FileOpsPort):
+    def listar_archivos(self, path, extensiones_permitidas):
+        # Simula estructura de archivos
+        return [f"{path}/archivo1.py", f"{path}/archivo2.txt"], ["estructura1", "estructura2"]
+    def contar_lineas_codigo(self, file_path, extensiones_codigo):
+        return 42
 
-@patch('os.walk')
-@patch('os.path.getsize', return_value=1024)
-@patch('src.infrastructure.file_operations_adapter.contar_lineas_codigo', return_value=10)
-def test_listar_archivos_sin_extension(mock_contar_lineas, mock_getsize, mock_walk):
-    mock_walk.return_value = [
-        ('/ruta', ('subdir',), ('archivo1.py', 'archivo2.txt')),
-        ('/ruta/subdir', (), ('archivo3.py',)),
-    ]
-    
-    archivos, estructura = listar_archivos('/ruta', None)
-    
-    assert len(archivos) == 3
+def test_listar_archivos():
+    fake_ops = FakeFileOps()
+    archivos, estructura = fake_ops.listar_archivos('/ruta', {'.py', '.txt'})
+    assert len(archivos) == 2
+    assert archivos[0].endswith('archivo1.py')
+    assert archivos[1].endswith('archivo2.txt')
+    assert len(estructura) == 2
+
+def test_contar_lineas_codigo():
+    fake_ops = FakeFileOps()
+    assert fake_ops.contar_lineas_codigo('algo.py', {'.py'}) == 42

@@ -5,17 +5,15 @@ from src.domain.i_file_manager import IFileManager
 from src.domain.python_file_manager import PythonFileManager
 from src.domain.markdown_file_manager import MarkdownFileManager
 from src.domain.json_file_manager import JsonFileManager
-from src.file_handlers.html_file_handler import HtmlFileHandler
-from src.file_handlers.css_file_handler import CssFileHandler
-from src.file_handlers.js_file_handler import JsFileHandler
-from src.file_handlers.php_file_handler import PhpFileHandler
-from src.logs.config_logger import LoggerConfigurator
-
-logger = LoggerConfigurator().get_logger()
+from src.infrastructure.file_handlers.html_file_handler import HtmlFileHandler
+from src.infrastructure.file_handlers.css_file_handler import CssFileHandler
+from src.infrastructure.file_handlers.js_file_handler import JsFileHandler
+from src.infrastructure.file_handlers.php_file_handler import PhpFileHandler
 
 class FileManager:
-    def __init__(self, project_path):
+    def __init__(self, project_path, logger_port):
         self.project_path = project_path
+        self.logger = logger_port
         self.gitignore_patterns = self._leer_gitignore()
         self.handlers = {
             '.py': PythonFileManager(),
@@ -48,7 +46,7 @@ class FileManager:
         if handler:
             return handler.read_file(file_path)
         else:
-            logger.warning(f"No hay manejador para la extensión {extension}")
+            self.logger.warning("No hay manejador para la extensión %s", extension)
             return None
 
     def process_file(self, file_path):
@@ -57,12 +55,12 @@ class FileManager:
         if handler:
             return handler.process_file(file_path)
         else:
-            logger.warning(f"No hay manejador para la extensión {extension}")
+            self.logger.warning("No hay manejador para la extensión %s", extension)
             return None
 
     def validar_file_path(self, file_path):
         if not isinstance(file_path, str):
-            logger.warning(f"Tipo de dato incorrecto para file_path: {type(file_path)}. Se esperaba una cadena (str).")
+            self.logger.warning("Tipo de dato incorrecto para file_path: %s. Se esperaba una cadena (str).", type(file_path))
             return False
         return True
 
@@ -79,7 +77,7 @@ class FileManager:
         if not os.path.isfile(file_path):
             return False
         if not self.archivo_permitido(file_path, extensiones_permitidas):
-            logger.debug(f"Extensión de archivo no permitida para lectura: {file_path}")
+            self.logger.debug("Extensión de archivo no permitida para lectura: %s", file_path)
             return False
         if permitir_lectura:
             if not self.es_acceso_permitido(file_path, validaciones_extras):
@@ -94,13 +92,13 @@ class FileManager:
 
     def es_acceso_permitido(self, file_path, validaciones_extras):
         if '..' in os.path.abspath(file_path) or "docs" in file_path:
-            logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
+            self.logger.debug("Acceso a archivo fuera del directorio permitido o intento de leer archivo en directorio 'docs'.")
             return False
         if os.path.getsize(file_path) > 10240:
-            logger.warning(f"El archivo '{file_path}' excede el tamaño máximo permitido de 10KB.")
+            self.logger.warning("El archivo '%s' excede el tamaño máximo permitido de 10KB.", file_path)
             return False
         if self.esta_en_gitignore(file_path):
-            logger.warning(f"El archivo '{file_path}' está listado en .gitignore y no será leído.")
+            self.logger.warning("El archivo '%s' está listado en .gitignore y no será leído.", file_path)
             return False
         for validacion in validaciones_extras:
             if not validacion(file_path):
