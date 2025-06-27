@@ -38,6 +38,15 @@
 - **Código de Conducta**: Mantén una comunicación respetuosa y profesional en todas tus interacciones dentro del proyecto.
 - **Estilo de Código**: Adhiérete al estilo de codificación establecido en el proyecto. Si hay una guía de estilo, síguela.
 
+## Buenas Prácticas de Tests y Límites de Capa
+
+- Los tests deben depender únicamente de puertos/interfaces (carpeta `interfaces/`) o funciones de la capa de aplicación.
+- Evita importar adaptadores concretos de infraestructura en los tests.
+- Usa mocks o doubles para simular dependencias externas.
+- Si necesitas probar integración, hazlo a través de la capa de aplicación, nunca directamente sobre infraestructura.
+- Si detectas imports de adaptadores concretos en tests, refactoriza para desacoplar.
+- Mantén esta convención para facilitar refactors y asegurar la evolución limpia del proyecto.
+
 ## Preguntas y Ayuda
 
 - Si tienes alguna pregunta o necesitas ayuda, no dudes en abrir un 'issue' solicitando asistencia o dirigiéndote a nuestros canales de comunicación.
