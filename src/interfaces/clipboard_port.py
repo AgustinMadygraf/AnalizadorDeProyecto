@@ -1,6 +1,13 @@
 from abc import ABC, abstractmethod
 
 class ClipboardPort(ABC):
+    """Contract for clipboard operations."""
     @abstractmethod
-    def copiar_contenido_al_portapapeles(self, nombre_archivo, extensiones_permitidas):
+    def copy(self, data: str) -> None:
+        """Copy data to clipboard."""
+        pass
+
+    @abstractmethod
+    def paste(self) -> str:
+        """Paste data from clipboard."""
         pass

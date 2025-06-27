@@ -1,14 +1,13 @@
 from abc import ABC, abstractmethod
 
 class FileManagerPort(ABC):
+    """Contract for file management operations."""
     @abstractmethod
-    def read_file(self, file_path):
+    def read(self, path: str) -> str:
+        """Read file content from path."""
         pass
 
     @abstractmethod
-    def process_file(self, file_path):
-        pass
-
-    @abstractmethod
-    def read_and_validate_file(self, file_path, permitir_lectura, extensiones_permitidas, validaciones_extras=None):
+    def write(self, path: str, content: str) -> None:
+        """Write content to file at path."""
         pass

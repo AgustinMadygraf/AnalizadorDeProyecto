@@ -1,11 +1,10 @@
 import os
 from src.infrastructure.file_operations_adapter import listar_archivos
 from src.domain.report_generator import ReportGenerator
-from src.infrastructure.logger_adapter import LoggerAdapter
-from src.infrastructure.content_manager_adapter import ContentManagerAdapter
-from src.infrastructure.file_ops_adapter import FileOpsAdapter
-from src.infrastructure.file_manager_adapter import PythonFileManagerAdapter
-from src.infrastructure.clipboard_adapter import ClipboardAdapter
+from src.interfaces.logger_port import LoggerPort
+from src.interfaces.content_manager_port import ContentManagerPort
+from src.interfaces.file_manager_port import FileManagerPort
+from src.interfaces.clipboard_port import ClipboardPort
 from src.presentation.main_cli import bienvenida, esperar_usuario
 from src.utilities import obtener_version_python, limpieza_pantalla
 from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
@@ -13,7 +12,6 @@ from src.logs.config_logger import LoggerConfigurator
 from colorama import Fore, Style
 
 logger = LoggerConfigurator().get_logger()
-logger_port = LoggerAdapter()
 
 def inicializar():
     limpieza_pantalla()
@@ -32,7 +30,15 @@ def inicializar_sin_ui():
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
-def run_app(input_func=input, mostrar_bienvenida=True):
+def run_app(
+    file_manager_port: FileManagerPort,
+    file_ops_port,  # Asumir interfaz si existe
+    content_manager_port: ContentManagerPort,
+    clipboard_port: ClipboardPort,
+    logger_port: LoggerPort,
+    input_func=input,
+    mostrar_bienvenida=True
+):
     from src.presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
     ui_callbacks = {
         'on_invalid_path': mostrar_error_ruta,
@@ -42,17 +48,13 @@ def run_app(input_func=input, mostrar_bienvenida=True):
         project_path = inicializar()
     else:
         project_path = inicializar_sin_ui()
-    file_manager_port = PythonFileManagerAdapter()
-    file_ops_port = FileOpsAdapter(logger_port)
-    content_manager_port = ContentManagerAdapter()
-    clipboard_port = ClipboardAdapter()
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,
-        logger_port=logger
+        logger_port=logger_port
     )
     while True:
         if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks):

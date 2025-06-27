@@ -5,6 +5,13 @@ import os
 # ...implementar aquí acceso a sistema de archivos, logging, etc...
 
 class PythonFileManagerAdapter(FileManagerPort):
+    def read(self, path: str) -> str:
+        return self.read_file(path)
+
+    def write(self, path: str, content: str) -> None:
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(content)
+
     def read_file(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             return file.read()
