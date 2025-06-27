@@ -74,6 +74,63 @@ Con el entorno configurado y las dependencias instaladas, ahora puede ejecutar e
 python src/main.py
 ```
 
+## Uso por Línea de Comandos (CLI)
+
+A partir de la versión 2025.06, el AnalizadorDeProyecto soporta ejecución tanto interactiva como batch/no interactiva.
+
+### Ejecución Interactiva (menú clásico)
+```bash
+python run.py
+```
+
+### Ejecución Batch (no interactiva)
+```bash
+python run.py --input <ruta_proyecto> [--output <archivo_salida>] [--modo resumen|completo] [--incluir-todo] --no-interactive
+```
+
+#### Ejemplo:
+```bash
+python run.py --input ./mi_proyecto --output reporte.txt --modo completo --incluir-todo --no-interactive
+```
+
+### Flags disponibles
+- `--input`, `-i` : Ruta del directorio o archivo a analizar (obligatorio en modo batch)
+- `--output`, `-o` : Ruta del archivo de salida (opcional)
+- `--modo`, `-m` : Modo de análisis (`resumen` o `completo`)
+- `--incluir-todo` : Incluir el archivo `todo.txt` en el análisis
+- `--no-interactive` : Ejecutar en modo batch/no interactivo
+- `--help`, `-h` : Mostrar ayuda y salir
+
+> Si no se especifica `--no-interactive`, el programa inicia en modo menú clásico.
+
+## Ejemplos Avanzados de Uso
+
+### Análisis batch con salida a archivo
+```bash
+python run.py --input ./proyecto --output reporte.txt --modo completo --incluir-todo --no-interactive
+```
+
+### Análisis sin colores (accesibilidad o redirección)
+```bash
+python run.py --input ./proyecto --no-interactive --no-color > salida.txt
+```
+
+### Verificar código de salida tras error
+```bash
+python run.py --input ./noexiste --no-interactive || echo "Error: %ERRORLEVEL%"
+```
+
+## Troubleshooting (Solución de Problemas)
+
+- **Error: Ruta de entrada no encontrada**
+  - Verifica que la ruta especificada con `--input` exista y sea accesible.
+- **Permisos insuficientes**
+  - Ejecuta la terminal como administrador o revisa los permisos de los archivos.
+- **Colores extraños en la salida**
+  - Usa el flag `--no-color` o redirige la salida a un archivo.
+- **El análisis no genera reporte**
+  - Asegúrate de que el directorio contiene archivos soportados y que tienes permisos de escritura.
+
 ## Manteniendo tu repositorio limpio
 
 Es vital para la integridad y seguridad de tu código mantener ciertos archivos y directorios fuera del control de versiones. Por ello, te recordamos incluir el directorio `.pytest_cache/` en tu archivo `.gitignore`. Esto evitará la subida accidental de datos de prueba y configuraciones específicas de tu entorno de desarrollo al repositorio.
@@ -86,6 +143,16 @@ Es vital para la integridad y seguridad de tu código mantener ciertos archivos 
 ```
 
 Asegurarte de que tu `.gitignore` esté correctamente configurado puede ahorrarte problemas de seguridad y mantenimiento a largo plazo.
+
+## Guía de Contribución
+
+1. Forkea el repositorio y crea una rama descriptiva.
+2. Sigue la estructura de carpetas y convenciones del proyecto.
+3. Agrega o actualiza tests si modificas lógica de negocio.
+4. Documenta tus cambios en el README o en la sección correspondiente.
+5. Abre un Pull Request detallando el propósito y el impacto de tu contribución.
+
+Para dudas o sugerencias, utiliza la sección de 'issues' en GitHub.
 
 ## Preguntas Frecuentes (FAQ)
 
@@ -104,3 +171,7 @@ Aunque no estamos buscando contribuciones activas en este momento, valoramos tu 
 ### ¿Qué hago si encuentro un error o un problema?
 
 Si encuentras un error o tienes algún problema con el proyecto, por favor, repórtalo en la sección de 'issues' de nuestro repositorio de GitHub.
+
+## ¿Quieres ayudarnos a mejorar?
+
+Por favor, utiliza la [plantilla de feedback](FEEDBACK.md) para reportar tu experiencia, errores o sugerencias.
