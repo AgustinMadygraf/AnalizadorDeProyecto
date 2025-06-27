@@ -12,9 +12,9 @@ def seleccionar_ruta(project_path, input_func=input):
     if os.path.exists(archivo_default):
         with open(archivo_default, 'r', encoding='utf-8') as file:
             data = json.load(file)
-            rutas = data.get('rutas', [])
+            rutas = [r for r in data.get('rutas', []) if r.get('ruta')]
     print(f"{Fore.GREEN}{LANG.get('recent_paths', 'Rutas recientes:')}{Style.RESET_ALL}")
-    print(LANG.get('menu_option_0', '0. Introducir nueva ruta'))
+    print(LANG.get('menu_option_0', '0. Agregar nueva ruta'))
     for i, ruta_info in enumerate(rutas, start=1):
         ruta = ruta_info['ruta']
         print(f"{i}. {ruta}")
@@ -29,8 +29,11 @@ def seleccionar_ruta(project_path, input_func=input):
             return rutas[int(eleccion)-1]['ruta']
         elif eleccion == '0':
             nueva_ruta = input_func(LANG.get('prompt_enter_new_path', 'Introduzca la nueva ruta: ')).strip()
-            guardar_nueva_ruta_default(nueva_ruta)
-            return nueva_ruta
+            if nueva_ruta:
+                guardar_nueva_ruta_default(nueva_ruta)
+                return nueva_ruta
+            else:
+                print(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
         else:
             print(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
 

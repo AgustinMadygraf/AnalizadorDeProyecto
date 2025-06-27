@@ -2,7 +2,7 @@
   "menu_main_title": "Menú principal",
   "menu_option_1": "1. Convertir SVG a G-code",
   "menu_option_2": "2. Optimización",
-  "menu_option_0": "0. Salir",
+  "menu_option_0": "0. Agregar nueva ruta",
   "submenu_optimization_title": "Submenú de optimización",
   "submenu_option_1": "1. Optimizar movimientos",
   "submenu_option_2": "2. Reescalar dimensiones",

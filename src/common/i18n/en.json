@@ -2,7 +2,7 @@
   "menu_main_title": "Main menu",
   "menu_option_1": "1. Convert SVG to G-code",
   "menu_option_2": "2. Optimization",
-  "menu_option_0": "0. Exit",
+  "menu_option_0": "0. Add new path",
   "submenu_optimization_title": "Optimization submenu",
   "submenu_option_1": "1. Optimize movements",
   "submenu_option_2": "2. Rescale dimensions",
