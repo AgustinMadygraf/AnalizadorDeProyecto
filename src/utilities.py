@@ -1,4 +1,12 @@
-#src/utilities.py
+# src/utilities.py
+"""
+Módulo transversal de utilidades generales.
+
+- Solo debe contener funciones puramente utilitarias (sin lógica de dominio ni dependencias a infraestructura).
+- Si una función depende de infraestructura, muévala a src/infrastructure/.
+- Si una función es específica de una capa, ubíquela en la capa correspondiente.
+"""
+
 import sys
 import os
 from src.logs.config_logger import LoggerConfigurator

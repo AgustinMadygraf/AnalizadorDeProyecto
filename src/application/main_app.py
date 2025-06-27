@@ -1,5 +1,4 @@
 import os
-from src.infrastructure.file_operations_adapter import listar_archivos
 from src.domain.report_generator import ReportGenerator
 from src.interfaces.logger_port import LoggerPort
 from src.interfaces.content_manager_port import ContentManagerPort
@@ -57,10 +56,10 @@ def run_app(
         logger_port=logger_port
     )
     while True:
-        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks):
+        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port):
             esperar_usuario(input_func)
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None):
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None):
     # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
     ruta = seleccionar_ruta(project_path, input_func)
     if not ruta or not validar_ruta(ruta):
@@ -74,19 +73,19 @@ def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbac
     if ui_callbacks and 'on_info' in ui_callbacks:
         ui_callbacks['on_info'](inc_exc)
     modo_prompt = seleccionar_modo_operacion(input_func)
-    procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo)
+    procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo, file_ops_port)
     return True
 
-def procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo):
+def procesar_archivos(ruta, modo_prompt, project_path, report_generator, incluir_todo, file_ops_port):
     extensiones_permitidas = obtener_extensiones_permitidas()
-    archivos = listar_archivos_en_ruta(ruta, extensiones_permitidas)
+    archivos = listar_archivos_en_ruta(ruta, extensiones_permitidas, file_ops_port)
     generar_reporte(ruta, modo_prompt, project_path, report_generator, extensiones_permitidas, incluir_todo)
 
 def obtener_extensiones_permitidas():
     return ['.html', '.css', '.php', '.js', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h']
 
-def listar_archivos_en_ruta(ruta, extensiones_permitidas):
-    archivos, _ = listar_archivos(ruta, extensiones_permitidas)
+def listar_archivos_en_ruta(ruta, extensiones_permitidas, file_ops_port):
+    archivos, _ = file_ops_port.listar_archivos(ruta, extensiones_permitidas)
     return archivos
 
 def generar_reporte(ruta, modo_prompt, project_path, report_generator, extensiones_permitidas, incluir_todo):
