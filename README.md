@@ -88,6 +88,12 @@ python run.py
 python run.py --input <ruta_proyecto> [--output <archivo_salida>] [--modo resumen|completo] [--incluir-todo] --no-interactive
 ```
 
+> También puedes usar `--input -` para leer desde stdin (útil para pipes o redirección):
+> ```bash
+> cat archivo.txt | python run.py --input - --no-interactive
+> ```
+> En modo batch, todos los argumentos requeridos deben ser provistos por flags. Si falta `--input`, el programa mostrará un error y finalizará con código 1. No se solicitará ningún dato por pantalla.
+
 #### Ejemplo:
 ```bash
 python run.py --input ./mi_proyecto --output reporte.txt --modo completo --incluir-todo --no-interactive
@@ -104,6 +110,11 @@ python run.py --input ./mi_proyecto --output reporte.txt --modo completo --inclu
 > Si no se especifica `--no-interactive`, el programa inicia en modo menú clásico.
 
 ## Ejemplos Avanzados de Uso
+
+### Análisis batch leyendo desde stdin
+```bash
+cat archivo.txt | python run.py --input - --no-interactive
+```
 
 ### Análisis batch con salida a archivo
 ```bash

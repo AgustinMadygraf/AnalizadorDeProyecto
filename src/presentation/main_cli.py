@@ -2,26 +2,7 @@ from colorama import Fore, Style
 import time
 import threading
 import os
-
-# Detectar idioma global
-LANG = os.environ.get('ANALIZADOR_LANG', 'es')
-MSGS = {
-    'es': {
-        'bye': '[INFO] Saliendo del AnalizadorDeProyecto. ¡Hasta luego!',
-        'press_enter': '\nPresiona Enter para reiniciar o escribe \'salir\' para terminar...',
-        'invalid_path': '[ERROR] La ruta proporcionada no es válida o no se puede acceder a ella.',
-        'suggestion': 'Sugerencia: Verifique que la ruta exista, tenga permisos de lectura y sea un directorio válido.',
-        'todo_info': "[INFO] Se ha seleccionado la opción de {inc_exc} 'todo.txt' para análisis."
-    },
-    'en': {
-        'bye': '[INFO] Exiting AnalizadorDeProyecto. Goodbye!',
-        'press_enter': '\nPress Enter to restart or type \'exit\' to quit...',
-        'invalid_path': '[ERROR] The provided path is invalid or inaccessible.',
-        'suggestion': 'Tip: Check that the path exists, has read permissions, and is a valid directory.',
-        'todo_info': "[INFO] The option to {inc_exc} 'todo.txt' for analysis has been selected."
-    }
-}
-TXT = MSGS['en'] if LANG == 'en' else MSGS['es']
+from common.i18n import LANG
 
 # Detectar si se deben desactivar colores
 NO_COLOR = os.environ.get('ANSI_COLORS_DISABLED') == '1'
@@ -30,7 +11,8 @@ def _clr(text, color):
     return text if NO_COLOR else f"{color}{text}{Style.RESET_ALL}"
 
 def bienvenida(input_func=input):
-    mensaje = """Bienvenido al AnalizadorDeProyecto 🌟\nEste software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!"""
+    mensaje = LANG.get("menu_main_title", "Bienvenido al AnalizadorDeProyecto 🌟") + "\n" + \
+        "Este software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!"
     mensaje = f"{mensaje}\n\n\nPresiona Enter para continuar...\n"
     mostrar_todo = False
     def mostrar_mensaje():
@@ -49,17 +31,17 @@ def bienvenida(input_func=input):
     hilo_mensaje.join()
 
 def esperar_usuario(input_func=input):
-    respuesta = input_func(_clr(TXT['press_enter'], Fore.GREEN))
+    respuesta = input_func(_clr(LANG.get('press_enter', '\nPresiona Enter para reiniciar o escribe \'salir\' para terminar...'), Fore.GREEN))
     if respuesta.strip().lower() in ("salir", "exit"):
-        print(_clr(TXT['bye'], Fore.YELLOW))
+        print(_clr(LANG.get('bye', '[INFO] Saliendo del AnalizadorDeProyecto. ¡Hasta luego!'), Fore.YELLOW))
         exit(0)
 
 def mostrar_error_ruta():
-    print(_clr(TXT['invalid_path'], Fore.RED))
-    print(TXT['suggestion'])
+    print(_clr(LANG.get('error_invalid_option', '[ERROR] La ruta proporcionada no es válida o no se puede acceder a ella.'), Fore.RED))
+    print(LANG.get('suggestion', 'Sugerencia: Verifique que la ruta exista, tenga permisos de lectura y sea un directorio válido.'))
 
 def mostrar_info_todo(inc_exc):
-    print(_clr(TXT['todo_info'].format(inc_exc=inc_exc), Fore.CYAN))
+    print(_clr(LANG.get('info_processing', '[INFO] Se ha seleccionado la opción de {inc_exc} \"todo.txt\" para análisis.').format(inc_exc=inc_exc), Fore.CYAN))
 
 def limpieza_pantalla():
     print("\033[H\033[J", end="")

@@ -106,11 +106,28 @@ if __name__ == '__main__':
             if getattr(args, key, None) in (None, False):
                 setattr(args, key, value)
 
+        # Validación estricta de argumentos obligatorios en modo batch
+        if args.no_interactive:
+            if not args.input:
+                print(f"{TXT['input_not_found']} <stdin>")
+                print(TXT['input_suggestion'])
+                sys.exit(1)
+
         if args.no_interactive and args.input:
-            # Modo batch/no interactivo
+            # Soporte de entrada por stdin si --input es '-'
+            if args.input == '-':
+                import tempfile
+                temp_input = tempfile.NamedTemporaryFile(delete=False, mode='w+', encoding='utf-8', suffix='.tmp')
+                for line in sys.stdin:
+                    temp_input.write(line)
+                temp_input.flush()
+                temp_input.close()
+                input_path = temp_input.name
+            else:
+                input_path = args.input
             try:
                 analizar_y_generar_reporte(
-                    ruta=args.input,
+                    ruta=input_path,
                     modo_prompt=args.modo,
                     project_path=repo_path,
                     incluir_todo=args.incluir_todo,

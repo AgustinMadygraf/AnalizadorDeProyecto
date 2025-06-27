@@ -1,4 +1,5 @@
 import os
+from common.i18n import LANG
 from domain.report_generator import ReportGenerator
 from interfaces.file_manager_port import FileManagerPort
 from interfaces.file_ops_port import FileOpsPort
@@ -41,8 +42,8 @@ def run_app(
 ):
     import sys
     if not sys.stdin.isatty():
-        print("[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")
-        print("Sugerencia: Use el modo batch con --no-interactive y los flags requeridos.")
+        print(LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente."))
+        print(LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos."))
         return
     if mostrar_bienvenida:
         project_path = inicializar(event_handler)
@@ -66,11 +67,11 @@ def run_app(
             if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, event_handler=event_handler):
                 esperar_usuario(input_func)
         except KeyboardInterrupt:
-            print("\n[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...")
+            print(f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}")
             break
         except Exception as e:
-            print(f"[ERROR] Error inesperado: {e}")
-            print("Sugerencia: Revise la ruta, permisos o reporte el error si persiste.")
+            print(f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}")
+            print(LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.'))
             break
 
 def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, event_handler=None, max_intentos=3):
@@ -84,8 +85,8 @@ def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, event_han
             event_handler({'level': 'error', 'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
-        print(f"Intento {intentos}/{max_intentos}. Intente nuevamente. (Ctrl+C para salir)")
-    print("[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.")
+        print(f"Intento {intentos}/{max_intentos}. {LANG.get('try_again', 'Intente nuevamente. (Ctrl+C para salir)')}")
+    print(LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.'))
     return None
 
 def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, event_handler=None):
@@ -119,8 +120,8 @@ def generar_reporte(ruta, modo_prompt, project_path, report_generator, extension
     report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo)
 
 def preguntar_incluir_todo_txt(input_func):
-    respuesta = input_func(f"{Fore.GREEN}¿Desea incluir el análisis de 'todo.txt'? (S/N): {Style.RESET_ALL}").strip().lower()
-    return respuesta == 's'
+    respuesta = input_func(LANG.get('prompt_include_todo', "¿Desea incluir el análisis de 'todo.txt'? (S/N): ")).strip().lower()
+    return respuesta == 's' or respuesta == 'y'
 
 # TODO: Refactorizar para que la lógica de aplicación y dominio no invoquen directamente logger_port.
 # Propuesta: Emitir eventos o mensajes que la infraestructura pueda registrar.
