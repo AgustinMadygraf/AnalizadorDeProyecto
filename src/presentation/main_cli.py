@@ -3,6 +3,26 @@ import time
 import threading
 import os
 
+# Detectar idioma global
+LANG = os.environ.get('ANALIZADOR_LANG', 'es')
+MSGS = {
+    'es': {
+        'bye': '[INFO] Saliendo del AnalizadorDeProyecto. ¡Hasta luego!',
+        'press_enter': '\nPresiona Enter para reiniciar o escribe \'salir\' para terminar...',
+        'invalid_path': '[ERROR] La ruta proporcionada no es válida o no se puede acceder a ella.',
+        'suggestion': 'Sugerencia: Verifique que la ruta exista, tenga permisos de lectura y sea un directorio válido.',
+        'todo_info': "[INFO] Se ha seleccionado la opción de {inc_exc} 'todo.txt' para análisis."
+    },
+    'en': {
+        'bye': '[INFO] Exiting AnalizadorDeProyecto. Goodbye!',
+        'press_enter': '\nPress Enter to restart or type \'exit\' to quit...',
+        'invalid_path': '[ERROR] The provided path is invalid or inaccessible.',
+        'suggestion': 'Tip: Check that the path exists, has read permissions, and is a valid directory.',
+        'todo_info': "[INFO] The option to {inc_exc} 'todo.txt' for analysis has been selected."
+    }
+}
+TXT = MSGS['en'] if LANG == 'en' else MSGS['es']
+
 # Detectar si se deben desactivar colores
 NO_COLOR = os.environ.get('ANSI_COLORS_DISABLED') == '1'
 
@@ -29,17 +49,17 @@ def bienvenida(input_func=input):
     hilo_mensaje.join()
 
 def esperar_usuario(input_func=input):
-    respuesta = input_func(_clr("\nPresiona Enter para reiniciar o escribe 'salir' para terminar...", Fore.GREEN))
+    respuesta = input_func(_clr(TXT['press_enter'], Fore.GREEN))
     if respuesta.strip().lower() in ("salir", "exit"):
-        print(_clr("[INFO] Saliendo del AnalizadorDeProyecto. ¡Hasta luego!", Fore.YELLOW))
+        print(_clr(TXT['bye'], Fore.YELLOW))
         exit(0)
 
 def mostrar_error_ruta():
-    print(_clr("[ERROR] La ruta proporcionada no es válida o no se puede acceder a ella.", Fore.RED))
-    print("Sugerencia: Verifique que la ruta exista, tenga permisos de lectura y sea un directorio válido.")
+    print(_clr(TXT['invalid_path'], Fore.RED))
+    print(TXT['suggestion'])
 
 def mostrar_info_todo(inc_exc):
-    print(_clr(f"[INFO] Se ha seleccionado la opción de {inc_exc} 'todo.txt' para análisis.", Fore.CYAN))
+    print(_clr(TXT['todo_info'].format(inc_exc=inc_exc), Fore.CYAN))
 
 def limpieza_pantalla():
     print("\033[H\033[J", end="")

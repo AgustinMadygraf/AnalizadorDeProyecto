@@ -30,6 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('--incluir-todo', action='store_true', help="Incluir 'todo.txt' en el análisis")
     parser.add_argument('--no-interactive', action='store_true', help='Ejecutar en modo batch/no interactivo')
     parser.add_argument('--no-color', action='store_true', help='Desactivar colores ANSI en la salida')
+    parser.add_argument('--lang', help='Idioma de la interfaz (es|en). También configurable con ANALIZADOR_LANG.', default=None)
     args = parser.parse_args()
 
     # Detección automática de TTY o flag --no-color
@@ -64,6 +65,47 @@ if __name__ == '__main__':
             elif level == 'error':
                 logger_adapter.error(message)
 
+        # Determinar idioma
+        lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
+        MESSAGES = {
+            'es': {
+                'batch_done': '[INFO] Análisis batch finalizado.',
+                'input_not_found': '[ERROR] Ruta de entrada no encontrada:',
+                'input_suggestion': 'Sugerencia: Verifique que la ruta especificada con --input exista y sea accesible.',
+                'batch_fail': '[ERROR] Fallo en el análisis:',
+                'batch_fail_suggestion': 'Sugerencia: Revise los permisos de archivos y el formato de entrada.',
+                'interrupted': '\nEjecución interrumpida por el usuario. Saliendo del programa...',
+                'unexpected': '[ERROR] Error inesperado en modo interactivo:',
+                'unexpected_suggestion': 'Sugerencia: Revise la configuración y reporte el error si persiste.'
+            },
+            'en': {
+                'batch_done': '[INFO] Batch analysis completed.',
+                'input_not_found': '[ERROR] Input path not found:',
+                'input_suggestion': 'Tip: Check that the path specified with --input exists and is accessible.',
+                'batch_fail': '[ERROR] Analysis failed:',
+                'batch_fail_suggestion': 'Tip: Check file permissions and input format.',
+                'interrupted': '\nExecution interrupted by user. Exiting...',
+                'unexpected': '[ERROR] Unexpected error in interactive mode:',
+                'unexpected_suggestion': 'Tip: Check configuration or report the error if it persists.'
+            }
+        }
+        TXT = MESSAGES['en'] if lang == 'en' else MESSAGES['es']
+
+        # Leer configuración por archivo .analizadorrc si existe
+        import json
+        config_defaults = {}
+        config_path = os.path.join(os.path.dirname(__file__), '.analizadorrc')
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config_defaults = json.load(f)
+            except Exception as e:
+                print(f"[WARN] No se pudo leer .analizadorrc: {e}")
+        # Sobrescribir args con valores de config si no se pasan por CLI
+        for key, value in config_defaults.items():
+            if getattr(args, key, None) in (None, False):
+                setattr(args, key, value)
+
         if args.no_interactive and args.input:
             # Modo batch/no interactivo
             try:
@@ -78,24 +120,31 @@ if __name__ == '__main__':
                     clipboard_port=clipboard_adapter,
                     event_handler=event_handler
                 )
-                print("[INFO] Análisis batch finalizado.")
+                print(TXT['batch_done'])
                 sys.exit(0)
             except FileNotFoundError as e:
-                print(f"[ERROR] Ruta de entrada no encontrada: {e}")
-                print("Sugerencia: Verifique que la ruta especificada con --input exista y sea accesible.")
+                print(f"{TXT['input_not_found']} {e}")
+                print(TXT['input_suggestion'])
                 sys.exit(1)
             except Exception as e:
-                print(f"[ERROR] Fallo en el análisis: {e}")
-                print("Sugerencia: Revise los permisos de archivos y el formato de entrada.")
+                print(f"{TXT['batch_fail']} {e}")
+                print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
         else:
             # Modo interactivo clásico
-            run_app(
-                file_manager_port=file_manager_adapter,
-                file_ops_port=file_ops_adapter,
-                content_manager_port=content_manager_adapter,
-                clipboard_port=clipboard_adapter,
-                event_handler=event_handler
-            )
+            try:
+                run_app(
+                    file_manager_port=file_manager_adapter,
+                    file_ops_port=file_ops_adapter,
+                    content_manager_port=content_manager_adapter,
+                    clipboard_port=clipboard_adapter,
+                    event_handler=event_handler
+                )
+                sys.exit(0)
+            except Exception as e:
+                print(f"{TXT['unexpected']} {e}")
+                print(TXT['unexpected_suggestion'])
+                sys.exit(3)
     except KeyboardInterrupt:
-        print("\nEjecución interrumpida por el usuario. Saliendo del programa...")
+        print(TXT['interrupted'])
+        sys.exit(130)

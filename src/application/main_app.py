@@ -39,6 +39,11 @@ def run_app(
     mostrar_bienvenida=True,
     event_handler=None
 ):
+    import sys
+    if not sys.stdin.isatty():
+        print("[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")
+        print("Sugerencia: Use el modo batch con --no-interactive y los flags requeridos.")
+        return
     if mostrar_bienvenida:
         project_path = inicializar(event_handler)
     else:
@@ -57,17 +62,36 @@ def run_app(
         'on_info': mostrar_info_todo
     }
     while True:
-        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, event_handler=event_handler):
-            esperar_usuario(input_func)
+        try:
+            if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, event_handler=event_handler):
+                esperar_usuario(input_func)
+        except KeyboardInterrupt:
+            print("\n[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...")
+            break
+        except Exception as e:
+            print(f"[ERROR] Error inesperado: {e}")
+            print("Sugerencia: Revise la ruta, permisos o reporte el error si persiste.")
+            break
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, event_handler=None):
-    # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
-    ruta = seleccionar_ruta(project_path, input_func)
-    if not ruta or not validar_ruta(ruta):
+def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, event_handler=None, max_intentos=3):
+    intentos = 0
+    while intentos < max_intentos:
+        ruta = seleccionar_ruta(project_path, input_func)
+        if ruta and validar_ruta(ruta):
+            return ruta
+        intentos += 1
         if event_handler:
             event_handler({'level': 'error', 'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
+        print(f"Intento {intentos}/{max_intentos}. Intente nuevamente. (Ctrl+C para salir)")
+    print("[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.")
+    return None
+
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, event_handler=None):
+    # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
+    ruta = solicitar_ruta_valida(project_path, input_func, ui_callbacks, event_handler)
+    if not ruta:
         return False
     incluir_todo = preguntar_incluir_todo_txt(input_func)
     inc_exc = "incluir" if incluir_todo else "excluir"

@@ -172,6 +172,66 @@ Aunque no estamos buscando contribuciones activas en este momento, valoramos tu 
 
 Si encuentras un error o tienes algún problema con el proyecto, por favor, repórtalo en la sección de 'issues' de nuestro repositorio de GitHub.
 
+### ¿Puedo extender el AnalizadorDeProyecto con plugins o extensiones?
+
+Actualmente no se soportan plugins/extensiones. Esta funcionalidad se evaluará en el futuro según la demanda y la estabilidad del core. Si tienes un caso de uso concreto, abre un issue para discutirlo.
+
 ## ¿Quieres ayudarnos a mejorar?
 
 Por favor, utiliza la [plantilla de feedback](FEEDBACK.md) para reportar tu experiencia, errores o sugerencias.
+
+## Cambios recientes (junio 2025)
+
+- Se implementó modo batch/no interactivo (`--no-interactive`) con códigos de salida estándar.
+- Se robusteció el manejo de errores y mensajes en modo interactivo (máx. 3 intentos para rutas inválidas).
+- Todos los errores relevantes retornan códigos de salida Unix (`0` éxito, `1` error usuario, `2` error sistema, `3` error inesperado, `130` interrupción).
+- La ayuda (`--help`) y los ejemplos de uso fueron revisados y ampliados.
+
+## Validación recomendada
+
+1. **Modo batch**:
+   - Ejecutar: `python run.py --input ./noexiste --no-interactive` → Debe mostrar error y código de salida 1.
+   - Ejecutar: `python run.py --input ./proyecto --no-interactive` → Debe finalizar con éxito (código 0) si la ruta es válida.
+2. **Modo interactivo**:
+   - Ingresar rutas inválidas 3 veces seguidas → Debe abortar con mensaje claro.
+   - Interrumpir con Ctrl+C → Debe mostrar mensaje y salir con código 130.
+3. **Ayuda y ejemplos**:
+   - Ejecutar: `python run.py --help` → Debe mostrar flags y ejemplos claros.
+
+## Soporte de idioma (internacionalización)
+
+- Puedes elegir idioma español o inglés con el flag `--lang` o la variable de entorno `ANALIZADOR_LANG`.
+- Ejemplo:
+  ```bash
+  python run.py --lang en --no-interactive --input ./project
+  ANALIZADOR_LANG=en python run.py --no-interactive --input ./project
+  ```
+- Los mensajes principales y errores se mostrarán en el idioma seleccionado.
+
+## Accesibilidad y TTY
+
+- Si la salida no es TTY o usas `--no-color`, los colores se desactivan automáticamente.
+- Los mensajes principales son texto plano, compatibles con lectores de pantalla.
+
+## Backlog de mejoras futuras (priorizado)
+
+1. **Internacionalización** (`--lang` o variable de entorno)
+   - Permitir mensajes y ayuda en inglés/español.
+   - Beneficio: medio | Esfuerzo: medio
+2. **Accesibilidad avanzada**
+   - Mejorar compatibilidad con lectores de pantalla y prompts alternativos.
+   - Beneficio: medio | Esfuerzo: bajo
+3. **Refactor de input y validaciones**
+   - Unificar lógica de validación y mensajes de error.
+   - Beneficio: medio | Esfuerzo: bajo
+4. **Soporte para configuración por archivo (`.analizadorrc`)**
+   - Permitir flags y rutas por archivo de configuración.
+   - Beneficio: bajo | Esfuerzo: medio
+5. **Mejorar tests de integración CLI**
+   - Cobertura de casos de error y edge cases.
+   - Beneficio: medio | Esfuerzo: bajo
+6. **Soporte para plugins/extensiones**
+   - Permitir análisis personalizados por el usuario.
+   - Beneficio: bajo | Esfuerzo: alto
+
+> **Nota:** Por el momento, la arquitectura de plugins/extensiones no será implementada hasta consolidar la base y recibir feedback real. Si tienes necesidades específicas, por favor abre un issue para discutirlas.
