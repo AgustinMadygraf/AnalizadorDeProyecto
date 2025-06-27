@@ -4,15 +4,21 @@
 # Eliminar imports no utilizados
 import os
 
-def listar_archivos(ruta, extensiones_permitidas):
+def listar_archivos(ruta, extensiones_permitidas, logger=None):
     """
-    Implementación movida desde src/file_operations.py
+    Lista archivos y carpetas, agregando para cada archivo .py el número de líneas de código y el tamaño en kB.
+    Excluye carpetas __pycache__ y .git. Muestra LOC y kB alineados en columnas.
     """
     archivos_encontrados = []
     estructura = []
+    extensiones_codigo = {'.py'}
+    ANCHO_NOMBRE = 40
+    ANCHO_LOC = 10
+    ANCHO_KB = 10
 
     for raiz, _, archivos in os.walk(ruta):
-        if '.git' in raiz:
+        # Excluir carpetas .git y __pycache__
+        if '.git' in raiz or '__pycache__' in raiz:
             continue
 
         nivel = raiz.replace(ruta, '').count(os.sep)
@@ -22,7 +28,15 @@ def listar_archivos(ruta, extensiones_permitidas):
             archivo_completo = os.path.join(raiz, archivo)
             if not extensiones_permitidas or os.path.splitext(archivo_completo)[1] in extensiones_permitidas:
                 archivos_encontrados.append(archivo_completo)
-                estructura.append(f"{' ' * 4 * (nivel + 1)}{os.path.basename(archivo_completo)}")
+                extension = os.path.splitext(archivo_completo)[1]
+                size_kb = os.path.getsize(archivo_completo) / 1024
+                size_str = f"{size_kb:6.1f} kB"
+                if extension == '.py':
+                    loc = contar_lineas_codigo(archivo_completo, extensiones_codigo, logger) if logger else None
+                    loc_str = f"{str(loc).rjust(4)} LOC" if loc is not None else "    "
+                else:
+                    loc_str = " " * ANCHO_LOC
+                estructura.append(f"{' ' * 4 * (nivel + 1)}{os.path.basename(archivo_completo):<{ANCHO_NOMBRE}}{loc_str:>{ANCHO_LOC}}{size_str:>{ANCHO_KB}}")
 
     return archivos_encontrados, estructura
 

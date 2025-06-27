@@ -16,7 +16,7 @@ class ReportGenerator:
         file_ops_port: FileOpsPort,
         content_manager_port: ContentManagerPort,
         clipboard_port: ClipboardPort,
-        event_handler=None  # Nuevo parámetro opcional
+        event_handler=None,  # Puede ser None o un adaptador con publish
     ):
         self.project_path = project_path
         self.file_manager = file_manager_port
@@ -26,8 +26,8 @@ class ReportGenerator:
         self.event_handler = event_handler
 
     def _emit_event(self, level, message):
-        if self.event_handler:
-            self.event_handler({'level': level, 'message': message})
+        if self.event_handler and hasattr(self.event_handler, 'publish'):
+            self.event_handler.publish('log', {'level': level, 'message': message})
 
     def generar_archivo_salida(self, path, modo_prompt, extensiones_permitidas, ruta_archivos, incluir_todo):
         self.content_manager.asegurar_directorio_docs(path)
@@ -100,3 +100,17 @@ class ReportGenerator:
         except Exception as e:
             self._emit_event('error', f"Error inesperado al escribir en el archivo {nombre_archivo}: {e}")
         return False
+
+    def generar_archivo_salida_rapido(self, path, extensiones_permitidas):
+        """
+        Genera un archivo de salida rápido con solo la estructura de carpetas y archivos.
+        """
+        self.content_manager.asegurar_directorio_docs(path)
+        archivos_encontrados, estructura_actualizada = self.file_ops.listar_archivos(path, extensiones_permitidas)
+        nombre_archivo_salida = self.generar_nombre_archivo_salida(path)
+        self.formatear_archivo_salida(nombre_archivo_salida)
+        contenido = "## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura_actualizada) + "\n```\n"
+        self.escribir_archivo_salida(nombre_archivo_salida, contenido)
+        self.clipboard.copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
+        print("")
+        return nombre_archivo_salida

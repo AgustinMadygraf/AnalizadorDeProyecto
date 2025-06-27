@@ -7,6 +7,8 @@ from interfaces.file_manager_port import FileManagerPort
 from interfaces.file_ops_port import FileOpsPort
 from interfaces.content_manager_port import ContentManagerPort
 from interfaces.clipboard_port import ClipboardPort
+from interfaces.logger_port import LoggerPort
+from interfaces.event_handler_port import IEventHandlerPort
 
 def analizar_y_generar_reporte(
     ruta: str,
@@ -17,23 +19,36 @@ def analizar_y_generar_reporte(
     file_ops_port: FileOpsPort,
     content_manager_port: ContentManagerPort,
     clipboard_port: ClipboardPort,
-    event_handler=None
+    logger_port: LoggerPort = None,
+    event_handler_port: IEventHandlerPort = None,
+    rapido: bool = False
 ):
+    print(f"[DEBUG] analizar_y_generar_reporte llamado con rapido={rapido}")
     """
     Ejecuta el análisis y genera el reporte, sin interacción de usuario.
+    Si rapido=True, solo genera la estructura de carpetas y archivos.
     """
+    if logger_port:
+        logger_port.info(f"[BATCH] Iniciando análisis en: {ruta}")
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,
-        event_handler=event_handler
+        event_handler=event_handler_port
     )
     extensiones_permitidas = [
         '.html', '.css', '.php', '.js', '.py', '.json', '.sql', '.md', '.txt', '.ino', '.h'
     ]
-    report_generator.generar_archivo_salida(
-        ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo
-    )
+    if rapido:
+        report_generator.generar_archivo_salida_rapido(
+            ruta, extensiones_permitidas
+        )
+    else:
+        report_generator.generar_archivo_salida(
+            ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo
+        )
+    if logger_port:
+        logger_port.info(f"[BATCH] Análisis finalizado para: {ruta}")
     return True

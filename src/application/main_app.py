@@ -6,26 +6,27 @@ from interfaces.file_ops_port import FileOpsPort
 from interfaces.content_manager_port import ContentManagerPort
 from interfaces.clipboard_port import ClipboardPort
 from interfaces.logger_port import LoggerPort
+from interfaces.event_handler_port import IEventHandlerPort
 from presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
 from common.utilities import obtener_version_python
 from application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from colorama import Fore, Style
 
-def inicializar(event_handler=None):
+def inicializar(logger_port=None):
     limpieza_pantalla()
     bienvenida()  # <- UI
-    if event_handler:
-        event_handler({'level': 'debug', 'message': f"Versión de Python en uso: {obtener_version_python()}"})
+    if logger_port:
+        logger_port.info(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
 # Nueva función: lógica de aplicación sin UI
 
-def inicializar_sin_ui(event_handler=None):
+def inicializar_sin_ui(logger_port=None):
     limpieza_pantalla()
-    if event_handler:
-        event_handler({'level': 'debug', 'message': f"Versión de Python en uso: {obtener_version_python()}"})
+    if logger_port:
+        logger_port.info(f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
@@ -36,26 +37,27 @@ def run_app(
     file_ops_port: FileOpsPort,
     content_manager_port: ContentManagerPort,
     clipboard_port: ClipboardPort,
+    logger_port: LoggerPort,
+    event_handler_port: IEventHandlerPort = None,
     input_func=input,
     mostrar_bienvenida=True,
-    event_handler=None
 ):
     import sys
     if not sys.stdin.isatty():
-        print(LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente."))
-        print(LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos."))
+        logger_port.warning(LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente."))
+        logger_port.info(LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos."))
         return
     if mostrar_bienvenida:
-        project_path = inicializar(event_handler)
+        project_path = inicializar(logger_port)
     else:
-        project_path = inicializar_sin_ui(event_handler)
+        project_path = inicializar_sin_ui(logger_port)
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,
-        event_handler=event_handler
+        event_handler=event_handler_port
     )
     from presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
     ui_callbacks = {
@@ -64,40 +66,39 @@ def run_app(
     }
     while True:
         try:
-            if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, event_handler=event_handler):
+            if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_port=logger_port, event_handler_port=event_handler_port):
                 esperar_usuario(input_func)
         except KeyboardInterrupt:
-            print(f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}")
+            logger_port.info(f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}")
             break
         except Exception as e:
-            print(f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}")
-            print(LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.'))
+            logger_port.error(f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}")
+            logger_port.info(LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.'))
             break
 
-def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, event_handler=None, max_intentos=3):
+def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, logger_port=None, event_handler_port=None, max_intentos=3):
     intentos = 0
     while intentos < max_intentos:
         ruta = seleccionar_ruta(project_path, input_func)
         if ruta and validar_ruta(ruta):
             return ruta
         intentos += 1
-        if event_handler:
-            event_handler({'level': 'error', 'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
+        if event_handler_port:
+            event_handler_port.publish('invalid_path', {'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
-        print(f"Intento {intentos}/{max_intentos}. {LANG.get('try_again', 'Intente nuevamente. (Ctrl+C para salir)')}")
-    print(LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.'))
+        logger_port.error(f"Intento {intentos}/{max_intentos}. {LANG.get('try_again', 'Intente nuevamente. (Ctrl+C para salir)')}")
+    logger_port.error(LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.'))
     return None
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, event_handler=None):
-    # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
-    ruta = solicitar_ruta_valida(project_path, input_func, ui_callbacks, event_handler)
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_port=None, event_handler_port=None):
+    ruta = solicitar_ruta_valida(project_path, input_func, ui_callbacks, logger_port, event_handler_port)
     if not ruta:
         return False
     incluir_todo = preguntar_incluir_todo_txt(input_func)
     inc_exc = "incluir" if incluir_todo else "excluir"
-    if event_handler:
-        event_handler({'level': 'info', 'message': f'Se ha seleccionado la opción de {inc_exc} "todo.txt" para análisis.'})
+    if event_handler_port:
+        event_handler_port.publish('todo_option_selected', {'option': inc_exc})
     if ui_callbacks and 'on_info' in ui_callbacks:
         ui_callbacks['on_info'](inc_exc)
     modo_prompt = seleccionar_modo_operacion(input_func)
@@ -117,7 +118,11 @@ def listar_archivos_en_ruta(ruta, extensiones_permitidas, file_ops_port):
     return archivos
 
 def generar_reporte(ruta, modo_prompt, project_path, report_generator, extensiones_permitidas, incluir_todo):
-    report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo)
+    modo_rapido = str(modo_prompt).strip().lower() in ["rapido", "resumen", "estructura"]
+    if modo_rapido:
+        report_generator.generar_archivo_salida_rapido(ruta, extensiones_permitidas)
+    else:
+        report_generator.generar_archivo_salida(ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo)
 
 def preguntar_incluir_todo_txt(input_func):
     respuesta = input_func(LANG.get('prompt_include_todo', "¿Desea incluir el análisis de 'todo.txt'? (S/N): ")).strip().lower()

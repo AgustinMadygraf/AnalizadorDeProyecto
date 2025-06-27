@@ -63,4 +63,9 @@ def seleccionar_modo_operacion(input_func=input):
     print(LANG.get('mode_option_1', '1. Análisis completo'))
     print(LANG.get('mode_option_2', '2. Análisis rápido'))
     opcion = input_func(LANG.get('prompt_mode_option', 'Opción (1/2): ')).strip()
-    return opcion
+    if opcion == '2':
+        return 'rapido'
+    elif opcion == '1':
+        return 'completo'
+    else:
+        return opcion

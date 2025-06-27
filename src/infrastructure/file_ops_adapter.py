@@ -7,7 +7,7 @@ class FileOpsAdapter(FileOpsPort):
         self.logger = logger_port
 
     def listar_archivos(self, path, extensiones_permitidas):
-        return listar_archivos(path, extensiones_permitidas)
+        return listar_archivos(path, extensiones_permitidas, self.logger)
     
     def contar_lineas_codigo(self, file_path, extensiones_codigo):
         return contar_lineas_codigo(file_path, extensiones_codigo, self.logger)

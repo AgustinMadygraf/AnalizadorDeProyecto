@@ -12,6 +12,7 @@ from src.infrastructure.file_ops_adapter import FileOpsAdapter
 from src.infrastructure.content_manager_adapter import ContentManagerAdapter
 from src.infrastructure.clipboard_adapter import ClipboardAdapter
 from src.infrastructure.logger_adapter import LoggerAdapter
+from src.infrastructure.event_handler_adapter import EventHandlerAdapter
 from src.application.batch_api import analizar_y_generar_reporte
 
 # 3. Importa la función de orquestación principal (no importa puertos aquí)
@@ -53,17 +54,7 @@ if __name__ == '__main__':
         file_ops_adapter = FileOpsAdapter(logger_adapter)
         content_manager_adapter = ContentManagerAdapter()
         clipboard_adapter = ClipboardAdapter()
-        def event_handler(event):
-            level = event.get('level')
-            message = event.get('message')
-            if level == 'debug':
-                logger_adapter.debug(message)
-            elif level == 'info':
-                logger_adapter.info(message)
-            elif level == 'warning':
-                logger_adapter.warning(message)
-            elif level == 'error':
-                logger_adapter.error(message)
+        event_handler_adapter = EventHandlerAdapter(logger_adapter)
 
         # Determinar idioma
         lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
@@ -135,7 +126,9 @@ if __name__ == '__main__':
                     file_ops_port=file_ops_adapter,
                     content_manager_port=content_manager_adapter,
                     clipboard_port=clipboard_adapter,
-                    event_handler=event_handler
+                    logger_port=logger_adapter,
+                    event_handler_port=event_handler_adapter,
+                    rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"])
                 )
                 print(TXT['batch_done'])
                 sys.exit(0)
@@ -155,7 +148,8 @@ if __name__ == '__main__':
                     file_ops_port=file_ops_adapter,
                     content_manager_port=content_manager_adapter,
                     clipboard_port=clipboard_adapter,
-                    event_handler=event_handler
+                    logger_port=logger_adapter,
+                    event_handler_port=event_handler_adapter
                 )
                 sys.exit(0)
             except Exception as e:
