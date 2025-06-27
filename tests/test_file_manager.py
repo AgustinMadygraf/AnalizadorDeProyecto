@@ -1,7 +1,7 @@
 # tests/test_file_manager.py
 import pytest
 import os
-from src.models.file_manager import FileManager
+from src.infrastructure.file_manager import FileManager
 from unittest.mock import patch, mock_open
 
 @pytest.fixture

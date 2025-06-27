@@ -1,0 +1,1 @@
+Eliminados: file_manager.py, i_file_manager.py, json_file_manager.py, markdown_file_manager.py, python_file_manager.py, report_generator.py, update_repo.py, user_interface.py

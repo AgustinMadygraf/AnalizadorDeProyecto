@@ -9,6 +9,28 @@ El `AnalizadorDeProyecto` es una herramienta poderosa diseñada para ayudar a lo
 
 Empieza rápidamente con nuestra [Guía de Inicio Rápido](https://github.com/AgustinMadygraf/AnalizadorDeProyecto/blob/main/docs/QUICKSTART.MD).
 
+## Arquitectura Limpia y Estructura del Proyecto
+
+El proyecto sigue los principios de Clean Architecture, separando responsabilidades en capas bien definidas para maximizar la mantenibilidad y escalabilidad.
+
+**Estructura principal:**
+
+```
+src/
+  common/           # Utilidades transversales puras
+  domain/           # Lógica de negocio
+  application/      # Casos de uso y orquestación
+  infrastructure/   # Adaptadores y utilidades técnicas
+    file_handlers/  # Manejadores concretos de archivos
+    utils/          # Utilidades dependientes de infraestructura
+  interfaces/       # Puertos (interfaces) para comunicación entre capas
+  presentation/     # Lógica de presentación (CLI, UI)
+```
+
+- Las utilidades puras se encuentran en `src/common/`.
+- Los manejadores de archivos y utilidades técnicas están en `src/infrastructure/`.
+- Las interfaces y puertos están en `src/interfaces/`.
+
 ## Versión de Python
 El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
 
