@@ -1,7 +1,7 @@
 # tests/test_user_interface.py
 import pytest
 from unittest.mock import patch
-from src.models.user_interface import UserInterface
+from src.domain.user_interface import UserInterface
 
 def test_solicitar_opcion_valida():
     ui = UserInterface()

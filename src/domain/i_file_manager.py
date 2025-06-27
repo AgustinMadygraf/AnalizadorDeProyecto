@@ -1,4 +1,4 @@
-# src/models/i_file_manager.py
+# src/domain/i_file_manager.py
 
 from abc import ABC, abstractmethod
 

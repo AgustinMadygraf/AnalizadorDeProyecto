@@ -1,0 +1,1 @@
+Este archivo indica que la carpeta src/models/ puede ser eliminada tras la migración a domain/.

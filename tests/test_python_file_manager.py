@@ -1,6 +1,6 @@
 # tests/test_python_file_manager.py
 import pytest
-from src.models.python_file_manager import PythonFileManager
+from src.domain.python_file_manager import PythonFileManager
 from unittest.mock import mock_open, patch
 
 def test_read_file():

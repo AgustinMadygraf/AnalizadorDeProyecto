@@ -1,6 +1,6 @@
 # tests/test_json_file_manager.py
 import pytest
-from src.models.json_file_manager import JsonFileManager
+from src.domain.json_file_manager import JsonFileManager
 from unittest.mock import mock_open, patch
 import json
 

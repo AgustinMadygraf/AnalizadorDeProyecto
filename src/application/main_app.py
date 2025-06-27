@@ -8,27 +8,25 @@ from src.presentation.main_cli import bienvenida, esperar_usuario
 from src.common.utilities import obtener_version_python
 from src.infrastructure.utils.screen_utils import limpieza_pantalla
 from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
-from src.logs.config_logger import LoggerConfigurator
 from colorama import Fore, Style
 
-logger = LoggerConfigurator().get_logger()
-
-def inicializar():
+def inicializar(logger_port: LoggerPort):
     limpieza_pantalla()
     bienvenida()  # <- UI
-    logger.debug("Versión de Python en uso: %s", obtener_version_python())
+    logger_port.debug("Versión de Python en uso: %s" % obtener_version_python())
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
 # Nueva función: lógica de aplicación sin UI
 
-def inicializar_sin_ui():
+def inicializar_sin_ui(logger_port: LoggerPort):
     limpieza_pantalla()
-    logger.debug("Versión de Python en uso: %s", obtener_version_python())
+    logger_port.debug("Versión de Python en uso: %s" % obtener_version_python())
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
+
 
 def run_app(
     file_manager_port: FileManagerPort,
@@ -45,9 +43,9 @@ def run_app(
         'on_info': mostrar_info_todo
     }
     if mostrar_bienvenida:
-        project_path = inicializar()
+        project_path = inicializar(logger_port)
     else:
-        project_path = inicializar_sin_ui()
+        project_path = inicializar_sin_ui(logger_port)
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
@@ -57,20 +55,22 @@ def run_app(
         logger_port=logger_port
     )
     while True:
-        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port):
+        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_port=logger_port):
             esperar_usuario(input_func)
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None):
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_port=None):
     # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
     ruta = seleccionar_ruta(project_path, input_func)
     if not ruta or not validar_ruta(ruta):
-        logger.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
+        if logger_port:
+            logger_port.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
         return False
     incluir_todo = preguntar_incluir_todo_txt(input_func)
     inc_exc = "incluir" if incluir_todo else "excluir"
-    logger.info('Se ha seleccionado la opción de %s "todo.txt" para análisis.', inc_exc)
+    if logger_port:
+        logger_port.info('Se ha seleccionado la opción de %s "todo.txt" para análisis.' % inc_exc)
     if ui_callbacks and 'on_info' in ui_callbacks:
         ui_callbacks['on_info'](inc_exc)
     modo_prompt = seleccionar_modo_operacion(input_func)

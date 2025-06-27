@@ -1,6 +1,6 @@
 # tests/test_markdown_file_manager.py
 import pytest
-from src.models.markdown_file_manager import MarkdownFileManager
+from src.domain.markdown_file_manager import MarkdownFileManager
 from unittest.mock import mock_open, patch
 
 def test_read_file():
