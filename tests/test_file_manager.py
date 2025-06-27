@@ -1,7 +1,11 @@
 # tests/test_file_manager.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 import pytest
 from unittest.mock import Mock
-from src.interfaces.i_file_manager import IFileManager
+from interfaces.i_file_manager import IFileManager
 
 class FakeFileManager(IFileManager):
     def read_file(self, file_path):

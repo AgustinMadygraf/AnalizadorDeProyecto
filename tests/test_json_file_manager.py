@@ -1,6 +1,8 @@
-# tests/test_json_file_manager.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 import pytest
-from src.domain.json_file_manager import JsonFileManager
+from domain.json_file_manager import JsonFileManager
 from unittest.mock import mock_open, patch
 import json
 

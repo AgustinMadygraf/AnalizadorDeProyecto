@@ -1,6 +1,6 @@
 # tests/domain/test_report_generator.py
 import pytest
-from src.domain.report_generator import ReportGenerator
+from domain.report_generator import ReportGenerator
 from unittest.mock import patch, mock_open
 
 @pytest.fixture
@@ -17,18 +17,18 @@ def report_generator():
         def warning(self, *a, **kw): pass
         def error(self, *a, **kw): pass
     dummy = DummyPort()
+    # event_handler debe ser un callable
     return ReportGenerator(
         "C:\\AppServ\\www\\AnalizadorDeProyecto",
-        dummy, dummy, dummy, dummy, dummy
+        dummy, dummy, dummy, dummy, lambda event: None
     )
 
 def test_generar_archivo_salida(report_generator, mocker):
     mocker.patch("builtins.open", mock_open(read_data="content"))
     mocker.patch("os.path.exists", return_value=True)
-    mocker.patch("src.infrastructure.file_operations_adapter.listar_archivos", return_value=([], []))
     mocker.patch.object(report_generator, 'generar_nombre_archivo_salida', return_value="output.md")
     mocker.patch.object(report_generator, 'escribir_archivo_salida', return_value=True)
-    mocker.patch("src.infrastructure.file_utilities.copiar_contenido_al_portapapeles")
+    mocker.patch.object(report_generator.clipboard, 'copiar_contenido_al_portapapeles')
 
     result = report_generator.generar_archivo_salida("path", "modo_prompt", [], "ruta_archivos", True)
     assert result == "output.md"

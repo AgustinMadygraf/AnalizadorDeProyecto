@@ -1,17 +1,33 @@
 import os
 import datetime
-from src.interfaces.logger_port import LoggerPort
+from interfaces.file_manager_port import FileManagerPort
+from interfaces.file_ops_port import FileOpsPort
+from interfaces.content_manager_port import ContentManagerPort
+from interfaces.clipboard_port import ClipboardPort
+from interfaces.logger_port import LoggerPort
 # Dominio: Entidad para generación de reportes
 # ...mover aquí la lógica de negocio pura relacionada a reportes...
 
 class ReportGenerator:
-    def __init__(self, project_path, file_manager_port, file_ops_port, content_manager_port, clipboard_port, logger_port: LoggerPort):
+    def __init__(
+        self,
+        project_path: str,
+        file_manager_port: FileManagerPort,
+        file_ops_port: FileOpsPort,
+        content_manager_port: ContentManagerPort,
+        clipboard_port: ClipboardPort,
+        event_handler=None  # Nuevo parámetro opcional
+    ):
         self.project_path = project_path
         self.file_manager = file_manager_port
         self.file_ops = file_ops_port
         self.content_manager = content_manager_port
         self.clipboard = clipboard_port
-        self.logger = logger_port
+        self.event_handler = event_handler
+
+    def _emit_event(self, level, message):
+        if self.event_handler:
+            self.event_handler({'level': level, 'message': message})
 
     def generar_archivo_salida(self, path, modo_prompt, extensiones_permitidas, ruta_archivos, incluir_todo):
         self.content_manager.asegurar_directorio_docs(path)
@@ -28,12 +44,12 @@ class ReportGenerator:
         try:
             with open(nombre_archivo_salida, 'w', encoding='utf-8') as archivo:
                 archivo.write('')
-            self.logger.debug(f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
+            self._emit_event('debug', f"El contenido de {nombre_archivo_salida} ha sido eliminado.")
         except Exception as e:
-            self.logger.warning(f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
+            self._emit_event('warning', f"Error al intentar formatear el archivo {nombre_archivo_salida}: {e}")
 
     def preparar_contenido_salida(self, estructura, modo_prompt, archivos_seleccionados, path, ruta_archivo, extensiones_permitidas):
-        self.logger.debug("Preparando contenido de salida")
+        self._emit_event('debug', "Preparando contenido de salida")
         contenido_prompt = self.file_manager.read_and_validate_file(os.path.join(ruta_archivo, modo_prompt), permitir_lectura=True, extensiones_permitidas=extensiones_permitidas) or "\n\nPrompt:\nNo hay prompt. Falla.\n\n"
         contenido = contenido_prompt
         ruta_todo_txt = os.path.join(path, 'todo.txt')
@@ -45,7 +61,7 @@ class ReportGenerator:
         if archivos_seleccionados:
             contenido += self.construir_contenido_archivos_seleccionados(archivos_seleccionados, extensiones_permitidas)
         else:
-            self.logger.warning("No se han proporcionado archivos seleccionados para incluir en el contenido")
+            self._emit_event('warning', "No se han proporcionado archivos seleccionados para incluir en el contenido")
         contenido += "Fecha y hora:\n"
         contenido += datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
         return contenido
@@ -61,7 +77,7 @@ class ReportGenerator:
                 else:
                     contenido_archivos += f"\n### {archivo}\n```plaintext\n{contenido_archivo}\n```\n"
             else:
-                self.logger.debug(f"No se pudo obtener el contenido del archivo: {archivo}")
+                self._emit_event('debug', f"No se pudo obtener el contenido del archivo: {archivo}")
         return contenido_archivos
 
     def generar_nombre_archivo_salida(self, path):
@@ -70,17 +86,17 @@ class ReportGenerator:
 
     def escribir_archivo_salida(self, nombre_archivo, contenido):
         if contenido is None:
-            self.logger.error(f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
+            self._emit_event('error', f"Se intentó escribir contenido 'None' en el archivo {nombre_archivo}.")
             return False
-        self.logger.debug(f"Intentando escribir en el archivo: {nombre_archivo}")
+        self._emit_event('debug', f"Intentando escribir en el archivo: {nombre_archivo}")
         try:
             with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
                 archivo.write(contenido)
-            self.logger.info("Archivo de salida generado exitosamente:")
-            self.logger.info(nombre_archivo)
+            self._emit_event('info', "Archivo de salida generado exitosamente:")
+            self._emit_event('info', nombre_archivo)
             return True
         except IOError as e:
-            self.logger.error(f"Error de E/S al escribir en el archivo {nombre_archivo}: {e}")
+            self._emit_event('error', f"Error de E/S al escribir en el archivo {nombre_archivo}: {e}")
         except Exception as e:
-            self.logger.error(f"Error inesperado al escribir en el archivo {nombre_archivo}: {e}")
+            self._emit_event('error', f"Error inesperado al escribir en el archivo {nombre_archivo}: {e}")
         return False

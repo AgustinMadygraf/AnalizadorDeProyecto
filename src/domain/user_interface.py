@@ -58,3 +58,5 @@ class UserInterface:
         archivo_seleccionado = opciones[eleccion]
         self.logger.info(f"Ha seleccionado la opción {eleccion}")
         return archivo_seleccionado
+
+# No hay imports de src.domain, pero si los hubiera, deben ser relativos a la raíz de src.

@@ -1,6 +1,10 @@
 # tests/test_content_manager.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 import pytest
-from tests.helper_content_manager import contenido_archivo, filtrar_archivos_por_extension
+from .helper_content_manager import contenido_archivo, filtrar_archivos_por_extension
 from unittest.mock import mock_open, patch, MagicMock
 
 def test_contenido_archivo():

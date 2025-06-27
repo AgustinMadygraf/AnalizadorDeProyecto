@@ -1,6 +1,8 @@
-# tests/test_python_file_manager.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 import pytest
-from src.domain.python_file_manager import PythonFileManager
+from domain.python_file_manager import PythonFileManager
 from unittest.mock import mock_open, patch
 
 def test_read_file():

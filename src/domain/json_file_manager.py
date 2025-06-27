@@ -1,8 +1,8 @@
 # src/domain/json_file_manager.py
 
 import json
-from src.domain.i_file_manager import IFileManager
-from src.logs.config_logger import LoggerConfigurator
+from domain.i_file_manager import IFileManager
+from logs.config_logger import LoggerConfigurator
 
 logger = LoggerConfigurator().get_logger()
 

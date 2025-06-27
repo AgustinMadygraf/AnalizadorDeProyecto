@@ -1,6 +1,6 @@
 # src/domain/python_file_manager.py
 
-from src.domain.i_file_manager import IFileManager
+from domain.i_file_manager import IFileManager
 
 class PythonFileManager(IFileManager):
     def read_file(self, file_path):

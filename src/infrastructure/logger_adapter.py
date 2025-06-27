@@ -1,18 +1,18 @@
-from src.interfaces.logger_port import LoggerPort
-from src.logs.config_logger import LoggerConfigurator
+from interfaces.logger_port import LoggerPort
+from logs.config_logger import LoggerConfigurator
 
 class LoggerAdapter(LoggerPort):
     def __init__(self):
         self._logger = LoggerConfigurator().get_logger()
 
-    def debug(self, msg: str):
-        self._logger.debug(msg)
+    def debug(self, message: str):
+        self._logger.debug(message)
 
-    def info(self, msg: str):
-        self._logger.info(msg)
+    def info(self, message: str):
+        self._logger.info(message)
 
-    def warning(self, msg: str):
-        self._logger.warning(msg)
+    def warning(self, message: str):
+        self._logger.warning(message)
 
-    def error(self, msg: str):
-        self._logger.error(msg)
+    def error(self, message: str):
+        self._logger.error(message)

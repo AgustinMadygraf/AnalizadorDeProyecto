@@ -1,6 +1,8 @@
-# tests/test_file_operations.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 import pytest
-from src.interfaces.file_ops_port import FileOpsPort
+from interfaces.file_ops_port import FileOpsPort
 
 class FakeFileOps(FileOpsPort):
     def listar_archivos(self, path, extensiones_permitidas):

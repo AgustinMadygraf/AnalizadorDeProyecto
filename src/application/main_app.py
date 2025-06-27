@@ -1,27 +1,30 @@
 import os
-from src.domain.report_generator import ReportGenerator
-from src.interfaces.logger_port import LoggerPort
-from src.interfaces.content_manager_port import ContentManagerPort
-from src.interfaces.file_manager_port import FileManagerPort
-from src.interfaces.clipboard_port import ClipboardPort
-from src.presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
-from src.common.utilities import obtener_version_python
-from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
+from domain.report_generator import ReportGenerator
+from interfaces.file_manager_port import FileManagerPort
+from interfaces.file_ops_port import FileOpsPort
+from interfaces.content_manager_port import ContentManagerPort
+from interfaces.clipboard_port import ClipboardPort
+from interfaces.logger_port import LoggerPort
+from presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
+from common.utilities import obtener_version_python
+from application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from colorama import Fore, Style
 
-def inicializar(logger_port: LoggerPort):
+def inicializar(event_handler=None):
     limpieza_pantalla()
     bienvenida()  # <- UI
-    logger_port.debug("Versión de Python en uso: %s" % obtener_version_python())
+    if event_handler:
+        event_handler({'level': 'debug', 'message': f"Versión de Python en uso: {obtener_version_python()}"})
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
 # Nueva función: lógica de aplicación sin UI
 
-def inicializar_sin_ui(logger_port: LoggerPort):
+def inicializar_sin_ui(event_handler=None):
     limpieza_pantalla()
-    logger_port.debug("Versión de Python en uso: %s" % obtener_version_python())
+    if event_handler:
+        event_handler({'level': 'debug', 'message': f"Versión de Python en uso: {obtener_version_python()}"})
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
@@ -29,47 +32,47 @@ def inicializar_sin_ui(logger_port: LoggerPort):
 
 def run_app(
     file_manager_port: FileManagerPort,
-    file_ops_port,  # Asumir interfaz si existe
+    file_ops_port: FileOpsPort,
     content_manager_port: ContentManagerPort,
     clipboard_port: ClipboardPort,
-    logger_port: LoggerPort,
     input_func=input,
-    mostrar_bienvenida=True
+    mostrar_bienvenida=True,
+    event_handler=None
 ):
-    from src.presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
-    ui_callbacks = {
-        'on_invalid_path': mostrar_error_ruta,
-        'on_info': mostrar_info_todo
-    }
     if mostrar_bienvenida:
-        project_path = inicializar(logger_port)
+        project_path = inicializar(event_handler)
     else:
-        project_path = inicializar_sin_ui(logger_port)
+        project_path = inicializar_sin_ui(event_handler)
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,
-        logger_port=logger_port
+        event_handler=event_handler
     )
+    from presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
+    ui_callbacks = {
+        'on_invalid_path': mostrar_error_ruta,
+        'on_info': mostrar_info_todo
+    }
     while True:
-        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_port=logger_port):
+        if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, event_handler=event_handler):
             esperar_usuario(input_func)
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_port=None):
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, event_handler=None):
     # ui_callbacks: {'on_invalid_path': func, 'on_info': func}
     ruta = seleccionar_ruta(project_path, input_func)
     if not ruta or not validar_ruta(ruta):
-        if logger_port:
-            logger_port.error("La ruta proporcionada no es válida o no se puede acceder a ella.")
+        if event_handler:
+            event_handler({'level': 'error', 'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
         return False
     incluir_todo = preguntar_incluir_todo_txt(input_func)
     inc_exc = "incluir" if incluir_todo else "excluir"
-    if logger_port:
-        logger_port.info('Se ha seleccionado la opción de %s "todo.txt" para análisis.' % inc_exc)
+    if event_handler:
+        event_handler({'level': 'info', 'message': f'Se ha seleccionado la opción de {inc_exc} "todo.txt" para análisis.'})
     if ui_callbacks and 'on_info' in ui_callbacks:
         ui_callbacks['on_info'](inc_exc)
     modo_prompt = seleccionar_modo_operacion(input_func)
@@ -94,3 +97,7 @@ def generar_reporte(ruta, modo_prompt, project_path, report_generator, extension
 def preguntar_incluir_todo_txt(input_func):
     respuesta = input_func(f"{Fore.GREEN}¿Desea incluir el análisis de 'todo.txt'? (S/N): {Style.RESET_ALL}").strip().lower()
     return respuesta == 's'
+
+# TODO: Refactorizar para que la lógica de aplicación y dominio no invoquen directamente logger_port.
+# Propuesta: Emitir eventos o mensajes que la infraestructura pueda registrar.
+# Ejemplo: return {'event': 'debug', 'message': ...} o usar un EventBus.
