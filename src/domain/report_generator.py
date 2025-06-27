@@ -103,13 +103,27 @@ class ReportGenerator:
 
     def generar_archivo_salida_rapido(self, path, extensiones_permitidas):
         """
-        Genera un archivo de salida rápido con solo la estructura de carpetas y archivos.
+        Genera un archivo de salida rápido con solo la estructura de carpetas y archivos y el top 5 de archivos por LOC.
         """
+        import os
         self.content_manager.asegurar_directorio_docs(path)
         archivos_encontrados, estructura_actualizada = self.file_ops.listar_archivos(path, extensiones_permitidas)
         nombre_archivo_salida = self.generar_nombre_archivo_salida(path)
         self.formatear_archivo_salida(nombre_archivo_salida)
-        contenido = "## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura_actualizada) + "\n```\n"
+        # Calcular top 5 archivos por LOC
+        top_archivos = []
+        extensiones_codigo = {'.py'}
+        for archivo in archivos_encontrados:
+            if os.path.splitext(archivo)[1] in extensiones_codigo:
+                loc = self.file_ops.contar_lineas_codigo(archivo, extensiones_codigo)
+                if loc is not None:
+                    rel_path = os.path.relpath(archivo, path)
+                    top_archivos.append((loc, rel_path, os.path.basename(archivo)))
+        top_archivos.sort(reverse=True)
+        top5 = top_archivos[:5]
+        top5_lines = [f"{loc:>5} LOC | {rel_path}" for loc, rel_path, _ in top5]
+        top5_section = "## Top 5 archivos por mayor cantidad de líneas de código\n" + '\n'.join(top5_lines) + "\n\n"
+        contenido = top5_section + "## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura_actualizada) + "\n```\n"
         self.escribir_archivo_salida(nombre_archivo_salida, contenido)
         self.clipboard.copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
         print("")
