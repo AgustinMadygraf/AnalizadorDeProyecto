@@ -1,6 +1,6 @@
 # tests/test_content_manager.py
 import pytest
-from src.content_manager import contenido_archivo, filtrar_archivos_por_extension, asegurar_directorio_docs
+from src.application.content_manager import contenido_archivo, filtrar_archivos_por_extension, asegurar_directorio_docs
 from unittest.mock import mock_open, patch, MagicMock
 
 def test_contenido_archivo():

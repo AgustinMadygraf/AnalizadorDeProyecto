@@ -90,7 +90,10 @@ class UserInterface:
             print("")
 
             while True:
-                eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip()
+                eleccion = input_func(f"{Fore.GREEN}Seleccione una opción: {Style.RESET_ALL}").strip().lower()
+                if eleccion == "salir":
+                    print(f"{Fore.YELLOW}Saliendo del AnalizadorDeProyecto. ¡Hasta luego!{Style.RESET_ALL}")
+                    exit(0)
                 if not eleccion:
                     return rutas[0]['ruta']
                 elif eleccion.isdigit() and 1 <= int(eleccion) < len(tabla):

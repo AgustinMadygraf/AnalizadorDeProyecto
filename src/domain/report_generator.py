@@ -1,10 +1,11 @@
 import os
 import datetime
+from src.interfaces.logger_port import LoggerPort
 # Dominio: Entidad para generación de reportes
 # ...mover aquí la lógica de negocio pura relacionada a reportes...
 
 class ReportGenerator:
-    def __init__(self, project_path, file_manager_port, file_ops_port, content_manager_port, clipboard_port, logger_port):
+    def __init__(self, project_path, file_manager_port, file_ops_port, content_manager_port, clipboard_port, logger_port: LoggerPort):
         self.project_path = project_path
         self.file_manager = file_manager_port
         self.file_ops = file_ops_port

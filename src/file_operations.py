@@ -1,43 +1,13 @@
-#AnalizadorDeProyectos/src/file_operations.py
+# Mover este archivo a src/infrastructure/file_operations_adapter.py
+# Actualizar imports en todo el proyecto para reflejar la nueva ubicación
+
 import os
-from src.logs.config_logger import LoggerConfigurator
+from src.infrastructure.file_operations_adapter import contar_lineas_codigo
+from src.infrastructure.logger_adapter import LoggerAdapter
+from src.interfaces.logger_port import LoggerPort
 
-# Configuración del logger
-logger = LoggerConfigurator().get_logger()
-
-def contar_lineas_codigo(file_path, extensiones_codigo):
-    """
-    Cuenta las líneas de código en un archivo, excluyendo líneas en blanco y comentarios.
-
-    Args:
-        file_path (str): Ruta del archivo.
-        extensiones_codigo (set): Conjunto de extensiones de archivo que representan código fuente.
-
-    Returns:
-        int or None: Número de líneas de código (entero de 3 dígitos), o None si el conteo es 0.
-    """
-    _, extension = os.path.splitext(file_path)
-    if extension not in extensiones_codigo:
-        return None
-
-    lineas_codigo = 0
-    try:
-        with open(file_path, 'r', encoding='utf-8') as archivo:
-            for linea in archivo:
-                linea = linea.strip()
-                if linea and not linea.startswith("#"):
-                    lineas_codigo += 1
-    except Exception as e:
-        logger.error(f"Error leyendo el archivo {file_path}: {e}")
-        return None
-
-    # Asegurarse de que el número de líneas sea de 3 dígitos
-    if lineas_codigo == 0:
-        return None
-    elif lineas_codigo > 999:
-        return 999
-    else:
-        return lineas_codigo
+# Initialize a logger instance
+logger: LoggerPort = LoggerAdapter()
 
 def listar_archivos(ruta, extensiones_permitidas):
     """
@@ -96,7 +66,7 @@ def formatear_archivo(archivo_completo, nivel):
     """Formatea el archivo con su tamaño y número de líneas de código."""
     subindentacion = ' ' * 4 * nivel
     tamano_kb = obtener_tamano_archivo(archivo_completo)
-    lineas_codigo = contar_lineas_codigo(archivo_completo, {'.py', '.ino', '.h'})
+    lineas_codigo = contar_lineas_codigo(archivo_completo, {'.py', '.ino', '.h'}, logger)
     espacio_vacio = ' ' * (50 - len(os.path.basename(archivo_completo)) - len(subindentacion))
     if lineas_codigo is None:
         return f"{subindentacion}{os.path.basename(archivo_completo)}{espacio_vacio}{tamano_kb:.2f}kB - N/A"
