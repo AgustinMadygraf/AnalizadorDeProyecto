@@ -1,10 +1,12 @@
+# pylint: disable=import-error
 from interfaces.logger_port import LoggerPort
+from interfaces.logger_event_port import LoggerEventPort
 from logs.config_logger import LoggerConfigurator
 
-class LoggerAdapter(LoggerPort):
+class LoggerAdapter(LoggerPort, LoggerEventPort):
     """
-    Adaptador concreto que implementa el puerto LoggerPort.
-    Cumple el contrato de Clean Architecture: la infraestructura implementa el puerto,
+    Adaptador concreto que implementa los puertos LoggerPort y LoggerEventPort.
+    Cumple el contrato de Clean Architecture: la infraestructura implementa los puertos,
     la aplicación depende solo de la interfaz.
     """
     def __init__(self):
@@ -21,3 +23,13 @@ class LoggerAdapter(LoggerPort):
 
     def error(self, message: str):
         self._logger.error(message)
+
+    def emit_log(self, level: str, message: str, **kwargs):
+        """
+        Implementación de LoggerEventPort: permite logging desacoplado por nivel.
+        """
+        log_method = getattr(self._logger, level.lower(), None)
+        if callable(log_method):
+            log_method(message, **kwargs)
+        else:
+            self._logger.info(f"[LoggerEventPort] {level.upper()}: {message}", **kwargs)

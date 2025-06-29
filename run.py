@@ -14,6 +14,7 @@ from src.infrastructure.clipboard_adapter import ClipboardAdapter
 from src.infrastructure.logger_adapter import LoggerAdapter
 from src.infrastructure.event_handler_adapter import EventHandlerAdapter
 from src.application.batch_api import analizar_y_generar_reporte
+from colorama import init
 
 # 3. Importa la función de orquestación principal (no importa puertos aquí)
 from src.application.main_app import run_app
@@ -37,11 +38,9 @@ if __name__ == '__main__':
     # Detección automática de TTY o flag --no-color
     disable_colors = args.no_color or not sys.stdout.isatty()
     if disable_colors:
-        import os
         os.environ['ANSI_COLORS_DISABLED'] = '1'
         # Parchea colorama para no usar colores
         try:
-            from colorama import init, AnsiToWin32
             init(strip=True)
         except ImportError:
             pass
@@ -90,8 +89,10 @@ if __name__ == '__main__':
             try:
                 with open(config_path, 'r', encoding='utf-8') as f:
                     config_defaults = json.load(f)
-            except Exception as e:
-                print(f"[WARN] No se pudo leer .analizadorrc: {e}")
+            except json.JSONDecodeError as e:
+                print(f"[WARN] No se pudo leer .analizadorrc (JSON inválido): {e}")
+            except OSError as e:
+                print(f"[WARN] No se pudo acceder a .analizadorrc: {e}")
         # Sobrescribir args con valores de config si no se pasan por CLI
         for key, value in config_defaults.items():
             if getattr(args, key, None) in (None, False):
@@ -126,7 +127,7 @@ if __name__ == '__main__':
                     file_ops_port=file_ops_adapter,
                     content_manager_port=content_manager_adapter,
                     clipboard_port=clipboard_adapter,
-                    logger_port=logger_adapter,
+                    logger_port=logger_adapter,  # batch_api aún usa logger_port
                     event_handler_port=event_handler_adapter,
                     rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"])
                 )
@@ -136,8 +137,15 @@ if __name__ == '__main__':
                 print(f"{TXT['input_not_found']} {e}")
                 print(TXT['input_suggestion'])
                 sys.exit(1)
-            except Exception as e:
+            except (PermissionError, IsADirectoryError, OSError, ValueError) as e:
                 print(f"{TXT['batch_fail']} {e}")
+                print(TXT['batch_fail_suggestion'])
+                sys.exit(2)
+            except Exception as e:
+                # Log unexpected exceptions and re-raise or exit
+                import traceback
+                print(f"{TXT['batch_fail']} {e}")
+                print(traceback.format_exc())
                 print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
         else:
@@ -148,11 +156,11 @@ if __name__ == '__main__':
                     file_ops_port=file_ops_adapter,
                     content_manager_port=content_manager_adapter,
                     clipboard_port=clipboard_adapter,
-                    logger_port=logger_adapter,
+                    logger_event_port=logger_adapter,  # ahora se inyecta como logger_event_port
                     event_handler_port=event_handler_adapter
                 )
                 sys.exit(0)
-            except Exception as e:
+            except (RuntimeError, ValueError, OSError) as e:
                 print(f"{TXT['unexpected']} {e}")
                 print(TXT['unexpected_suggestion'])
                 sys.exit(3)

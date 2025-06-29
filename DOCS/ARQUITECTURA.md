@@ -38,7 +38,9 @@ El proyecto sigue los principios de Clean Architecture, separando responsabilida
 - El usuario ejecuta un comando en la UI (presentation).
 - La UI llama a un caso de uso en la aplicación.
 - La aplicación utiliza puertos para interactuar con el dominio.
-- El dominio ejecuta la lógica y, si es necesario, utiliza adaptadores de infraestructura (por ejemplo, para logging o acceso a archivos).
+- El dominio ejecuta la lógica y las interfaces (puertos).
+- **El logging está desacoplado:** la aplicación emite eventos de log a través del puerto `LoggerEventPort`, y la infraestructura (`LoggerAdapter`) los registra. La aplicación nunca invoca métodos de logging concretos.
+- La infraestructura implementa adaptadores concretos para los puertos definidos en el dominio.
 
 ## 6. Tests
 - Los tests están organizados por capa, permitiendo validar cada responsabilidad de forma aislada.
@@ -46,7 +48,7 @@ El proyecto sigue los principios de Clean Architecture, separando responsabilida
 
 ## 7. Estado Actual
 - La migración a Clean Architecture está completa.
-- El logging está desacoplado mediante puertos/adaptadores.
+- El logging está desacoplado mediante el puerto `LoggerEventPort` y adaptadores concretos.
 - La UI y la lógica de aplicación están separadas.
 - El código duplicado ha sido eliminado.
 - Los tests están organizados por capas y las utilidades puras se encuentran en `src/common/`.

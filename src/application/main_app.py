@@ -1,32 +1,32 @@
 import os
+# pylint: disable=import-error
 from common.i18n import LANG
 from domain.report_generator import ReportGenerator
 from interfaces.file_manager_port import FileManagerPort
 from interfaces.file_ops_port import FileOpsPort
 from interfaces.content_manager_port import ContentManagerPort
 from interfaces.clipboard_port import ClipboardPort
-from interfaces.logger_port import LoggerPort
+from interfaces.logger_event_port import LoggerEventPort
 from interfaces.event_handler_port import IEventHandlerPort
 from presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
 from common.utilities import obtener_version_python
 from application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
-from colorama import Fore, Style
 
-def inicializar(logger_port=None):
+def inicializar(logger_event_port=None):
     limpieza_pantalla()
     bienvenida()  # <- UI
-    if logger_port:
-        logger_port.info(f"Versión de Python en uso: {obtener_version_python()}")
+    if logger_event_port:
+        logger_event_port.emit_log('info', f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
 
 # Nueva función: lógica de aplicación sin UI
 
-def inicializar_sin_ui(logger_port=None):
+def inicializar_sin_ui(logger_event_port=None):
     limpieza_pantalla()
-    if logger_port:
-        logger_port.info(f"Versión de Python en uso: {obtener_version_python()}")
+    if logger_event_port:
+        logger_event_port.emit_log('info', f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
     project_path = os.path.normpath(os.path.join(ruta_script, ".."))
     return project_path
@@ -37,7 +37,7 @@ def run_app(
     file_ops_port: FileOpsPort,
     content_manager_port: ContentManagerPort,
     clipboard_port: ClipboardPort,
-    logger_port: LoggerPort,
+    logger_event_port: LoggerEventPort,
     event_handler_port: IEventHandlerPort = None,
     input_func=input,
     mostrar_bienvenida=True,
@@ -48,13 +48,13 @@ def run_app(
         eventos.append({'type': 'log', 'level': 'warning', 'message': LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")})
         eventos.append({'type': 'log', 'level': 'info', 'message': LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos.")})
         for evento in eventos:
-            if evento['type'] == 'log' and logger_port:
-                getattr(logger_port, evento['level'])(evento['message'])
+            if evento['type'] == 'log' and logger_event_port:
+                logger_event_port.emit_log(evento['level'], evento['message'])
         return
     if mostrar_bienvenida:
-        project_path = inicializar(logger_port)
+        project_path = inicializar(logger_event_port)
     else:
-        project_path = inicializar_sin_ui(logger_port)
+        project_path = inicializar_sin_ui(logger_event_port)
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
@@ -70,23 +70,23 @@ def run_app(
     }
     while True:
         try:
-            if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_port=logger_port, event_handler_port=event_handler_port):
+            if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_event_port=logger_event_port, event_handler_port=event_handler_port):
                 esperar_usuario(input_func)
         except KeyboardInterrupt:
             eventos.append({'type': 'log', 'level': 'info', 'message': f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}"})
             for evento in eventos:
-                if evento['type'] == 'log' and logger_port:
-                    getattr(logger_port, evento['level'])(evento['message'])
+                if evento['type'] == 'log' and logger_event_port:
+                    logger_event_port.emit_log(evento['level'], evento['message'])
             break
         except Exception as e:
             eventos.append({'type': 'log', 'level': 'error', 'message': f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}"})
             eventos.append({'type': 'log', 'level': 'info', 'message': LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.')})
             for evento in eventos:
-                if evento['type'] == 'log' and logger_port:
-                    getattr(logger_port, evento['level'])(evento['message'])
+                if evento['type'] == 'log' and logger_event_port:
+                    logger_event_port.emit_log(evento['level'], evento['message'])
             break
 
-def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, logger_port=None, event_handler_port=None, max_intentos=3):
+def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, logger_event_port=None, event_handler_port=None, max_intentos=3):
     intentos = 0
     eventos = []
     while intentos < max_intentos:
@@ -101,11 +101,11 @@ def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, logger_po
     eventos.append({'type': 'log', 'level': 'error', 'message': LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.')})
     return None, eventos
 
-def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_port=None, event_handler_port=None):
-    ruta, eventos = solicitar_ruta_valida(project_path, input_func, ui_callbacks, logger_port, event_handler_port)
+def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_event_port=None, event_handler_port=None):
+    ruta, eventos = solicitar_ruta_valida(project_path, input_func, ui_callbacks, logger_event_port, event_handler_port)
     for evento in eventos:
-        if evento['type'] == 'log' and logger_port:
-            getattr(logger_port, evento['level'])(evento['message'])
+        if evento['type'] == 'log' and logger_event_port:
+            logger_event_port.emit_log(evento['level'], evento['message'])
         elif evento['type'] == 'event' and event_handler_port:
             event_handler_port.publish(evento['name'], evento['payload'])
     if not ruta:
@@ -142,7 +142,3 @@ def generar_reporte(ruta, modo_prompt, project_path, report_generator, extension
 def preguntar_incluir_todo_txt(input_func):
     respuesta = input_func(LANG.get('prompt_include_todo', "¿Desea incluir el análisis de 'todo.txt'? (S/N): ")).strip().lower()
     return respuesta == 's' or respuesta == 'y'
-
-# TODO: Refactorizar para que la lógica de aplicación y dominio no invoquen directamente logger_port.
-# Propuesta: Emitir eventos o mensajes que la infraestructura pueda registrar.
-# Ejemplo: return {'event': 'debug', 'message': ...} o usar un EventBus.
