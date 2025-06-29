@@ -23,13 +23,8 @@ def analizar_y_generar_reporte(
     event_handler_port: IEventHandlerPort = None,
     rapido: bool = False
 ):
-    print(f"[DEBUG] analizar_y_generar_reporte llamado con rapido={rapido}")
-    """
-    Ejecuta el análisis y genera el reporte, sin interacción de usuario.
-    Si rapido=True, solo genera la estructura de carpetas y archivos.
-    """
-    if logger_port:
-        logger_port.info(f"[BATCH] Iniciando análisis en: {ruta}")
+    eventos = []
+    eventos.append({'type': 'log', 'level': 'info', 'message': f"[BATCH] Iniciando análisis en: {ruta}"})
     report_generator = ReportGenerator(
         project_path,
         file_manager_port=file_manager_port,
@@ -49,6 +44,8 @@ def analizar_y_generar_reporte(
         report_generator.generar_archivo_salida(
             ruta, modo_prompt, extensiones_permitidas, project_path, incluir_todo
         )
-    if logger_port:
-        logger_port.info(f"[BATCH] Análisis finalizado para: {ruta}")
+    eventos.append({'type': 'log', 'level': 'info', 'message': f"[BATCH] Análisis finalizado para: {ruta}"})
+    for evento in eventos:
+        if evento['type'] == 'log' and logger_port:
+            getattr(logger_port, evento['level'])(evento['message'])
     return True

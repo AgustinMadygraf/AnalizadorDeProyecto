@@ -1,6 +1,11 @@
 from src.interfaces.event_handler_port import IEventHandlerPort
 
 class EventHandlerAdapter(IEventHandlerPort):
+    """
+    Adaptador concreto que implementa el puerto IEventHandlerPort.
+    Cumple Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def __init__(self, logger_port):
         self.logger = logger_port
         self._subscribers = {}

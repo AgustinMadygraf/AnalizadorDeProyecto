@@ -2,6 +2,11 @@ from src.interfaces.clipboard_port import ClipboardPort
 from src.infrastructure.file_utilities import copiar_contenido_al_portapapeles
 
 class ClipboardAdapter(ClipboardPort):
+    """
+    Adaptador concreto que implementa el puerto ClipboardPort.
+    Cumple Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def copy(self, data: str) -> None:
         # Implementación mínima, usar utilitario si aplica
         # Aquí solo se deja un NotImplementedError si no hay lógica real

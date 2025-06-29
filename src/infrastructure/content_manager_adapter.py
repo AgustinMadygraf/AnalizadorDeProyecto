@@ -2,6 +2,11 @@ from src.interfaces.content_manager_port import ContentManagerPort
 from src.application.content_manager import asegurar_directorio_docs
 
 class ContentManagerAdapter(ContentManagerPort):
+    """
+    Adaptador concreto que implementa el puerto ContentManagerPort.
+    Cumple Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def load_content(self, source: str) -> str:
         with open(source, 'r', encoding='utf-8') as f:
             return f.read()

@@ -2,6 +2,11 @@ from interfaces.logger_port import LoggerPort
 from logs.config_logger import LoggerConfigurator
 
 class LoggerAdapter(LoggerPort):
+    """
+    Adaptador concreto que implementa el puerto LoggerPort.
+    Cumple el contrato de Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def __init__(self):
         self._logger = LoggerConfigurator().get_logger()
 

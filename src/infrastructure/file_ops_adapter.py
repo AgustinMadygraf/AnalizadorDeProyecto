@@ -3,6 +3,11 @@ from src.infrastructure.file_operations_adapter import listar_archivos
 from src.infrastructure.file_operations_adapter import contar_lineas_codigo
 
 class FileOpsAdapter(FileOpsPort):
+    """
+    Adaptador concreto que implementa el puerto FileOpsPort.
+    Cumple Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def __init__(self, logger_port):
         self.logger = logger_port
 

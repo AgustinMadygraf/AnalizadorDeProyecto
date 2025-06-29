@@ -2,10 +2,16 @@ from src.interfaces.file_manager_port import FileManagerPort
 import os
 from src.infrastructure.logger_adapter import LoggerAdapter
 
-# Adaptador: Implementación concreta de FileManager
-# ...implementar aquí acceso a sistema de archivos, logging, etc...
+# Adaptador: Implementación concreta de FileManagerPort
+# Cumple Clean Architecture: la infraestructura implementa el puerto,
+# la aplicación depende solo de la interfaz.
 
 class PythonFileManagerAdapter(FileManagerPort):
+    """
+    Adaptador concreto que implementa el puerto FileManagerPort.
+    Cumple Clean Architecture: la infraestructura implementa el puerto,
+    la aplicación depende solo de la interfaz.
+    """
     def __init__(self, logger=None):
         self.logger = logger or LoggerAdapter()
 

@@ -43,9 +43,13 @@ def run_app(
     mostrar_bienvenida=True,
 ):
     import sys
+    eventos = []
     if not sys.stdin.isatty():
-        logger_port.warning(LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente."))
-        logger_port.info(LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos."))
+        eventos.append({'type': 'log', 'level': 'warning', 'message': LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")})
+        eventos.append({'type': 'log', 'level': 'info', 'message': LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos.")})
+        for evento in eventos:
+            if evento['type'] == 'log' and logger_port:
+                getattr(logger_port, evento['level'])(evento['message'])
         return
     if mostrar_bienvenida:
         project_path = inicializar(logger_port)
@@ -69,30 +73,41 @@ def run_app(
             if manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=ui_callbacks, file_ops_port=file_ops_port, logger_port=logger_port, event_handler_port=event_handler_port):
                 esperar_usuario(input_func)
         except KeyboardInterrupt:
-            logger_port.info(f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}")
+            eventos.append({'type': 'log', 'level': 'info', 'message': f"\n{LANG.get('info_interrupted', '[INFO] Ejecución interrumpida por el usuario. Saliendo del programa...')}"})
+            for evento in eventos:
+                if evento['type'] == 'log' and logger_port:
+                    getattr(logger_port, evento['level'])(evento['message'])
             break
         except Exception as e:
-            logger_port.error(f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}")
-            logger_port.info(LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.'))
+            eventos.append({'type': 'log', 'level': 'error', 'message': f"{LANG.get('error_unexpected', '[ERROR] Error inesperado: {e}').format(e=e)}"})
+            eventos.append({'type': 'log', 'level': 'info', 'message': LANG.get('suggestion', 'Sugerencia: Revise la ruta, permisos o reporte el error si persiste.')})
+            for evento in eventos:
+                if evento['type'] == 'log' and logger_port:
+                    getattr(logger_port, evento['level'])(evento['message'])
             break
 
 def solicitar_ruta_valida(project_path, input_func, ui_callbacks=None, logger_port=None, event_handler_port=None, max_intentos=3):
     intentos = 0
+    eventos = []
     while intentos < max_intentos:
         ruta = seleccionar_ruta(project_path, input_func)
         if ruta and validar_ruta(ruta):
-            return ruta
+            return ruta, eventos
         intentos += 1
-        if event_handler_port:
-            event_handler_port.publish('invalid_path', {'message': "La ruta proporcionada no es válida o no se puede acceder a ella."})
+        eventos.append({'type': 'event', 'name': 'invalid_path', 'payload': {"message": "La ruta proporcionada no es válida o no se puede acceder a ella."}})
         if ui_callbacks and 'on_invalid_path' in ui_callbacks:
             ui_callbacks['on_invalid_path']()
-        logger_port.error(f"Intento {intentos}/{max_intentos}. {LANG.get('try_again', 'Intente nuevamente. (Ctrl+C para salir)')}")
-    logger_port.error(LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.'))
-    return None
+        eventos.append({'type': 'log', 'level': 'error', 'message': f"Intento {intentos}/{max_intentos}. {LANG.get('try_again', 'Intente nuevamente. (Ctrl+C para salir)')}"})
+    eventos.append({'type': 'log', 'level': 'error', 'message': LANG.get('error_too_many_attempts', '[ERROR] Demasiados intentos fallidos. Saliendo del flujo de análisis.')})
+    return None, eventos
 
 def manejar_ruta_proyecto(project_path, report_generator, input_func, ui_callbacks=None, file_ops_port=None, logger_port=None, event_handler_port=None):
-    ruta = solicitar_ruta_valida(project_path, input_func, ui_callbacks, logger_port, event_handler_port)
+    ruta, eventos = solicitar_ruta_valida(project_path, input_func, ui_callbacks, logger_port, event_handler_port)
+    for evento in eventos:
+        if evento['type'] == 'log' and logger_port:
+            getattr(logger_port, evento['level'])(evento['message'])
+        elif evento['type'] == 'event' and event_handler_port:
+            event_handler_port.publish(evento['name'], evento['payload'])
     if not ruta:
         return False
     incluir_todo = preguntar_incluir_todo_txt(input_func)
