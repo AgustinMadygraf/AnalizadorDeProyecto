@@ -11,3 +11,6 @@ src/logs/sistema.log
 config/path.json
 test_path/
 tests/coverage_report.txt
+src/vulture/candidates.txt
+src/vulture/vulture_report.txt
+src/vulture/ok_removal_plan.txt
