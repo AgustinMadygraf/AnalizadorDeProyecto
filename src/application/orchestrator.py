@@ -8,18 +8,28 @@ import argparse
 from colorama import init
 from src.application.batch_api import analizar_y_generar_reporte
 from src.application.main_app import run_app
+from src.interfaces.file_manager_port import FileManagerPort
+from src.interfaces.file_ops_port import FileOpsPort
+from src.interfaces.content_manager_port import ContentManagerPort
+from src.interfaces.clipboard_port import ClipboardPort
+from src.interfaces.logger_port import LoggerPort
+from src.interfaces.logger_event_port import LoggerEventPort
+from src.interfaces.event_handler_port import IEventHandlerPort
+from src.interfaces.file_handler_factory_port import FileHandlerFactoryPort
+from src.interfaces.vulture_port import VulturePort
 
 
 def main_orchestrator(
     argv=None,
-    handler_factory_adapter=None,
-    file_manager_adapter=None,
-    logger_adapter=None,
-    file_ops_adapter=None,
-    content_manager_adapter=None,
-    clipboard_adapter=None,
-    event_handler_adapter=None,
-    vulture_adapter=None
+    handler_factory: FileHandlerFactoryPort = None,
+    file_manager_port: FileManagerPort = None,
+    logger_port: LoggerPort = None,
+    logger_event_port: LoggerEventPort = None,
+    file_ops_port: FileOpsPort = None,
+    content_manager_port: ContentManagerPort = None,
+    clipboard_port: ClipboardPort = None,
+    event_handler_port: IEventHandlerPort = None,
+    vulture_port: VulturePort = None
 ):
     parser = argparse.ArgumentParser(
         description='AnalizadorDeProyecto: analiza y documenta proyectos de software.',
@@ -113,14 +123,14 @@ def main_orchestrator(
                     modo_prompt=args.modo,
                     project_path=repo_path,
                     incluir_todo=args.incluir_todo,
-                    file_manager_port=file_manager_adapter,
-                    file_ops_port=file_ops_adapter,
-                    content_manager_port=content_manager_adapter,
-                    clipboard_port=clipboard_adapter,
-                    logger_port=logger_adapter,
-                    event_handler_port=event_handler_adapter,
+                    file_manager_port=file_manager_port,
+                    file_ops_port=file_ops_port,
+                    content_manager_port=content_manager_port,
+                    clipboard_port=clipboard_port,
+                    logger_port=logger_port,
+                    event_handler_port=event_handler_port,
                     rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"]),
-                    handler_factory=handler_factory_adapter
+                    handler_factory=handler_factory
                 )
                 print(TXT['batch_done'])
                 sys.exit(0)
@@ -142,20 +152,20 @@ def main_orchestrator(
                 raise
         else:
             run_app(
-                file_manager_port=file_manager_adapter,
-                file_ops_port=file_ops_adapter,
-                content_manager_port=content_manager_adapter,
-                clipboard_port=clipboard_adapter,
-                logger_event_port=logger_adapter,
-                event_handler_port=event_handler_adapter,
-                handler_factory=handler_factory_adapter
+                file_manager_port=file_manager_port,
+                file_ops_port=file_ops_port,
+                content_manager_port=content_manager_port,
+                clipboard_port=clipboard_port,
+                logger_event_port=logger_event_port,
+                event_handler_port=event_handler_port,
+                handler_factory=handler_factory
             )
             sys.exit(0)
     except KeyboardInterrupt:
         print(TXT['interrupted'])
         sys.exit(130)
 
-    # Ejemplo de uso de VultureAdapter (ajustar según integración real)
-    # nombres = vulture_adapter.extract_names('src')
-    # refs = vulture_adapter.find_references('nombre_funcion', ['src/domain', 'src/application'])
-    # plan = vulture_adapter.generate_removal_plan('infrastructure/vulture/vulture_report.txt')
+    # Ejemplo de uso de VulturePort (ajustar según integración real)
+    # nombres = vulture_port.extract_names('src')
+    # refs = vulture_port.find_references('nombre_funcion', ['src/domain', 'src/application'])
+    # plan = vulture_port.generate_removal_plan('infrastructure/vulture/vulture_report.txt')

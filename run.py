@@ -16,33 +16,38 @@ from src.infrastructure.event_handler_adapter import EventHandlerAdapter
 from src.infrastructure.file_handler_factory_adapter import FileHandlerFactoryAdapter
 from src.application.batch_api import analizar_y_generar_reporte
 from colorama import init
-from src.infrastructure.vulture.find_references import VultureAdapter
+from src.infrastructure.tools.vulture_adapter.find_references import VultureAdapter
 
 # 3. Importa la función de orquestación principal (no importa puertos aquí)
 from src.application.main_app import run_app
 
+def crear_adaptadores():
+    handler_factory = FileHandlerFactoryAdapter()
+    file_manager_port = PythonFileManagerAdapter()
+    logger_port = LoggerAdapter()
+    logger_event_port = logger_port  # LoggerAdapter implementa ambos puertos
+    file_ops_port = FileOpsAdapter(logger_port)
+    content_manager_port = ContentManagerAdapter()
+    clipboard_port = ClipboardAdapter()
+    event_handler_port = EventHandlerAdapter(logger_port)
+    vulture_port = VultureAdapter()
+    return dict(
+        handler_factory=handler_factory,
+        file_manager_port=file_manager_port,
+        logger_port=logger_port,
+        logger_event_port=logger_event_port,
+        file_ops_port=file_ops_port,
+        content_manager_port=content_manager_port,
+        clipboard_port=clipboard_port,
+        event_handler_port=event_handler_port,
+        vulture_port=vulture_port
+    )
+
 # 4. Orquestación de dependencias: la infraestructura crea adaptadores y los inyecta a la aplicación
 if __name__ == '__main__':
     from src.application.orchestrator import main_orchestrator
-    # Inicialización de adaptadores concretos
-    handler_factory_adapter = FileHandlerFactoryAdapter()
-    file_manager_adapter = PythonFileManagerAdapter()
-    logger_adapter = LoggerAdapter()
-    file_ops_adapter = FileOpsAdapter(logger_adapter)
-    content_manager_adapter = ContentManagerAdapter()
-    clipboard_adapter = ClipboardAdapter()
-    event_handler_adapter = EventHandlerAdapter(logger_adapter)
-    vulture_adapter = VultureAdapter()
-    main_orchestrator(
-        handler_factory_adapter=handler_factory_adapter,
-        file_manager_adapter=file_manager_adapter,
-        logger_adapter=logger_adapter,
-        file_ops_adapter=file_ops_adapter,
-        content_manager_adapter=content_manager_adapter,
-        clipboard_adapter=clipboard_adapter,
-        event_handler_adapter=event_handler_adapter,
-        vulture_adapter=vulture_adapter
-    )
+    adaptadores = crear_adaptadores()
+    main_orchestrator(**adaptadores)
 
     parser = argparse.ArgumentParser(
         description='AnalizadorDeProyecto: analiza y documenta proyectos de software.',
@@ -71,14 +76,16 @@ if __name__ == '__main__':
     repo_path = os.path.dirname(os.path.abspath(__file__))
     try:
         # Inicialización de adaptadores concretos
-        handler_factory_adapter = FileHandlerFactoryAdapter()
-        file_manager_adapter = PythonFileManagerAdapter()
-        logger_adapter = LoggerAdapter()
-        file_ops_adapter = FileOpsAdapter(logger_adapter)
-        content_manager_adapter = ContentManagerAdapter()
-        clipboard_adapter = ClipboardAdapter()
-        event_handler_adapter = EventHandlerAdapter(logger_adapter)
-        vulture_adapter = VultureAdapter()
+        adaptadores = crear_adaptadores()
+        handler_factory = adaptadores['handler_factory']
+        file_manager_port = adaptadores['file_manager_port']
+        logger_port = adaptadores['logger_port']
+        logger_event_port = adaptadores['logger_event_port']
+        file_ops_port = adaptadores['file_ops_port']
+        content_manager_port = adaptadores['content_manager_port']
+        clipboard_port = adaptadores['clipboard_port']
+        event_handler_port = adaptadores['event_handler_port']
+        vulture_port = adaptadores['vulture_port']
 
         # Determinar idioma
         lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
@@ -148,14 +155,14 @@ if __name__ == '__main__':
                     modo_prompt=args.modo,
                     project_path=repo_path,
                     incluir_todo=args.incluir_todo,
-                    file_manager_port=file_manager_adapter,
-                    file_ops_port=file_ops_adapter,
-                    content_manager_port=content_manager_adapter,
-                    clipboard_port=clipboard_adapter,
-                    logger_port=logger_adapter,
-                    event_handler_port=event_handler_adapter,
+                    file_manager_port=file_manager_port,
+                    file_ops_port=file_ops_port,
+                    content_manager_port=content_manager_port,
+                    clipboard_port=clipboard_port,
+                    logger_port=logger_port,
+                    event_handler_port=event_handler_port,
                     rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"]),
-                    handler_factory=handler_factory_adapter
+                    handler_factory=handler_factory
                 )
                 print(TXT['batch_done'])
                 sys.exit(0)
@@ -180,13 +187,13 @@ if __name__ == '__main__':
         else:
             # Modo interactivo clásico
             run_app(
-                file_manager_port=file_manager_adapter,
-                file_ops_port=file_ops_adapter,
-                content_manager_port=content_manager_adapter,
-                clipboard_port=clipboard_adapter,
-                logger_event_port=logger_adapter,
-                event_handler_port=event_handler_adapter,
-                handler_factory=handler_factory_adapter
+                file_manager_port=file_manager_port,
+                file_ops_port=file_ops_port,
+                content_manager_port=content_manager_port,
+                clipboard_port=clipboard_port,
+                logger_event_port=logger_port,
+                event_handler_port=event_handler_port,
+                handler_factory=handler_factory
             )
             sys.exit(0)
     except KeyboardInterrupt:
