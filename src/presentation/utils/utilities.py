@@ -1,4 +1,4 @@
-# src/common/utilities.py
+# src/presentation/utils/utilities.py
 import sys
 
 def obtener_version_python():

@@ -5,7 +5,7 @@ from tabulate import tabulate
 import json
 import os
 import datetime
-from common.i18n import LANG
+from presentation.i18n import LANG
 
 class UserInterface:
     def __init__(self, logger_port):

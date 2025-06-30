@@ -1,16 +1,16 @@
 import os
 # pylint: disable=import-error
-from common.i18n import LANG
-from domain.report_generator import ReportGenerator
-from interfaces.file_manager_port import FileManagerPort
-from interfaces.file_ops_port import FileOpsPort
-from interfaces.content_manager_port import ContentManagerPort
-from interfaces.clipboard_port import ClipboardPort
-from interfaces.logger_event_port import LoggerEventPort
-from interfaces.event_handler_port import IEventHandlerPort
-from presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
-from common.utilities import obtener_version_python
-from application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
+from src.presentation.i18n import LANG
+from src.domain.report_generator import ReportGenerator
+from src.interfaces.file_manager_port import FileManagerPort
+from src.interfaces.file_ops_port import FileOpsPort
+from src.interfaces.content_manager_port import ContentManagerPort
+from src.interfaces.clipboard_port import ClipboardPort
+from src.interfaces.logger_event_port import LoggerEventPort
+from src.interfaces.event_handler_port import IEventHandlerPort
+from src.presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
+from src.presentation.utils.utilities import obtener_version_python
+from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from src.domain.file_manager import FileManager
 
 def inicializar(logger_event_port=None):
@@ -68,7 +68,7 @@ def run_app(
         clipboard_port=clipboard_port,
         event_handler=event_handler_port
     )
-    from presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
+    from src.presentation.main_cli import mostrar_error_ruta, mostrar_info_todo
     ui_callbacks = {
         'on_invalid_path': mostrar_error_ruta,
         'on_info': mostrar_info_todo

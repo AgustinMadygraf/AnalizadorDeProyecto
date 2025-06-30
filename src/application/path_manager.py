@@ -3,7 +3,7 @@
 import os
 import json
 from colorama import Fore, Style
-from common.i18n import LANG
+from src.presentation.i18n import LANG
 
 def seleccionar_ruta(project_path, input_func=input):
     """Muestra un menú de rutas recientes y permite introducir una nueva ruta."""

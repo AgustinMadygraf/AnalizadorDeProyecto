@@ -1,6 +1,6 @@
 # src/domain/markdown_file_manager.py
 
-from domain.i_file_manager import IFileManager
+from src.domain.i_file_manager import IFileManager
 
 class MarkdownFileManager(IFileManager):
     def read_file(self, file_path):

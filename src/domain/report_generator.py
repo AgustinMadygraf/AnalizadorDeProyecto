@@ -1,10 +1,10 @@
 import os
 import datetime
-from interfaces.file_manager_port import FileManagerPort
-from interfaces.file_ops_port import FileOpsPort
-from interfaces.content_manager_port import ContentManagerPort
-from interfaces.clipboard_port import ClipboardPort
-from interfaces.logger_port import LoggerPort
+from src.interfaces.file_manager_port import FileManagerPort
+from src.interfaces.file_ops_port import FileOpsPort
+from src.interfaces.content_manager_port import ContentManagerPort
+from src.interfaces.clipboard_port import ClipboardPort
+from src.interfaces.logger_port import LoggerPort
 # Dominio: Entidad para generación de reportes
 # ...mover aquí la lógica de negocio pura relacionada a reportes...
 

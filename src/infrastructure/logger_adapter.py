@@ -1,7 +1,7 @@
 # pylint: disable=import-error
-from interfaces.logger_port import LoggerPort
-from interfaces.logger_event_port import LoggerEventPort
-from logs.config_logger import LoggerConfigurator
+from src.interfaces.logger_port import LoggerPort
+from src.interfaces.logger_event_port import LoggerEventPort
+from src.logs.config_logger import LoggerConfigurator
 
 class LoggerAdapter(LoggerPort, LoggerEventPort):
     """

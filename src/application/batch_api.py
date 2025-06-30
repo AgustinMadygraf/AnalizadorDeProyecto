@@ -3,13 +3,13 @@ API de alto nivel para uso batch/no interactivo del AnalizadorDeProyecto.
 Permite invocar análisis y generación de reportes desde CLI o scripts.
 """
 # pylint: disable=import-error
-from domain.report_generator import ReportGenerator
-from interfaces.file_manager_port import FileManagerPort
-from interfaces.file_ops_port import FileOpsPort
-from interfaces.content_manager_port import ContentManagerPort
-from interfaces.clipboard_port import ClipboardPort
-from interfaces.logger_port import LoggerPort
-from interfaces.event_handler_port import IEventHandlerPort
+from src.domain.report_generator import ReportGenerator
+from src.interfaces.file_manager_port import FileManagerPort
+from src.interfaces.file_ops_port import FileOpsPort
+from src.interfaces.content_manager_port import ContentManagerPort
+from src.interfaces.clipboard_port import ClipboardPort
+from src.interfaces.logger_port import LoggerPort
+from src.interfaces.event_handler_port import IEventHandlerPort
 from src.domain.file_manager import FileManager
 
 # TODO: Revisar posible código muerto (vulture): función 'analizar_y_generar_reporte' reportada como sin uso

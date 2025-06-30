@@ -2,7 +2,7 @@ from colorama import Fore, Style
 import time
 import threading
 import os
-from common.i18n import LANG  # pylint: disable=import-error
+from src.presentation.i18n import LANG  # pylint: disable=import-error
 import argparse
 
 # Detectar si se deben desactivar colores
