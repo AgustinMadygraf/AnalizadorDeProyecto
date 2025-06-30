@@ -6,6 +6,7 @@ from src.infrastructure.logger_adapter import LoggerAdapter
 # Cumple Clean Architecture: la infraestructura implementa el puerto,
 # la aplicación depende solo de la interfaz.
 
+# TODO: Revisar posible código muerto (vulture): clase 'PythonFileManagerAdapter' reportada como sin uso
 class PythonFileManagerAdapter(FileManagerPort):
     """
     Adaptador concreto que implementa el puerto FileManagerPort.

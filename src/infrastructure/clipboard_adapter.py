@@ -1,6 +1,7 @@
 from src.interfaces.clipboard_port import ClipboardPort
 from src.infrastructure.file_utilities import copiar_contenido_al_portapapeles
 
+# TODO: Revisar posible código muerto (vulture): clase 'ClipboardAdapter' y método 'paste' reportados como sin uso
 class ClipboardAdapter(ClipboardPort):
     """
     Adaptador concreto que implementa el puerto ClipboardPort.

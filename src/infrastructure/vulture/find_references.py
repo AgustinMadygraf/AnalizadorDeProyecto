@@ -2,6 +2,7 @@ from src.interfaces.vulture_port import VulturePort
 import os
 import re
 
+# TODO: Revisar posible código muerto (vulture): clase 'VultureAdapter', métodos 'extract_names', 'find_references', 'generate_removal_plan' reportados como sin uso
 class VultureAdapter(VulturePort):
     def extract_names(self, source_dir: str) -> list:
         # Implementación basada en extract_names.py

@@ -12,6 +12,7 @@ from src.infrastructure.file_handlers.css_file_handler import CssFileHandler
 from src.infrastructure.file_handlers.js_file_handler import JsFileHandler
 from src.infrastructure.file_handlers.php_file_handler import PhpFileHandler
 
+# TODO: Revisar posible código muerto (vulture): clase 'FileHandlerFactoryAdapter' reportada como sin uso
 class FileHandlerFactoryAdapter(FileHandlerFactoryPort):
     def __init__(self):
         self.handlers = {

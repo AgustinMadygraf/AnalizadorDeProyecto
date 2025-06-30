@@ -8,6 +8,7 @@ class ClipboardPort(ABC):
         pass
 
     @abstractmethod
+    # TODO: Revisar posible código muerto (vulture): método 'paste' reportado como sin uso
     def paste(self) -> str:
         """Paste data from clipboard."""
         pass

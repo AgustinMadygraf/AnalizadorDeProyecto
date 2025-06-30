@@ -33,6 +33,7 @@ def inicializar_sin_ui(logger_event_port=None):
     return project_path
 
 
+# TODO: Revisar posible código muerto (vulture): función 'run_app' reportada como sin uso
 def run_app(
     file_manager_port: FileManagerPort,
     file_ops_port: FileOpsPort,

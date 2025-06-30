@@ -2,6 +2,7 @@ from src.interfaces.file_ops_port import FileOpsPort
 from src.infrastructure.file_operations_adapter import listar_archivos
 from src.infrastructure.file_operations_adapter import contar_lineas_codigo
 
+# TODO: Revisar posible código muerto (vulture): clase 'FileOpsAdapter' reportada como sin uso
 class FileOpsAdapter(FileOpsPort):
     """
     Adaptador concreto que implementa el puerto FileOpsPort.

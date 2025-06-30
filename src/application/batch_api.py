@@ -12,6 +12,8 @@ from interfaces.logger_port import LoggerPort
 from interfaces.event_handler_port import IEventHandlerPort
 from src.domain.file_manager import FileManager
 
+# TODO: Revisar posible código muerto (vulture): función 'analizar_y_generar_reporte' reportada como sin uso
+
 def analizar_y_generar_reporte(
     ruta: str,
     modo_prompt: str,

@@ -49,6 +49,24 @@ El proyecto sigue los principios de Clean Architecture, separando responsabilida
 - El entrypoint crea el factory y lo inyecta a `FileManager`.
 - `FileManager` usa el factory para obtener el handler adecuado según la extensión, cumpliendo inversión de dependencias.
 
+## 5c. Inyección de dependencias global (entrypoint)
+- La creación de adaptadores concretos (implementaciones de puertos) se realiza exclusivamente en el entrypoint (`run.py`).
+- El entrypoint instancia los adaptadores y los inyecta a la capa de aplicación mediante los puertos definidos en `interfaces/`.
+- Ningún archivo de `application/` debe importar adaptadores concretos; solo puertos/interfaces.
+- Este patrón garantiza el desacoplamiento y permite cambiar implementaciones sin modificar la lógica de aplicación.
+
+### Ejemplo:
+```python
+# run.py
+from src.infrastructure.file_manager_adapter import PythonFileManagerAdapter
+from src.application.main_app import run_app
+
+file_manager_adapter = PythonFileManagerAdapter()
+run_app(file_manager_port=file_manager_adapter, ...)
+```
+
+- La política de inyección de dependencias debe mantenerse y validarse en futuras evoluciones del sistema.
+
 ## 6. Tests
 - Los tests están organizados por capa, permitiendo validar cada responsabilidad de forma aislada.
 - Se recomienda mantener mocks/adaptadores dobles para aislar dependencias externas en los tests de dominio y aplicación.

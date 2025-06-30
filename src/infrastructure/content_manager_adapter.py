@@ -1,6 +1,7 @@
 from src.interfaces.content_manager_port import ContentManagerPort
 from src.application.content_manager import asegurar_directorio_docs
 
+# TODO: Revisar posible código muerto (vulture): clase 'ContentManagerAdapter', métodos 'load_content' y 'save_content' reportados como sin uso
 class ContentManagerAdapter(ContentManagerPort):
     """
     Adaptador concreto que implementa el puerto ContentManagerPort.

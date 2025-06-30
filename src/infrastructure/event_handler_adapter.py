@@ -1,5 +1,6 @@
 from src.interfaces.event_handler_port import IEventHandlerPort
 
+# TODO: Revisar posible código muerto (vulture): clase 'EventHandlerAdapter' y método 'subscribe' reportados como sin uso
 class EventHandlerAdapter(IEventHandlerPort):
     """
     Adaptador concreto que implementa el puerto IEventHandlerPort.

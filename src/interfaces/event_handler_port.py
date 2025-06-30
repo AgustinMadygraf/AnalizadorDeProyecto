@@ -6,5 +6,6 @@ class IEventHandlerPort(ABC):
         pass
 
     @abstractmethod
+    # TODO: Revisar posible código muerto (vulture): método 'subscribe' reportado como sin uso
     def subscribe(self, event: str, handler) -> None:
         pass
