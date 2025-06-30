@@ -27,10 +27,11 @@ class LoggerConfigurator:
     def get_logger(self):
         return self.logger
 
+# TODO: Revisar posible código muerto (vulture): clase 'InfoErrorFilter' y variable 'logger_configurator' reportadas como sin uso
 class InfoErrorFilter(logging.Filter):
     def filter(self, record):
         # Permitir solo registros de nivel INFO y ERROR
         return record.levelno in (logging.INFO, logging.ERROR)
 
-# Configuración inicial del logger para módulos individuales
+# TODO: Revisar posible código muerto (vulture): variable 'logger_configurator' reportada como sin uso
 logger_configurator = LoggerConfigurator()
