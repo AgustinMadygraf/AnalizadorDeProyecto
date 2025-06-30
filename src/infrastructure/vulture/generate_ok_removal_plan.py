@@ -5,7 +5,7 @@ import re
 # Genera una lista de archivos y líneas a modificar para automatizar la limpieza.
 
 # 1. Parsear el reporte de vulture para obtener ubicaciones
-vulture_report = 'vulture/vulture_report.txt'
+vulture_report = 'infrastructure/vulture/vulture_report.txt'
 candidates_file = 'vulture/candidates.txt'
 plan_file = 'vulture/ok_removal_plan.txt'
 

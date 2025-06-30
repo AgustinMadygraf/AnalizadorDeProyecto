@@ -16,6 +16,7 @@ from src.infrastructure.event_handler_adapter import EventHandlerAdapter
 from src.infrastructure.file_handler_factory_adapter import FileHandlerFactoryAdapter
 from src.application.batch_api import analizar_y_generar_reporte
 from colorama import init
+from src.infrastructure.vulture.find_references import VultureAdapter
 
 # 3. Importa la función de orquestación principal (no importa puertos aquí)
 from src.application.main_app import run_app
@@ -56,6 +57,7 @@ if __name__ == '__main__':
         content_manager_adapter = ContentManagerAdapter()
         clipboard_adapter = ClipboardAdapter()
         event_handler_adapter = EventHandlerAdapter(logger_adapter)
+        vulture_adapter = VultureAdapter()
 
         # Determinar idioma
         lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
@@ -169,3 +171,8 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print(TXT['interrupted'])
         sys.exit(130)
+
+    # Ejemplo de uso de VultureAdapter (ajustar según integración real)
+    # nombres = vulture_adapter.extract_names('src')
+    # refs = vulture_adapter.find_references('nombre_funcion', ['src/domain', 'src/application'])
+    # plan = vulture_adapter.generate_removal_plan('infrastructure/vulture/vulture_report.txt')

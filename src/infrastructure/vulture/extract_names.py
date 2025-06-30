@@ -1,9 +1,9 @@
 import re
 
-with open('vulture/vulture_report.txt', 'r', encoding='utf-16') as f:
+with open('infrastructure/vulture/vulture_report.txt', 'r', encoding='utf-16') as f:
     lines = f.readlines()
 
-with open('vulture/candidates.txt', 'w', encoding='utf-8') as out:
+with open('infrastructure/vulture/candidates.txt', 'w', encoding='utf-8') as out:
     found = False
     for idx, line in enumerate(lines):
         print(f"[DEBUG] Línea {idx+1}: {line.strip()}")
