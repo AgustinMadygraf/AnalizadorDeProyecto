@@ -17,6 +17,7 @@ from src.interfaces.logger_event_port import LoggerEventPort
 from src.interfaces.event_handler_port import IEventHandlerPort
 from src.interfaces.file_handler_factory_port import FileHandlerFactoryPort
 from src.interfaces.vulture_port import VulturePort
+import logging
 
 
 def main_orchestrator(
@@ -44,6 +45,8 @@ def main_orchestrator(
     parser.add_argument('--no-color', action='store_true', help='Desactivar colores ANSI en la salida')
     parser.add_argument('--lang', help='Idioma de la interfaz (es|en). También configurable con ANALIZADOR_LANG.', default=None)
     args = parser.parse_args(argv)
+
+    logger = logger_port if logger_port else logging.getLogger(__name__)
 
     disable_colors = args.no_color or not sys.stdout.isatty()
     if disable_colors:
@@ -88,24 +91,24 @@ def main_orchestrator(
                 with open(config_path, 'r', encoding='utf-8') as f:
                     config_defaults = json.load(f)
             except json.JSONDecodeError as e:
-                print(f"[WARN] No se pudo leer .analizadorrc (JSON inválido): {e}")
+                logger.warning("No se pudo leer .analizadorrc (JSON inválido): %s", e)
             except OSError as e:
-                print(f"[WARN] No se pudo acceder a .analizadorrc: {e}")
+                logger.warning("No se pudo acceder a .analizadorrc: %s", e)
         for key, value in config_defaults.items():
             if getattr(args, key, None) in (None, False):
                 setattr(args, key, value)
 
         if args.no_interactive:
             if not args.input:
-                print(f"{TXT['input_not_found']} <stdin>")
-                print(TXT['input_suggestion'])
+                logger.error("%s <stdin>", TXT['input_not_found'])
+                logger.info(TXT['input_suggestion'])
                 sys.exit(1)
 
         if args.no_interactive and args.input:
             # Validar existencia de la ruta antes de analizar
             if args.input != '-' and not os.path.exists(args.input):
-                print(f"{TXT['input_not_found']} {args.input}")
-                print(TXT['input_suggestion'])
+                logger.error("%s %s", TXT['input_not_found'], args.input)
+                logger.info(TXT['input_suggestion'])
                 sys.exit(1)
             if args.input == '-':
                 import tempfile
@@ -132,21 +135,21 @@ def main_orchestrator(
                     rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"]),
                     handler_factory=handler_factory
                 )
-                print(TXT['batch_done'])
+                logger.info(TXT['batch_done'])
                 sys.exit(0)
             except FileNotFoundError as e:
-                print(f"{TXT['input_not_found']} {e}")
-                print(TXT['input_suggestion'])
+                logger.error("%s %s", TXT['input_not_found'], e)
+                logger.info(TXT['input_suggestion'])
                 sys.exit(1)
             except (PermissionError, IsADirectoryError, OSError, ValueError) as e:
-                print(f"{TXT['batch_fail']} {e}")
-                print(TXT['batch_fail_suggestion'])
+                logger.error("%s %s", TXT['batch_fail'], e)
+                logger.info(TXT['batch_fail_suggestion'])
                 sys.exit(2)
             except RuntimeError as e:
                 import traceback
-                print(f"{TXT['batch_fail']} {e}")
-                print(traceback.format_exc())
-                print(TXT['batch_fail_suggestion'])
+                logger.error("%s %s", TXT['batch_fail'], e)
+                logger.error(traceback.format_exc())
+                logger.info(TXT['batch_fail_suggestion'])
                 sys.exit(2)
             except Exception as e:
                 raise
@@ -162,7 +165,7 @@ def main_orchestrator(
             )
             sys.exit(0)
     except KeyboardInterrupt:
-        print(TXT['interrupted'])
+        logger.info(TXT['interrupted'])
         sys.exit(130)
 
     # Ejemplo de uso de VulturePort (ajustar según integración real)

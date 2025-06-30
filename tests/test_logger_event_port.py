@@ -24,6 +24,5 @@ def test_run_app_emite_logs(monkeypatch):
         logger_event_port=dummy_logger,
         event_handler_port=None,
         input_func=lambda x: 'n',
-        mostrar_bienvenida=False
     )
     assert any('no_tty_warning' in log[1] or 'no_tty' in log[1].lower() for log in dummy_logger.logs)

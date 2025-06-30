@@ -8,14 +8,13 @@ from src.interfaces.content_manager_port import ContentManagerPort
 from src.interfaces.clipboard_port import ClipboardPort
 from src.interfaces.logger_event_port import LoggerEventPort
 from src.interfaces.event_handler_port import IEventHandlerPort
-from src.presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
+from src.presentation.main_cli import  esperar_usuario, limpieza_pantalla
 from src.presentation.utils.utilities import obtener_version_python
 from src.application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
 from src.domain.file_manager import FileManager
 
 def inicializar(logger_event_port=None):
     limpieza_pantalla()
-    bienvenida()  # <- UI
     if logger_event_port:
         logger_event_port.emit_log('info', f"Versión de Python en uso: {obtener_version_python()}")
     ruta_script = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +42,6 @@ def run_app(
     event_handler_port: IEventHandlerPort = None,
     handler_factory=None,  # Nuevo parámetro para factory de handlers
     input_func=input,
-    mostrar_bienvenida=True,
 ):
     import sys
     eventos = []
@@ -54,10 +52,7 @@ def run_app(
             if evento['type'] == 'log' and logger_event_port:
                 logger_event_port.emit_log(evento['level'], evento['message'])
         return
-    if mostrar_bienvenida:
-        project_path = inicializar(logger_event_port)
-    else:
-        project_path = inicializar_sin_ui(logger_event_port)
+    project_path = inicializar(logger_event_port)
     # Crear FileManager con handler_factory y logger
     file_manager = FileManager(project_path, logger_event_port, handler_factory)
     report_generator = ReportGenerator(

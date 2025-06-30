@@ -1,4 +1,6 @@
 import re
+import logging
+logger = logging.getLogger(__name__)
 
 # Este script genera un plan de eliminación para los elementos [OK] SEGURO PARA ELIMINAR
 # usando el reporte de vulture y la lista de candidatos.
@@ -28,4 +30,4 @@ with open(plan_file, 'w', encoding='utf-8') as f:
     for file, lineno, name in ok_locations:
         f.write(f"{file}:{lineno}:{name}\n")
 
-print(f"Plan de eliminación generado en {plan_file} ({len(ok_locations)} elementos)")
+logger.info("Plan de eliminación generado en %s (%d elementos)", plan_file, len(ok_locations))

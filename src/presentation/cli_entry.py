@@ -17,6 +17,9 @@ from src.infrastructure.tools.vulture_adapter.find_references import VultureAdap
 from src.application.batch_api import analizar_y_generar_reporte
 from src.application.main_app import run_app
 from colorama import init
+import logging
+
+logger = logging.getLogger(__name__)
 
 def crear_adaptadores():
     handler_factory = FileHandlerFactoryAdapter()
@@ -68,11 +71,11 @@ def main():
             from src.__version__ import __version__
         except ImportError:
             __version__ = 'desconocida'
-        print(f'AnalizadorDeProyecto versión {__version__}')
+        logger.info(f'AnalizadorDeProyecto versión {__version__}')
         sys.exit(0)
 
     if getattr(args, 'help_modo', False):
-        print("""
+        logger.info("""
 [AYUDA] Modos de análisis:
   resumen   - Análisis rápido: estructura, archivos clave, dependencias principales.
   completo  - Análisis profundo: incluye métricas, dependencias, sugerencias de mejora y documentación generada.
@@ -83,7 +86,7 @@ Ejemplo:
         sys.exit(0)
 
     if getattr(args, 'help_optimizacion', False):
-        print("""
+        logger.info("""
 [AYUDA] Submenú de optimización:
   1. Optimizar movimientos: Reordena operaciones para mayor eficiencia.
   2. Reescalar dimensiones: Ajusta escalas de salida según parámetros.

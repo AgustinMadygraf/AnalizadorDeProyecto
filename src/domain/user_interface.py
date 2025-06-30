@@ -5,6 +5,9 @@ from tabulate import tabulate
 import json
 import os
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 class UserInterface:
     def __init__(self, logger_port):
@@ -49,8 +52,8 @@ class UserInterface:
         ]
 
         self.logger.info("Por favor, seleccione una opción de configuración:")
-        print(tabulate(tabla, headers, tablefmt="grid"))
-        print("")
+        logger.info("\n" + tabulate(tabla, headers, tablefmt="grid"))
+        logger.info("")
         eleccion = input(f"{Fore.GREEN}Ingrese el número de la opción deseada: {Style.RESET_ALL}") or '0'
         while eleccion not in opciones:
             self.logger.info("Opción no válida. Por defecto se seleccionará la opción 0.")

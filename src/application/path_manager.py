@@ -4,6 +4,9 @@ import os
 import json
 from colorama import Fore, Style
 from src.presentation.i18n import LANG
+import logging
+
+logger = logging.getLogger(__name__)
 
 def seleccionar_ruta(project_path, input_func=input):
     """Muestra un menú de rutas recientes y permite introducir una nueva ruta."""
@@ -13,11 +16,11 @@ def seleccionar_ruta(project_path, input_func=input):
         with open(archivo_default, 'r', encoding='utf-8') as file:
             data = json.load(file)
             rutas = [r for r in data.get('rutas', []) if r.get('ruta')]
-    print(f"{Fore.GREEN}{LANG.get('recent_paths', 'Rutas recientes:')}{Style.RESET_ALL}")
-    print(LANG.get('menu_option_0', '0. Agregar nueva ruta'))
+    logger.info(f"{Fore.GREEN}{LANG.get('recent_paths', 'Rutas recientes:')}{Style.RESET_ALL}")
+    logger.info(LANG.get('menu_option_0', '0. Agregar nueva ruta'))
     for i, ruta_info in enumerate(rutas, start=1):
         ruta = ruta_info['ruta']
-        print(f"{i}. {ruta}")
+        logger.info(f"{i}. {ruta}")
     while True:
         eleccion = input_func(f"{Fore.GREEN}{LANG.get('prompt_select_option', 'Seleccione una opción: ')}{Style.RESET_ALL}").strip()
         if not eleccion:
@@ -33,9 +36,9 @@ def seleccionar_ruta(project_path, input_func=input):
                 guardar_nueva_ruta_default(nueva_ruta)
                 return nueva_ruta
             else:
-                print(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
+                logger.warning(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
         else:
-            print(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
+            logger.warning(f"{Fore.RED}{LANG.get('error_invalid_option', 'Opción no válida. Por favor, intente de nuevo.')}{Style.RESET_ALL}")
 
 def guardar_nueva_ruta_default(nueva_ruta):
     archivo_default = 'config/path.json'
@@ -54,7 +57,7 @@ def guardar_nueva_ruta_default(nueva_ruta):
         with open(archivo_default, 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4)
     except Exception as e:
-        print(LANG.get('error_save_path', f"Error al guardar la nueva ruta por defecto: {e}"))
+        logger.error(LANG.get('error_save_path', f"Error al guardar la nueva ruta por defecto: {e}"))
 
 def validar_ruta(ruta):
     """Valida si la ruta existe y es accesible."""
@@ -62,9 +65,9 @@ def validar_ruta(ruta):
     return os.path.exists(ruta) and os.path.isdir(ruta)
 
 def seleccionar_modo_operacion(input_func=input):
-    print(LANG.get('prompt_select_mode', 'Selecciona el modo de operación:'))
-    print(LANG.get('mode_option_1', '1. Análisis completo'))
-    print(LANG.get('mode_option_2', '2. Análisis rápido'))
+    logger.info(LANG.get('prompt_select_mode', 'Selecciona el modo de operación:'))
+    logger.info(LANG.get('mode_option_1', '1. Análisis completo'))
+    logger.info(LANG.get('mode_option_2', '2. Análisis rápido'))
     opcion = input_func(LANG.get('prompt_mode_option', 'Opción (1/2): ')).strip()
     if opcion == '2':
         return 'rapido'

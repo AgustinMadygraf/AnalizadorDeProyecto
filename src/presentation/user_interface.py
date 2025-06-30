@@ -6,6 +6,9 @@ import json
 import os
 import datetime
 from presentation.i18n import LANG
+import logging
+
+logger = logging.getLogger(__name__)
 
 class UserInterface:
     def __init__(self, logger_port):
@@ -48,5 +51,5 @@ class UserInterface:
             ["5", LANG.get('submenu_option_5', 'Asesor de Calidad de Software ISO 90003')],
             ["6", LANG.get('submenu_option_6', 'Testing de aplicaciones: Análisis y Mejora de la Calidad de Software con Pruebas Automatizadas')]
         ]
-        print(tabulate(tabla, headers, tablefmt="fancy_grid"))
+        logger.info("\n" + tabulate(tabla, headers, tablefmt="fancy_grid"))
         return input(LANG.get('prompt_select_option', 'Seleccione una opción: ')).strip()

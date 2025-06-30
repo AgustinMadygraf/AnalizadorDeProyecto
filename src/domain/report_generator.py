@@ -1,10 +1,12 @@
 import os
 import datetime
+import logging
 from src.interfaces.file_manager_port import FileManagerPort
 from src.interfaces.file_ops_port import FileOpsPort
 from src.interfaces.content_manager_port import ContentManagerPort
 from src.interfaces.clipboard_port import ClipboardPort
 from src.interfaces.logger_port import LoggerPort
+logger = logging.getLogger(__name__)
 # Dominio: Entidad para generación de reportes
 # ...mover aquí la lógica de negocio pura relacionada a reportes...
 
@@ -37,7 +39,7 @@ class ReportGenerator:
         contenido = self.preparar_contenido_salida(estructura_actualizada, modo_prompt, archivos_encontrados, path, ruta_archivos, extensiones_permitidas)
         self.escribir_archivo_salida(nombre_archivo_salida, contenido)
         self.clipboard.copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
-        print("")
+        logger.info("")
         return nombre_archivo_salida
 
     def formatear_archivo_salida(self, nombre_archivo_salida):
@@ -126,5 +128,5 @@ class ReportGenerator:
         contenido = top5_section + "## Estructura de Carpetas y Archivos\n```bash\n" + '\n'.join(estructura_actualizada) + "\n```\n"
         self.escribir_archivo_salida(nombre_archivo_salida, contenido)
         self.clipboard.copiar_contenido_al_portapapeles(nombre_archivo_salida, extensiones_permitidas)
-        print("")
+        logger.info("")
         return nombre_archivo_salida
