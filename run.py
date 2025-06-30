@@ -24,7 +24,25 @@ from src.application.main_app import run_app
 # 4. Orquestación de dependencias: la infraestructura crea adaptadores y los inyecta a la aplicación
 if __name__ == '__main__':
     from src.application.orchestrator import main_orchestrator
-    main_orchestrator()
+    # Inicialización de adaptadores concretos
+    handler_factory_adapter = FileHandlerFactoryAdapter()
+    file_manager_adapter = PythonFileManagerAdapter()
+    logger_adapter = LoggerAdapter()
+    file_ops_adapter = FileOpsAdapter(logger_adapter)
+    content_manager_adapter = ContentManagerAdapter()
+    clipboard_adapter = ClipboardAdapter()
+    event_handler_adapter = EventHandlerAdapter(logger_adapter)
+    vulture_adapter = VultureAdapter()
+    main_orchestrator(
+        handler_factory_adapter=handler_factory_adapter,
+        file_manager_adapter=file_manager_adapter,
+        logger_adapter=logger_adapter,
+        file_ops_adapter=file_ops_adapter,
+        content_manager_adapter=content_manager_adapter,
+        clipboard_adapter=clipboard_adapter,
+        event_handler_adapter=event_handler_adapter,
+        vulture_adapter=vulture_adapter
+    )
 
     parser = argparse.ArgumentParser(
         description='AnalizadorDeProyecto: analiza y documenta proyectos de software.',

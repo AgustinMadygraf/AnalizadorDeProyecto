@@ -21,8 +21,7 @@ src/
   domain/           # Lógica de negocio
   application/      # Casos de uso y orquestación
   infrastructure/   # Adaptadores y utilidades técnicas
-    file_handlers/  # Manejadores concretos de archivos
-    utils/          # Utilidades dependientes de infraestructura
+    file_adapters/  # Manejadores concretos de archivos
   interfaces/       # Puertos (interfaces) para comunicación entre capas
   presentation/     # Lógica de presentación (CLI, UI)
 ```

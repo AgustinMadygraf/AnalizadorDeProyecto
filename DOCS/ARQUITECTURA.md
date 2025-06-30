@@ -10,8 +10,7 @@ El proyecto sigue los principios de Clean Architecture, separando responsabilida
   - `domain/`: Lógica de negocio pura (ej: `report_generator.py`)
   - `application/`: Orquestación de casos de uso y lógica de aplicación (ej: `main_app.py`)
   - `infrastructure/`: Adaptadores a sistemas externos y utilidades técnicas (ej: `file_manager.py`, `logger_adapter.py`)
-    - `file_handlers/`: Manejadores concretos de archivos (ej: `python_file_handler.py`)
-    - `utils/`: Utilidades dependientes de infraestructura (ej: `screen_utils.py`)
+    - `file_adapters/`: Manejadores concretos de archivos (ej: `python_file_handler.py`)
   - `interfaces/`: Definición de puertos (interfaces) para la comunicación entre capas
   - `presentation/`: Lógica de presentación e interacción con el usuario (ej: CLI, UI)
 

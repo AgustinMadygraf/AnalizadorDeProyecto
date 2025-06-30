@@ -4,7 +4,7 @@ src/__pycache__
 src/logs/__pycache__
 config/path.txt
 analizador_env/
-docs/00-Prompt-for-ProjectAnalysis.md
+*/00-Prompt-for-ProjectAnalysis.md
 src/logs/sistema.log
 .pytest_cache/
 .pytest_cache

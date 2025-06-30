@@ -5,20 +5,22 @@ Extraído de run.py para cumplir Clean Architecture.
 import sys
 import os
 import argparse
-from src.infrastructure.file_manager_adapter import PythonFileManagerAdapter
-from src.infrastructure.file_ops_adapter import FileOpsAdapter
-from src.infrastructure.content_manager_adapter import ContentManagerAdapter
-from src.infrastructure.clipboard_adapter import ClipboardAdapter
-from src.infrastructure.logger_adapter import LoggerAdapter
-from src.infrastructure.event_handler_adapter import EventHandlerAdapter
-from src.infrastructure.file_handler_factory_adapter import FileHandlerFactoryAdapter
-from src.application.batch_api import analizar_y_generar_reporte
 from colorama import init
-from src.infrastructure.vulture.find_references import VultureAdapter
+from src.application.batch_api import analizar_y_generar_reporte
 from src.application.main_app import run_app
 
 
-def main_orchestrator(argv=None):
+def main_orchestrator(
+    argv=None,
+    handler_factory_adapter=None,
+    file_manager_adapter=None,
+    logger_adapter=None,
+    file_ops_adapter=None,
+    content_manager_adapter=None,
+    clipboard_adapter=None,
+    event_handler_adapter=None,
+    vulture_adapter=None
+):
     parser = argparse.ArgumentParser(
         description='AnalizadorDeProyecto: analiza y documenta proyectos de software.',
         epilog='''\nEjemplos de uso:\n  python run.py --input ./mi_proyecto --output reporte.txt --modo completo --incluir-todo --no-interactive\n  python run.py  # modo interactivo clásico\n\nFlags:\n  --input, -i           Ruta del directorio o archivo a analizar (obligatorio en modo batch)\n  --output, -o          Ruta del archivo de salida (opcional)\n  --modo, -m            Modo de análisis (resumen o completo)\n  --incluir-todo        Incluir el archivo todo.txt en el análisis\n  --no-interactive      Ejecutar en modo batch/no interactivo\n  --help, -h            Mostrar esta ayuda y salir\n''',
@@ -43,15 +45,6 @@ def main_orchestrator(argv=None):
 
     repo_path = os.path.dirname(os.path.abspath(__file__))
     try:
-        handler_factory_adapter = FileHandlerFactoryAdapter()
-        file_manager_adapter = PythonFileManagerAdapter()
-        logger_adapter = LoggerAdapter()
-        file_ops_adapter = FileOpsAdapter(logger_adapter)
-        content_manager_adapter = ContentManagerAdapter()
-        clipboard_adapter = ClipboardAdapter()
-        event_handler_adapter = EventHandlerAdapter(logger_adapter)
-        vulture_adapter = VultureAdapter()
-
         lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
         MESSAGES = {
             'es': {
@@ -99,6 +92,11 @@ def main_orchestrator(argv=None):
                 sys.exit(1)
 
         if args.no_interactive and args.input:
+            # Validar existencia de la ruta antes de analizar
+            if args.input != '-' and not os.path.exists(args.input):
+                print(f"{TXT['input_not_found']} {args.input}")
+                print(TXT['input_suggestion'])
+                sys.exit(1)
             if args.input == '-':
                 import tempfile
                 temp_input = tempfile.NamedTemporaryFile(delete=False, mode='w+', encoding='utf-8', suffix='.tmp')

@@ -48,7 +48,7 @@ def run_app(
     import sys
     eventos = []
     if not sys.stdin.isatty():
-        eventos.append({'type': 'log', 'level': 'warning', 'message': LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")})
+        eventos.append({'type': 'log', 'level': 'warning', 'message': 'no_tty_warning: ' + LANG.get('no_tty_warning', "[ADVERTENCIA] No se detecta terminal interactiva (TTY). El modo interactivo puede no funcionar correctamente.")})
         eventos.append({'type': 'log', 'level': 'info', 'message': LANG.get('no_tty_suggestion', "Sugerencia: Use el modo batch con --no-interactive y los flags requeridos.")})
         for evento in eventos:
             if evento['type'] == 'log' and logger_event_port:
