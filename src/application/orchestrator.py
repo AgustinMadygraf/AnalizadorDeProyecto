@@ -1,12 +1,10 @@
-#AnalizadorDeProyectos\run.py
+"""
+Orquestador principal de dependencias y modos de ejecución para AnalizadorDeProyecto.
+Extraído de run.py para cumplir Clean Architecture.
+"""
 import sys
 import os
 import argparse
-
-# 1. Asegura que 'src' esté en el PYTHONPATH
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
-
-# 2. Importa solo adaptadores concretos para inyección de dependencias
 from src.infrastructure.file_manager_adapter import PythonFileManagerAdapter
 from src.infrastructure.file_ops_adapter import FileOpsAdapter
 from src.infrastructure.content_manager_adapter import ContentManagerAdapter
@@ -17,15 +15,10 @@ from src.infrastructure.file_handler_factory_adapter import FileHandlerFactoryAd
 from src.application.batch_api import analizar_y_generar_reporte
 from colorama import init
 from src.infrastructure.vulture.find_references import VultureAdapter
-
-# 3. Importa la función de orquestación principal (no importa puertos aquí)
 from src.application.main_app import run_app
 
-# 4. Orquestación de dependencias: la infraestructura crea adaptadores y los inyecta a la aplicación
-if __name__ == '__main__':
-    from src.application.orchestrator import main_orchestrator
-    main_orchestrator()
 
+def main_orchestrator(argv=None):
     parser = argparse.ArgumentParser(
         description='AnalizadorDeProyecto: analiza y documenta proyectos de software.',
         epilog='''\nEjemplos de uso:\n  python run.py --input ./mi_proyecto --output reporte.txt --modo completo --incluir-todo --no-interactive\n  python run.py  # modo interactivo clásico\n\nFlags:\n  --input, -i           Ruta del directorio o archivo a analizar (obligatorio en modo batch)\n  --output, -o          Ruta del archivo de salida (opcional)\n  --modo, -m            Modo de análisis (resumen o completo)\n  --incluir-todo        Incluir el archivo todo.txt en el análisis\n  --no-interactive      Ejecutar en modo batch/no interactivo\n  --help, -h            Mostrar esta ayuda y salir\n''',
@@ -38,13 +31,11 @@ if __name__ == '__main__':
     parser.add_argument('--no-interactive', action='store_true', help='Ejecutar en modo batch/no interactivo')
     parser.add_argument('--no-color', action='store_true', help='Desactivar colores ANSI en la salida')
     parser.add_argument('--lang', help='Idioma de la interfaz (es|en). También configurable con ANALIZADOR_LANG.', default=None)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
-    # Detección automática de TTY o flag --no-color
     disable_colors = args.no_color or not sys.stdout.isatty()
     if disable_colors:
         os.environ['ANSI_COLORS_DISABLED'] = '1'
-        # Parchea colorama para no usar colores
         try:
             init(strip=True)
         except ImportError:
@@ -52,7 +43,6 @@ if __name__ == '__main__':
 
     repo_path = os.path.dirname(os.path.abspath(__file__))
     try:
-        # Inicialización de adaptadores concretos
         handler_factory_adapter = FileHandlerFactoryAdapter()
         file_manager_adapter = PythonFileManagerAdapter()
         logger_adapter = LoggerAdapter()
@@ -62,7 +52,6 @@ if __name__ == '__main__':
         event_handler_adapter = EventHandlerAdapter(logger_adapter)
         vulture_adapter = VultureAdapter()
 
-        # Determinar idioma
         lang = args.lang or os.environ.get('ANALIZADOR_LANG', 'es')
         MESSAGES = {
             'es': {
@@ -88,7 +77,6 @@ if __name__ == '__main__':
         }
         TXT = MESSAGES['en'] if lang == 'en' else MESSAGES['es']
 
-        # Leer configuración por archivo .analizadorrc si existe
         import json
         config_defaults = {}
         config_path = os.path.join(os.path.dirname(__file__), '.analizadorrc')
@@ -100,12 +88,10 @@ if __name__ == '__main__':
                 print(f"[WARN] No se pudo leer .analizadorrc (JSON inválido): {e}")
             except OSError as e:
                 print(f"[WARN] No se pudo acceder a .analizadorrc: {e}")
-        # Sobrescribir args con valores de config si no se pasan por CLI
         for key, value in config_defaults.items():
             if getattr(args, key, None) in (None, False):
                 setattr(args, key, value)
 
-        # Validación estricta de argumentos obligatorios en modo batch
         if args.no_interactive:
             if not args.input:
                 print(f"{TXT['input_not_found']} <stdin>")
@@ -113,7 +99,6 @@ if __name__ == '__main__':
                 sys.exit(1)
 
         if args.no_interactive and args.input:
-            # Soporte de entrada por stdin si --input es '-'
             if args.input == '-':
                 import tempfile
                 temp_input = tempfile.NamedTemporaryFile(delete=False, mode='w+', encoding='utf-8', suffix='.tmp')
@@ -150,17 +135,14 @@ if __name__ == '__main__':
                 print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
             except RuntimeError as e:
-                # Log runtime errors and exit
                 import traceback
                 print(f"{TXT['batch_fail']} {e}")
                 print(traceback.format_exc())
                 print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
             except Exception as e:
-                # Re-raise truly unexpected exceptions
                 raise
         else:
-            # Modo interactivo clásico
             run_app(
                 file_manager_port=file_manager_adapter,
                 file_ops_port=file_ops_adapter,

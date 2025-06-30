@@ -61,3 +61,7 @@ def parse_args():
     parser.add_argument('--no-color', action='store_true', help='Desactivar colores ANSI en la salida')
     parser.add_argument('--lang', help='Idioma de la interfaz (es|en). También configurable con ANALIZADOR_LANG.', default=None)
     return parser.parse_args()
+
+if __name__ == "__main__":
+    from src.application.orchestrator import main_orchestrator
+    main_orchestrator()
