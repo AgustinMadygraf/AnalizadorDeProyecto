@@ -42,16 +42,25 @@ El proyecto sigue los principios de Clean Architecture, separando responsabilida
 - **El logging está desacoplado:** la aplicación emite eventos de log a través del puerto `LoggerEventPort`, y la infraestructura (`LoggerAdapter`) los registra. La aplicación nunca invoca métodos de logging concretos.
 - La infraestructura implementa adaptadores concretos para los puertos definidos en el dominio.
 
+## 5b. Inyección de Factory de Handlers de Archivos
+- El dominio ya no instancia ni conoce adaptadores concretos de archivos.
+- Se define el puerto `FileHandlerFactoryPort` en `interfaces/`.
+- La infraestructura implementa `FileHandlerFactoryAdapter`, que conoce los handlers concretos.
+- El entrypoint crea el factory y lo inyecta a `FileManager`.
+- `FileManager` usa el factory para obtener el handler adecuado según la extensión, cumpliendo inversión de dependencias.
+
 ## 6. Tests
 - Los tests están organizados por capa, permitiendo validar cada responsabilidad de forma aislada.
 - Se recomienda mantener mocks/adaptadores dobles para aislar dependencias externas en los tests de dominio y aplicación.
 
 ## 7. Estado Actual
 - La migración a Clean Architecture está completa.
+- El dominio está completamente desacoplado de la infraestructura (incluyendo manejo de archivos).
 - El logging está desacoplado mediante el puerto `LoggerEventPort` y adaptadores concretos.
 - La UI y la lógica de aplicación están separadas.
 - El código duplicado ha sido eliminado.
 - Los tests están organizados por capas y las utilidades puras se encuentran en `src/common/`.
+- La inyección de dependencias para handlers de archivos se realiza vía factory, cumpliendo Clean Architecture.
 
 ## 8. Próximos Pasos
 - Revisar y mejorar la cobertura de tests.

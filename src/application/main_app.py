@@ -11,6 +11,7 @@ from interfaces.event_handler_port import IEventHandlerPort
 from presentation.main_cli import bienvenida, esperar_usuario, limpieza_pantalla
 from common.utilities import obtener_version_python
 from application.path_manager import seleccionar_ruta, validar_ruta, seleccionar_modo_operacion
+from src.domain.file_manager import FileManager
 
 def inicializar(logger_event_port=None):
     limpieza_pantalla()
@@ -39,6 +40,7 @@ def run_app(
     clipboard_port: ClipboardPort,
     logger_event_port: LoggerEventPort,
     event_handler_port: IEventHandlerPort = None,
+    handler_factory=None,  # Nuevo parámetro para factory de handlers
     input_func=input,
     mostrar_bienvenida=True,
 ):
@@ -55,9 +57,11 @@ def run_app(
         project_path = inicializar(logger_event_port)
     else:
         project_path = inicializar_sin_ui(logger_event_port)
+    # Crear FileManager con handler_factory y logger
+    file_manager = FileManager(project_path, logger_event_port, handler_factory)
     report_generator = ReportGenerator(
         project_path,
-        file_manager_port=file_manager_port,
+        file_manager_port=file_manager,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,

@@ -13,6 +13,7 @@ from src.infrastructure.content_manager_adapter import ContentManagerAdapter
 from src.infrastructure.clipboard_adapter import ClipboardAdapter
 from src.infrastructure.logger_adapter import LoggerAdapter
 from src.infrastructure.event_handler_adapter import EventHandlerAdapter
+from src.infrastructure.file_handler_factory_adapter import FileHandlerFactoryAdapter
 from src.application.batch_api import analizar_y_generar_reporte
 from colorama import init
 
@@ -48,6 +49,7 @@ if __name__ == '__main__':
     repo_path = os.path.dirname(os.path.abspath(__file__))
     try:
         # Inicialización de adaptadores concretos
+        handler_factory_adapter = FileHandlerFactoryAdapter()
         file_manager_adapter = PythonFileManagerAdapter()
         logger_adapter = LoggerAdapter()
         file_ops_adapter = FileOpsAdapter(logger_adapter)
@@ -127,9 +129,10 @@ if __name__ == '__main__':
                     file_ops_port=file_ops_adapter,
                     content_manager_port=content_manager_adapter,
                     clipboard_port=clipboard_adapter,
-                    logger_port=logger_adapter,  # batch_api aún usa logger_port
+                    logger_port=logger_adapter,
                     event_handler_port=event_handler_adapter,
-                    rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"])
+                    rapido=(args.modo.strip().lower() in ["rapido", "resumen", "estructura"]),
+                    handler_factory=handler_factory_adapter
                 )
                 print(TXT['batch_done'])
                 sys.exit(0)
@@ -141,29 +144,28 @@ if __name__ == '__main__':
                 print(f"{TXT['batch_fail']} {e}")
                 print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
-            except Exception as e:
-                # Log unexpected exceptions and re-raise or exit
+            except RuntimeError as e:
+                # Log runtime errors and exit
                 import traceback
                 print(f"{TXT['batch_fail']} {e}")
                 print(traceback.format_exc())
                 print(TXT['batch_fail_suggestion'])
                 sys.exit(2)
+            except Exception as e:
+                # Re-raise truly unexpected exceptions
+                raise
         else:
             # Modo interactivo clásico
-            try:
-                run_app(
-                    file_manager_port=file_manager_adapter,
-                    file_ops_port=file_ops_adapter,
-                    content_manager_port=content_manager_adapter,
-                    clipboard_port=clipboard_adapter,
-                    logger_event_port=logger_adapter,  # ahora se inyecta como logger_event_port
-                    event_handler_port=event_handler_adapter
-                )
-                sys.exit(0)
-            except (RuntimeError, ValueError, OSError) as e:
-                print(f"{TXT['unexpected']} {e}")
-                print(TXT['unexpected_suggestion'])
-                sys.exit(3)
+            run_app(
+                file_manager_port=file_manager_adapter,
+                file_ops_port=file_ops_adapter,
+                content_manager_port=content_manager_adapter,
+                clipboard_port=clipboard_adapter,
+                logger_event_port=logger_adapter,
+                event_handler_port=event_handler_adapter,
+                handler_factory=handler_factory_adapter
+            )
+            sys.exit(0)
     except KeyboardInterrupt:
         print(TXT['interrupted'])
         sys.exit(130)

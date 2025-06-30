@@ -2,6 +2,7 @@
 API de alto nivel para uso batch/no interactivo del AnalizadorDeProyecto.
 Permite invocar análisis y generación de reportes desde CLI o scripts.
 """
+# pylint: disable=import-error
 from domain.report_generator import ReportGenerator
 from interfaces.file_manager_port import FileManagerPort
 from interfaces.file_ops_port import FileOpsPort
@@ -9,6 +10,7 @@ from interfaces.content_manager_port import ContentManagerPort
 from interfaces.clipboard_port import ClipboardPort
 from interfaces.logger_port import LoggerPort
 from interfaces.event_handler_port import IEventHandlerPort
+from src.domain.file_manager import FileManager
 
 def analizar_y_generar_reporte(
     ruta: str,
@@ -21,13 +23,16 @@ def analizar_y_generar_reporte(
     clipboard_port: ClipboardPort,
     logger_port: LoggerPort = None,
     event_handler_port: IEventHandlerPort = None,
-    rapido: bool = False
+    rapido: bool = False,
+    handler_factory=None  # Nuevo parámetro opcional
 ):
     eventos = []
     eventos.append({'type': 'log', 'level': 'info', 'message': f"[BATCH] Iniciando análisis en: {ruta}"})
+    # Crear FileManager con handler_factory y logger
+    file_manager = FileManager(project_path, logger_port, handler_factory) if handler_factory else file_manager_port
     report_generator = ReportGenerator(
         project_path,
-        file_manager_port=file_manager_port,
+        file_manager_port=file_manager,
         file_ops_port=file_ops_port,
         content_manager_port=content_manager_port,
         clipboard_port=clipboard_port,
