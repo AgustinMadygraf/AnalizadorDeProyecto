@@ -14,6 +14,7 @@ def _clr(text, color):
 def bienvenida(input_func=input):
     mensaje = LANG.get("menu_main_title", "Bienvenido al AnalizadorDeProyecto 🌟") + "\n" + \
         "Este software es una herramienta avanzada diseñada para ayudarte a analizar, documentar y mejorar la estructura de tus proyectos de software...\n    ¡Esperamos que disfrutes utilizando esta herramienta y que te sea de gran ayuda en tus proyectos de software!"
+    mensaje += "\n\n[INFO] Para accesibilidad, puedes usar --no-color y redirigir la salida a un archivo compatible con lectores de pantalla.\n"
     mensaje = f"{mensaje}\n\n\nPresiona Enter para continuar...\n"
     mostrar_todo = False
     def mostrar_mensaje():

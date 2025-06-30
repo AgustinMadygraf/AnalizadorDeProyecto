@@ -58,7 +58,41 @@ def main():
     parser.add_argument('--no-color', action='store_true', help='Desactivar colores ANSI en la salida')
     parser.add_argument('--lang', help='Idioma de la interfaz (es|en). También configurable con ANALIZADOR_LANG.', default=None)
     parser.add_argument('--run-vulture', action='store_true', help='Ejecutar análisis de código muerto con vulture')
+    parser.add_argument('--version', action='store_true', help='Mostrar la versión del programa y salir')
+    parser.add_argument('--help-modo', action='store_true', help='Mostrar ayuda sobre los modos de análisis y salir')
+    parser.add_argument('--help-optimizacion', action='store_true', help='Mostrar ayuda sobre el submenú de optimización y salir')
     args = parser.parse_args()
+
+    if getattr(args, 'version', False):
+        try:
+            from src.__version__ import __version__
+        except ImportError:
+            __version__ = 'desconocida'
+        print(f'AnalizadorDeProyecto versión {__version__}')
+        sys.exit(0)
+
+    if getattr(args, 'help_modo', False):
+        print("""
+[AYUDA] Modos de análisis:
+  resumen   - Análisis rápido: estructura, archivos clave, dependencias principales.
+  completo  - Análisis profundo: incluye métricas, dependencias, sugerencias de mejora y documentación generada.
+
+Ejemplo:
+  python run.py --input ./mi_proyecto --modo completo --no-interactive
+""")
+        sys.exit(0)
+
+    if getattr(args, 'help_optimizacion', False):
+        print("""
+[AYUDA] Submenú de optimización:
+  1. Optimizar movimientos: Reordena operaciones para mayor eficiencia.
+  2. Reescalar dimensiones: Ajusta escalas de salida según parámetros.
+  0. Cancelar: Vuelve al menú principal.
+
+Acceso:
+  Disponible tras seleccionar 'Optimización' en el menú principal interactivo.
+""")
+        sys.exit(0)
 
     # ...existing CLI logic from run.py...
     # (Se puede refactorizar aquí el cuerpo principal de run.py)

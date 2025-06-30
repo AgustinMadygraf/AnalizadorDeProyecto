@@ -66,11 +66,23 @@ run_app(file_manager_port=file_manager_adapter, ...)
 
 - La política de inyección de dependencias debe mantenerse y validarse en futuras evoluciones del sistema.
 
-## 6. Tests
+## 6. Inyección de dependencias y puertos
+
+La inyección de dependencias se realiza manualmente en `src/presentation/cli_entry.py`, donde se instancian los adaptadores concretos y se pasan a los orquestadores como puertos (interfaces). Esto asegura el cumplimiento del principio de inversión de dependencias y facilita el testeo y la extensión del sistema. Ejemplo:
+
+```python
+from src.infrastructure.logger_adapter import LoggerAdapter
+logger_port = LoggerAdapter()
+logger_event_port = logger_port  # LoggerAdapter implementa ambos puertos
+```
+
+Todos los adaptadores implementan explícitamente los puertos requeridos definidos en `src/interfaces/`.
+
+## 7. Tests
 - Los tests están organizados por capa, permitiendo validar cada responsabilidad de forma aislada.
 - Se recomienda mantener mocks/adaptadores dobles para aislar dependencias externas en los tests de dominio y aplicación.
 
-## 7. Estado Actual
+## 8. Estado Actual
 - La migración a Clean Architecture está completa.
 - El dominio está completamente desacoplado de la infraestructura (incluyendo manejo de archivos).
 - El logging está desacoplado mediante el puerto `LoggerEventPort` y adaptadores concretos.
@@ -79,6 +91,6 @@ run_app(file_manager_port=file_manager_adapter, ...)
 - Los tests están organizados por capas y las utilidades puras se encuentran en `src/common/`.
 - La inyección de dependencias para handlers de archivos se realiza vía factory, cumpliendo Clean Architecture.
 
-## 8. Próximos Pasos
+## 9. Próximos Pasos
 - Revisar y mejorar la cobertura de tests.
 - Mantener la documentación actualizada ante futuros cambios estructurales.

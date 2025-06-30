@@ -30,6 +30,14 @@ src/
 - Los manejadores de archivos y utilidades técnicas están en `src/infrastructure/`.
 - Las interfaces y puertos están en `src/interfaces/`.
 
+---
+
+## Inyección de dependencias y puertos
+
+La inyección de dependencias se realiza en `src/presentation/cli_entry.py`, donde se instancian los adaptadores concretos y se pasan a los orquestadores como puertos (interfaces). Esto permite desacoplar la lógica de negocio de los detalles de infraestructura y facilita el testeo y la extensión del sistema.
+
+---
+
 ## Versión de Python
 El `AnalizadorDeProyecto` ha sido actualizado para ser compatible y ha sido testeado con Python 3.9, asegurando una mayor eficiencia y compatibilidad con las versiones más recientes. *Nota: Se recomienda verificar periódicamente las actualizaciones de Python y las dependencias para mantener la compatibilidad y seguridad.*
 
@@ -130,16 +138,35 @@ python run.py --input ./proyecto --no-interactive --no-color > salida.txt
 python run.py --input ./noexiste --no-interactive || echo "Error: %ERRORLEVEL%"
 ```
 
+## Errores Comunes y Mensajes
+
+- **[ERROR] Falta argumento obligatorio**
+  - Mensaje: `[ERROR] Falta el argumento --input. Sugerencia: use --help para ver los flags requeridos.`
+  - Código de salida: 1
+
+- **[ERROR] Ruta no encontrada o inaccesible**
+  - Mensaje: `[ERROR] La ruta proporcionada no es válida o no se puede acceder a ella.`
+  - Sugerencia: `Verifique que la ruta exista, tenga permisos de lectura y sea un directorio válido.`
+  - Código de salida: 1
+
+- **[ERROR] Error interno inesperado**
+  - Mensaje: `[ERROR] Ha ocurrido un error inesperado. Por favor, reporte este problema.`
+  - Código de salida: 3
+
+- **[INFO] Ejecución interrumpida por el usuario**
+  - Mensaje: `[INFO] Ejecución interrumpida por el usuario.`
+  - Código de salida: 130
+
+- **[INFO] Uso de idioma no soportado**
+  - Mensaje: `[WARN] No se pudo cargar el archivo de idioma 'fr': ... Usando español por defecto.`
+  - Código de salida: 0 (continúa con fallback)
+
 ## Troubleshooting (Solución de Problemas)
 
-- **Error: Ruta de entrada no encontrada**
-  - Verifica que la ruta especificada con `--input` exista y sea accesible.
-- **Permisos insuficientes**
-  - Ejecuta la terminal como administrador o revisa los permisos de los archivos.
-- **Colores extraños en la salida**
-  - Usa el flag `--no-color` o redirige la salida a un archivo.
-- **El análisis no genera reporte**
-  - Asegúrate de que el directorio contiene archivos soportados y que tienes permisos de escritura.
+- Si recibes un error de argumentos, revisa los flags requeridos con `--help` o `--help-modo`.
+- Si el idioma no cambia, verifica la variable de entorno `ANALIZADOR_LANG` o el flag `--lang`.
+- Si la salida tiene caracteres extraños, usa `--no-color` o redirige la salida a un archivo.
+- Para ayuda sobre modos o submenús, usa `--help-modo` o `--help-optimizacion`.
 
 ## Manteniendo tu repositorio limpio
 
@@ -218,10 +245,25 @@ Por favor, utiliza la [plantilla de feedback](FEEDBACK.md) para reportar tu expe
   ```
 - Los mensajes principales y errores se mostrarán en el idioma seleccionado.
 
+## Internacionalización: pluralización y fallback
+
+- El sistema de mensajes soporta español e inglés mediante archivos JSON.
+- Si se solicita un idioma no soportado, se muestra advertencia y se usa español por defecto.
+- Si falta una clave de mensaje, se muestra el texto interno por defecto (fallback).
+- Actualmente, la pluralización es básica: los mensajes pueden diferenciar singular/plural solo si se define en los archivos de idioma.
+- Para mejorar la pluralización, puedes proponer una estructura tipo `{clave}_plural` en los archivos JSON y lógica condicional en el código.
+
 ## Accesibilidad y TTY
 
 - Si la salida no es TTY o usas `--no-color`, los colores se desactivan automáticamente.
 - Los mensajes principales son texto plano, compatibles con lectores de pantalla.
+
+## Accesibilidad
+
+- Usa el flag `--no-color` para desactivar colores y mejorar la compatibilidad con lectores de pantalla.
+- Puedes redirigir la salida a un archivo y abrirlo con un lector accesible.
+- El menú y los mensajes están diseñados para ser claros en texto plano.
+- Si tienes sugerencias de mejora en accesibilidad, abre un issue o pull request.
 
 ## Backlog de mejoras futuras (priorizado)
 
@@ -245,3 +287,23 @@ Por favor, utiliza la [plantilla de feedback](FEEDBACK.md) para reportar tu expe
    - Beneficio: bajo | Esfuerzo: alto
 
 > **Nota:** Por el momento, la arquitectura de plugins/extensiones no será implementada hasta consolidar la base y recibir feedback real. Si tienes necesidades específicas, por favor abre un issue para discutirlas.
+
+## Demos Visuales (asciinema/GIF)
+
+> ¡Contribuye! Puedes grabar y compartir sesiones de ejemplo usando [asciinema](https://asciinema.org/) o herramientas de grabación de GIFs.
+>
+> - Para grabar una demo interactiva:
+>   ```bash
+>   asciinema rec docs/demo_interactivo.cast
+>   # Ejecuta: python run.py
+>   # Finaliza con Ctrl+D
+>   asciinema upload docs/demo_interactivo.cast
+>   ```
+> - Para grabar una demo batch:
+>   Usa [peek](https://github.com/phw/peek) o similar para capturar un GIF de la terminal.
+>
+> **Enlaces sugeridos:**
+> - [Demo Interactivo (asciinema)](docs/demo_interactivo.cast) *(placeholder)*
+> - [Demo Batch (GIF)](docs/demo_batch.gif) *(placeholder)*
+
+¿Quieres aportar una demo? Consulta la sección de contribución.
